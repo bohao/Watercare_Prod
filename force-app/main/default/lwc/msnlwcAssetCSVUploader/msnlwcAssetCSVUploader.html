@@ -1,0 +1,94 @@
+<template>
+    <template if:true={showLoadingSpinner}>
+        <div style="z-index: 10000 !important;">
+            <lightning-spinner alternative-text="Uploading......" size="medium" style="z-index: 10000 !important;"></lightning-spinner>
+        </div>
+    </template>
+    <div class="slds-grid slds-wrap">
+        <div class="slds-col slds-size_1-of-2 slds-page-header">
+            <div style="padding-left:15px">
+                <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                    <div class="slds-media__body">
+                        <h2 aria-level="2" class="slds-card__header-title">
+                            <span class="slds-text-heading_small slds-truncate">Asset Data Mapping</span>
+                        </h2>
+                    </div>
+                </header>
+                <p style="padding-top: 8px">Column Mapping can be found in "Asset CSV Mapping" (Asset_CSV_Mapping__mdt) Custom Metadata.</p><br />
+                <table style="border:0; padding-top:30px;">
+                    <tr>
+                        <th>MSN Field</th>
+                        <th>Asset Field API Name</th>
+                    </tr>
+                    <template for:each={buData} for:item="assetData">
+                        <tr key={assetData.label}>
+                            <td>{assetData.label}</td>
+                            <td>{assetData.fieldName}</td>
+                        </tr>
+                    </template>
+                </table>
+            </div>
+        </div>
+        <div class="slds-col slds-size_1-of-2 slds-page-header" style="background: transparent; border: 0; margin: auto; box-shadow: none">
+            <div style="width: 80%; margin: auto;">
+                <lightning-card title="Insert/Update an Asset">
+                    <div style="margin-left:4%; margin:0px auto; width: 300px;">
+                        <div style="margin: auto">
+                            <lightning-input 
+                                type="file" 
+                                label="" 
+                                accept=".csv"
+                                name="file uploader" 
+                                message-when-type-mismatch="Please upload a CSV File"
+                                onchange={handleFilesChange}
+                                required
+                                ></lightning-input>
+                        </div>
+                        <br/>
+                        <template if:false={hideFileName}>
+                            <template if:true={uploadSuccessful}>
+                                <div class="slds-text-body_small slds-text-color_success">
+                                    {fileName}
+                                </div>
+                            </template>
+                            <template if:false={uploadSuccessful}>
+                                <div class="slds-text-body_small">
+                                    <a class="slds-icon_xx-small">
+                                        <lightning-icon icon-name="action:delete" size="xx-small" alternative-text="Delete" title="Delete" onclick={onDelete}></lightning-icon>
+                                    </a> 
+                                    &nbsp; &nbsp; {fileName}
+                                </div>
+                            </template>
+                        </template>
+                        <br/>
+                        <div style="margin: auto">
+                            <lightning-button 
+                                class="slds-m-top_medium" 
+                                label={UploadFile} 
+                                onclick={handleSave} 
+                                variant="brand" 
+                                disabled={isTrue}>
+                            </lightning-button>
+                        </div>
+                    </div><br/><br/>
+                </lightning-card>
+            </div>
+        </div>
+    </div>
+    
+    <template if:true={hasErrors}>
+        <div style="padding-top: 20px">
+            <lightning-card title="Assets that had Errors Upserting" icon-name="standard:asset_object">
+                <div style="width: auto;">
+                    <template if:true={data}>
+                            <lightning-datatable
+                                    data={data}
+                                    columns={columns}
+                                    key-field="id">
+                            </lightning-datatable>
+                    </template>
+                </div>
+            </lightning-card>
+        </div>
+    </template>
+</template>
