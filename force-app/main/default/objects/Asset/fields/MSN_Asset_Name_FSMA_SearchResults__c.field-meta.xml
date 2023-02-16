@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_Asset_Name_FSMA_SearchResults__c</fullName>
+    <description>Used to show a detailed label when searching for an asset in the Field Service Mobile app. As of limitations with the Mobile app, usually only one field can be showed as a search result label (e.g. only the &quot;Serial Number&quot;). A list of only numbers would not be helpful to identify the correct asset, so we concatenate multiple fields such as Asset Type, Name, Serial Number and Street that can then be used to show as a label.</description>
+    <externalId>false</externalId>
+    <formula>TEXT(Asset_Type__c) &amp; &quot; - &quot; &amp; Name &amp; &quot; - &quot; &amp; SerialNumber &amp;&quot;, &quot;&amp;  House_Number__c &amp;&quot; &quot;&amp;Street_Name__c&amp;&quot; &quot;&amp;Street_Type__c</formula>
+    <label>Asset Name in Search Results</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

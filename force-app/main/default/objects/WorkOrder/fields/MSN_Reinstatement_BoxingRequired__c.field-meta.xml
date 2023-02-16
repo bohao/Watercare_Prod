@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_Reinstatement_BoxingRequired__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Used by Job Coordinators to indicate, whether a &quot;Custom Box&quot; is required e.g. for a meter replacement job</description>
+    <externalId>false</externalId>
+    <label>Custom Box Required?</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

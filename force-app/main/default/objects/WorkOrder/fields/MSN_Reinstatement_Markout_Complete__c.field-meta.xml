@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_Reinstatement_Markout_Complete__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Used for validation purposes in the field service mobile flow &quot;Update Job Status&quot; to determine whether the markout crew already has entered the required details for a hard surface reinstatement job.</description>
+    <externalId>false</externalId>
+    <label>Reinstatement Markout Complete</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

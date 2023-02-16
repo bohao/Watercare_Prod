@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Work Order Labour Booking</label>
+    <protected>false</protected>
+    <values>
+        <field>Payload__c</field>
+        <value xsi:type="xsd:string">{
+  &quot;TransactionID&quot;: &quot;eventId&quot;,
+  &quot;ContractorCode&quot;: &quot;MSN&quot;,
+  &quot;employeeCode&quot;: &quot;{{MSN_Employee_Code__c}}&quot;,
+  &quot;WorkOrderNo&quot;: &quot;{{MSN_EAM_WorkOrder_No__c}}&quot;,
+  &quot;activityCode&quot;: &quot;{{MSN_Activity_Code__c}}&quot;,
+  &quot;tradeCode&quot;: &quot;{{MSN_Trade_Code__c}}&quot;,
+  &quot;departmentCode&quot;: &quot;*&quot;,
+  &quot;typeOfHours&quot;: &quot;{{MSN_Type_of_Hours__c}}&quot;,
+  &quot;hoursWorked&quot;: {{Hours_Worked__c}},
+  &quot;dateWorked&quot;: &quot;{{Date_of_the_SA__c}}&quot;
+}</value>
+    </values>
+    <values>
+        <field>Request_Method__c</field>
+        <value xsi:type="xsd:string">PUT</value>
+    </values>
+    <values>
+        <field>Trigger_Object__c</field>
+        <value xsi:type="xsd:string">ProductConsumed</value>
+    </values>
+</CustomMetadata>

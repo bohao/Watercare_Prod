@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_WaterShutdown_Approved__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Used by Job Coordinators / Planners to indicate that a &quot;Shutdown&quot; has been approved for planned water work. Can be edited directly from a list view or report without having to open up the individual record.</description>
+    <externalId>false</externalId>
+    <label>Shutdown Approved</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

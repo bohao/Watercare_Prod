@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_Mandatory_WorkStep__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Used to flag, whether the Work Step is mandatory to answer by the field crew.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>This Work Step has to be answered</inlineHelpText>
+    <label>Is Mandatory</label>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_Hard_Material_Volume__c</fullName>
+    <description>Calculated reinstatement material volume for hard surface reinstatement in m³ . The Calculation is made from the entered Surface Length, Depth, Width that has been entered by the Reinstatement Markout Crew</description>
+    <externalId>false</externalId>
+    <formula>MSN_Reinstatement_Surface_Length__c * MSN_Reinstatement_Surface_Width__c * MSN_Reinstatement_Surface_Depth__c</formula>
+    <inlineHelpText>Approx. required hard surface material in cubic meters (m³)</inlineHelpText>
+    <label>Hard Material Volume (m³)</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

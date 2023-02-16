@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_WorkStep_Answer__c</fullName>
+    <description>Used to record the Answer that has been given to a Work Step question via the Flow &quot;MSN - Field Service Mobile App - Work Step Answers&quot; as part of a Work Plan for a given Work Order.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>If you type in an answer on this Work Step Template, this will then show up as a prepopulated answer on the Work Step for the mobile user.</inlineHelpText>
+    <label>Work Step Answer</label>
+    <length>32768</length>
+    <trackHistory>false</trackHistory>
+    <type>LongTextArea</type>
+    <visibleLines>5</visibleLines>
+</CustomField>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_Service_Appointment__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>This lookup relationship is used to link a &quot;Work Step&quot; to a specific Service Appointment during the work step has been completed/answered. This is particularly important to link a &quot;Schedule Item Code&quot; work step to a Service Appointment, in order to identify what type of work a specific crew/subcontractor has done during their Service Appointment. Otherwise, the Work Steps are only linked to a Work Order or Work Order Line Item, making it impossible to tell on which Service Appointment the Work Step has been completed.</description>
+    <externalId>false</externalId>
+    <label>Service Appointment</label>
+    <referenceTo>ServiceAppointment</referenceTo>
+    <relationshipLabel>Work Steps</relationshipLabel>
+    <relationshipName>Work_Steps</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

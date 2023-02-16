@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Revisit_Jobs</fullName>
+    <columns>Name</columns>
+    <columns>WorkType</columns>
+    <columns>Priority__c</columns>
+    <columns>Status</columns>
+    <columns>STREET</columns>
+    <columns>CITY</columns>
+    <columns>FSSK__FSK_Work_Order__c</columns>
+    <columns>EarliestStartTime</columns>
+    <columns>Inline_Due_Date__c</columns>
+    <columns>LatestEndTime</columns>
+    <columns>Letter_Drop__c</columns>
+    <columns>Letter_Drop_Date__c</columns>
+    <columns>FSL__Auto_Schedule__c</columns>
+    <columns>Dialysis_Patient__c</columns>
+    <columns>Key_Customer__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Status</field>
+        <operation>equals</operation>
+        <value>None</value>
+    </filters>
+    <filters>
+        <field>MSN_Revisit__c</field>
+        <operation>equals</operation>
+        <value>1</value>
+    </filters>
+    <label>Revisit jobs to schedule</label>
+</ListView>

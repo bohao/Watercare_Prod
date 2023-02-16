@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_Child_WorkType_Name__c</fullName>
+    <description>Cross object formula to retrieve the &quot;Name&quot; of the child work type linked in the lookup field.</description>
+    <externalId>false</externalId>
+    <formula>MSN_Child_Reinstatement_WorkType__r.Name</formula>
+    <label>Child Work Type - Name</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

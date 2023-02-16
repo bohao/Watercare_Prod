@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_Subcontractor_ServiceTerritory__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Used to flag Service Territories assigned to Subcontractors of MSN. This is e.g. used in the Flow &quot;Assign to Subcontractor&quot; in order to give the user a list of all subcontractor territories the service appointment can be assigned to.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Please tick this, if this Service Territory is used for a Subcontractor.</inlineHelpText>
+    <label>Subcontractor Service Territory</label>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_Answer_Type__c</fullName>
+    <description>Used to define the Type of Answer that is expected for this Work Step (e.g. String, Date, Boolean, Picklist , URL). Please note: If &quot;Picklist&quot; is chosen, at least 2 &quot;Work Step Answers&quot; have to be added to this Work Step Template. If &quot;URL&quot; is chose, you have to populate a URL into the field &quot;External URL&quot; on the Work Step Template.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Please specify what type of answer you expect for this Work Step. If you choose &quot;Picklist&quot;, you have to add at least two &quot;Work Step Answers&quot; to this template in order to show the user those as picklist choices. If you select &quot;URL&quot; you have to populate the &quot;External URL&quot; field on the record  - e.g. a link to Powerapps.</inlineHelpText>
+    <label>Answer Type</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetName>MSN_Work_Steps_Field_Type</valueSetName>
+    </valueSet>
+</CustomField>

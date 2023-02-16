@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Resource_Type__c</fullName>
+    <externalId>false</externalId>
+    <label>Resource Type</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Cartage/ Hiab Wastewater</fullName>
+                <default>false</default>
+                <label>Cartage/ Hiab Wastewater</label>
+            </value>
+            <value>
+                <fullName>Cartage/ Hiab Water</fullName>
+                <default>false</default>
+                <label>Cartage/ Hiab Water</label>
+            </value>
+            <value>
+                <fullName>CCTV</fullName>
+                <default>false</default>
+                <label>CCTV</label>
+            </value>
+            <value>
+                <fullName>Electrician/Technician Subcontractor</fullName>
+                <default>false</default>
+                <label>Electrician/Technician Subcontractor</label>
+            </value>
+            <value>
+                <fullName>Expose Concrete - Reinstatement Wash Down</fullName>
+                <default>false</default>
+                <label>Expose Concrete - Reinstatement Wash Down</label>
+            </value>
+            <value>
+                <fullName>Hydro Excavator Large - Wastewater</fullName>
+                <default>false</default>
+                <label>Hydro Excavator Large - Wastewater</label>
+            </value>
+            <value>
+                <fullName>Hydro Excavator Large - Water</fullName>
+                <default>false</default>
+                <label>Hydro Excavator Large - Water</label>
+            </value>
+            <value>
+                <fullName>Hydro Excavator Small - Wastewater</fullName>
+                <default>false</default>
+                <label>Hydro Excavator Small - Wastewater</label>
+            </value>
+            <value>
+                <fullName>Hydro Excavator Small - Water</fullName>
+                <default>false</default>
+                <label>Hydro Excavator Small - Water</label>
+            </value>
+            <value>
+                <fullName>Leak Detection</fullName>
+                <default>false</default>
+                <label>Leak Detection</label>
+            </value>
+            <value>
+                <fullName>Planned Water Crew (1 Man)</fullName>
+                <default>false</default>
+                <label>Planned Water Crew (1 Man)</label>
+            </value>
+            <value>
+                <fullName>Pumpstation Uate (1 Man)</fullName>
+                <default>false</default>
+                <label>Pumpstation Uate (1 Man)</label>
+            </value>
+            <value>
+                <fullName>Reinstatement - Pavers</fullName>
+                <default>false</default>
+                <label>Reinstatement - Pavers</label>
+            </value>
+            <value>
+                <fullName>Reinstatement - Perm Concrete</fullName>
+                <default>false</default>
+                <label>Reinstatement - Perm Concrete</label>
+            </value>
+            <value>
+                <fullName>Reinstatement - Perm Hotmix</fullName>
+                <default>false</default>
+                <label>Reinstatement - Perm Hotmix</label>
+            </value>
+            <value>
+                <fullName>Reinstatement - Perm Topsoil</fullName>
+                <default>false</default>
+                <label>Reinstatement - Perm Topsoil</label>
+            </value>
+            <value>
+                <fullName>Steel Plates - Drainage</fullName>
+                <default>false</default>
+                <label>Steel Plates - Drainage</label>
+            </value>
+            <value>
+                <fullName>Steel Plates - Reinstatement</fullName>
+                <default>false</default>
+                <label>Steel Plates - Reinstatement</label>
+            </value>
+            <value>
+                <fullName>Steel Plates - Water</fullName>
+                <default>false</default>
+                <label>Steel Plates - Water</label>
+            </value>
+            <value>
+                <fullName>Sucker Truck - Wastewater related works</fullName>
+                <default>false</default>
+                <label>Sucker Truck - Wastewater related works</label>
+            </value>
+            <value>
+                <fullName>Sucker Truck - Water related works</fullName>
+                <default>false</default>
+                <label>Sucker Truck - Water related works</label>
+            </value>
+            <value>
+                <fullName>Traffic Mgmt - Reinstatement Works</fullName>
+                <default>false</default>
+                <label>Traffic Mgmt - Reinstatement Works</label>
+            </value>
+            <value>
+                <fullName>Traffic Mgmt - Wastewater Works</fullName>
+                <default>false</default>
+                <label>Traffic Mgmt - Wastewater Works</label>
+            </value>
+            <value>
+                <fullName>Traffic Mgmt - Water Works</fullName>
+                <default>false</default>
+                <label>Traffic Mgmt - Water Works</label>
+            </value>
+            <value>
+                <fullName>Wastewater Crew (1 Man)</fullName>
+                <default>false</default>
+                <label>Wastewater Crew (1 Man)</label>
+            </value>
+            <value>
+                <fullName>Wastewater Dig Up Crew</fullName>
+                <default>false</default>
+                <label>Wastewater Dig Up Crew</label>
+            </value>
+            <value>
+                <fullName>Wastewater Jetter Truck</fullName>
+                <default>false</default>
+                <label>Wastewater Jetter Truck</label>
+            </value>
+            <value>
+                <fullName>Water Reactive Crew (1 Man)</fullName>
+                <default>false</default>
+                <label>Water Reactive Crew (1 Man)</label>
+            </value>
+            <value>
+                <fullName>Water Reactive Crew (Class 2 Large Truck)</fullName>
+                <default>false</default>
+                <label>Water Reactive Crew (Class 2 Large Truck)</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

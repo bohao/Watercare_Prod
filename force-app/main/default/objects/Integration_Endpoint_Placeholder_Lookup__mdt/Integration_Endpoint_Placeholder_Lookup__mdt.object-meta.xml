@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>this lookup has field mapping to replace the placeholder in the endpoint based on the triggered object</description>
+    <label>Integration Endpoint Placeholder Lookup</label>
+    <pluralLabel>Integration Endpoint Placeholder Lookups</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

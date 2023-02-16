@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_ServiceTerritory_Name__c</fullName>
+    <description>This cross object formula is used to retrieve the &quot;Name&quot; of the Service Territory in order to show it in data table elements of flows to the user - e.g. in the Work Completed Review flow.</description>
+    <externalId>false</externalId>
+    <formula>ServiceTerritory.Name</formula>
+    <label>Service Territory - Name</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

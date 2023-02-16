@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_Activity_Problem_Code__c</fullName>
+    <description>Cross Object Formula to retrieve either the &quot;Activity Code&quot; or the &quot;Problem Code&quot; from the related &quot;Work Type&quot; and display it in this field. This is used e.g. as a filter field in Gantt Filters to retrieve Service Appointments of a specific Activity or Problem Code.</description>
+    <externalId>false</externalId>
+    <formula>IF( NOT(ISBLANK( WorkType.MSN_ActivityCode__c )), WorkType.MSN_ActivityCode__c , IF(NOT( ISBLANK( WorkType.MSN_Problem_Code__c )) , WorkType.MSN_Problem_Code__c, &quot;&quot;))</formula>
+    <label>Activity Code / Problem Code</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

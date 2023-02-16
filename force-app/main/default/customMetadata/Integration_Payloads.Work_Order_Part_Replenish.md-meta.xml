@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Work Order Part Replenish</label>
+    <protected>false</protected>
+    <values>
+        <field>Payload__c</field>
+        <value xsi:type="xsd:string">{
+&quot;TransactionID&quot;: &quot;eventId&quot;,
+&quot;transactionOn&quot;: &quot;WORKORDER&quot;,
+&quot;transactionlines&quot;: [
+{
+&quot;partCode&quot;: &quot;{{ProductItem.MSN_LN_Material_Key__c}}&quot;,
+&quot;bin&quot;: &quot;*&quot;,
+&quot;lot&quot;: &quot;*&quot;,
+&quot;transactionQty&quot;: {{Quantity_Consumed_Diff__c}}
+}],
+&quot;WorkOrderNo&quot;: &quot;{{MSN_EAM_WorkOrder_No__c}}&quot;,
+&quot;ContractorCode&quot;: &quot;MSN&quot;,
+&quot;activityCode&quot; : &quot;10&quot;,
+&quot;storeCode&quot;: &quot;{{ProductItem.MSN_LN_Store_Id__c}}&quot;,
+&quot;date&quot;: &quot;{{LastModifiedDate}}&quot;,
+&quot;transactionType&quot;: &quot;RETURN&quot;
+}</value>
+    </values>
+    <values>
+        <field>Request_Method__c</field>
+        <value xsi:type="xsd:string">PUT</value>
+    </values>
+    <values>
+        <field>Trigger_Object__c</field>
+        <value xsi:type="xsd:string">ProductConsumed</value>
+    </values>
+</CustomMetadata>

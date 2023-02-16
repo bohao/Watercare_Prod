@@ -1,0 +1,1320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <description>When a new reactive water or wastewater P1/P2 job is created via the integration, this needs immediate action. Notify the users in the chatter group &quot;Water Reactive&quot; or &quot;Wastewater Reactive&quot; accordingly with a chatter message.</description>
+        <name>Notify_ChatterGroup_New_P1_P2_Job</name>
+        <label>Notify Chatter Group Members of New P1/P2 Job</label>
+        <locationX>1238</locationX>
+        <locationY>911</locationY>
+        <actionName>chatterPost</actionName>
+        <actionType>chatterPost</actionType>
+        <connector>
+            <targetReference>Decision_Reactive_SA_completed_or_incompleted</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>text</name>
+            <value>
+                <elementReference>ChatterGroup_Notification_Message</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>subjectNameOrId</name>
+            <value>
+                <elementReference>var_ChatterGroupId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>type</name>
+            <value>
+                <elementReference>var_Group</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <apiVersion>53.0</apiVersion>
+    <assignments>
+        <name>Assign_status_to_dispatch</name>
+        <label>Assign status to dispatch</label>
+        <locationX>1414</locationX>
+        <locationY>1607</locationY>
+        <assignmentItems>
+            <assignToReference>Get_Reactive_SAs_assigned_to_the_Service_Resource.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Dispatched</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_the_SA_to_dispatched_status</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <description>Check if the custom field &quot;Inline Due Date&quot; is blank upon record creation and if the Service Appointment is new.  If so, then populate it from the &quot;DueDate&quot; standard field. Inline Due Date must always be populated when a Service Appointment is created, otherwise the scheduling will fail with an error message.</description>
+        <name>Decision_AutoSchedule_SA_from_Work_Type</name>
+        <label>Auto-Schedule SA from Work Type?</label>
+        <locationX>1502</locationX>
+        <locationY>2711</locationY>
+        <defaultConnector>
+            <targetReference>Decision_InlineDueDate_changed</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Do not auto-schedule SA</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_AutoSchedule_Service_Appointment</name>
+            <conditionLogic>1 AND 2 AND (3 OR 4 OR 5 OR 6 OR 7 OR 8)</conditionLogic>
+            <conditions>
+                <leftValueReference>fx_ServiceAppointment_IsNew</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.MSN_AutoSchedule_from_WorkType__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Priority__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>P3</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Priority__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>P4</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Priority__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>P5</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Priority__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>P6</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Priority__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>P7</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Priority__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>P8</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_ServiceAppointment_AutoSchedule</targetReference>
+            </connector>
+            <label>Auto-schedule SA</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Used to determine if the Service Appointment triggering this Work Order is of a Work type that is a &quot;RAR&quot; (request for ressource) or related to a Work Order that is flagged as &quot;Is it a RAR&quot;</description>
+        <name>Decision_Check_if_work_type_is_a_RAR</name>
+        <label>Check if work type is a RAR</label>
+        <locationX>1502</locationX>
+        <locationY>3383</locationY>
+        <defaultConnector>
+            <targetReference>Decision_Crew_Updates_Status_to_Completed_CannotComplete</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_Available_for_RAR</name>
+            <conditionLogic>1 OR (2 AND 3)</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.WorkType.Available_for_RAR__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.FSSK__FSK_Work_Order__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.FSSK__FSK_Work_Order__r.Is_it_a_RAR__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_the_SA</targetReference>
+            </connector>
+            <label>Available for RAR</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>If a Crew updates the &quot;Status&quot; of the Service Appointment to &quot;Completed&quot; or &quot;Cannot Complete&quot;, then update the field &quot;Location&quot; of the Parent Record to an empty string. Please note: this is required, as the assignment of an SA to a Crew fills the field &quot;Location&quot; of the Parent Work Order with the Location assigned to the Crew Service Ressource so that the crew members can consume parts from the van (See Jira Ticket MSRS-2410). In order to prevent the &quot;location&quot; (=van stock) to linger on the crew member&apos;s mobile app even after they have been removed from the crew, this decision then removes the field &quot;Location&quot; again from the Work Order after the job has been completed.</description>
+        <name>Decision_Crew_Updates_Status_to_Completed_CannotComplete</name>
+        <label>Crew updates Status to &quot;Completed&quot; or &quot;Cannot Complete&quot;?</label>
+        <locationX>1502</locationX>
+        <locationY>3719</locationY>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_Update_Status_Completed_CannotComplete</name>
+            <conditionLogic>(1 OR 2) AND 3 AND 4 AND 5</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Completed</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Cannot Complete</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.FSSK__FSK_Assigned_Service_Resource__r.ResourceType</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>C</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ParentRecordId</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>0WO</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.FSSK__FSK_Assigned_Service_Resource__r.LocationId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_ParentWO_Location</targetReference>
+            </connector>
+            <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Check if the custom field &quot;Inline Due Date&quot; is blank upon record creation and if the Service Appointment is new.  If so, then populate it from the &quot;DueDate&quot; standard field. Inline Due Date must always be populated when a Service Appointment is created, otherwise the scheduling will fail with an error message.</description>
+        <name>Decision_InlineDueDate_Blank</name>
+        <label>Inline Due Date is blank</label>
+        <locationX>1502</locationX>
+        <locationY>2375</locationY>
+        <defaultConnector>
+            <targetReference>Decision_AutoSchedule_SA_from_Work_Type</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Inline Due Date populated</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_InlineDueDate_IsBlank</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Inline_Due_Date__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>fx_ServiceAppointment_IsNew</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_ServiceAppointment_InlineDueDate</targetReference>
+            </connector>
+            <label>Inline Due Date is blank</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Check if the inline due date is changed; is NOT equal to the prior inline due date and also check whether the SA record is NOT new.</description>
+        <name>Decision_InlineDueDate_changed</name>
+        <label>Inline Due Date changed</label>
+        <locationX>1502</locationX>
+        <locationY>3047</locationY>
+        <defaultConnector>
+            <targetReference>Decision_Check_if_work_type_is_a_RAR</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Inline Due Date not changed</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_InlineDueDate_changed</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Inline_Due_Date__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>fx_ServiceAppointment_IsNew</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record__Prior.Inline_Due_Date__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Inline_Due_Date__c</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <elementReference>$Record.EarliestStartTime</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_ServiceAppointment_DueDate</targetReference>
+            </connector>
+            <label>Inline Due Date changed</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Check if there is no Service Appointment scheduled to the Service Resource.</description>
+        <name>Decision_No_SA_Assigned_to_ServiceRessource</name>
+        <label>No SA assigned to Service Resource?</label>
+        <locationX>1326</locationX>
+        <locationY>1487</locationY>
+        <defaultConnector>
+            <targetReference>Assign_status_to_dispatch</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>SA record found</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_No_SA_Record_Found</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Reactive_SAs_assigned_to_the_Service_Resource.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Decision_Update_Gantt_Colour_when_SA_Status_changes</targetReference>
+            </connector>
+            <label>No SA record found</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>When a Service Appointment is created, populate the custom Work Order lookup field &quot;FSSK__FSK_Work_Order__c&quot;. This lookup is used in many other automation e.g. the Sharing of Grandparent Work Order Records, as soon as Service Ressource is assigned to the Service Appointment that is related to a child work order (e.g. Reinstatement). Please note: This functionality has been taken from the &quot;Field Service Starter Kit&quot; process builder process &quot;FSSK Service Appointment Process&quot; which was deemed inefficient as built in Process builder.</description>
+        <name>Decision_Populate_Custom_Work_Order_Lookup</name>
+        <label>Populate Custom Work Order Lookup on SA</label>
+        <locationX>1502</locationX>
+        <locationY>335</locationY>
+        <defaultConnector>
+            <targetReference>Decision_Reactive_P1_P2_Jobs</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_Populate_WorkOrder_Lookup</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>fx_ServiceAppointment_IsNew</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ParentRecordId</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>0WO</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Custom_Work_Order_Field</targetReference>
+            </connector>
+            <label>Populate Custom Work Order Lookup Field</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>This decision checks, whether the triggering Service Appointment is a &quot;P1&quot; or &quot;P2&quot; priority and the Service Area is &quot;Water&quot; or &quot;Wastwater&quot; and the Type of Work &quot;Reactive&quot;. If so, then send a chatter notification to the corresponding chatter group in the subsequent action.</description>
+        <name>Decision_Reactive_P1_P2_Jobs</name>
+        <label>Reactive P1/P2 jobs</label>
+        <locationX>1502</locationX>
+        <locationY>671</locationY>
+        <defaultConnector>
+            <targetReference>Decision_Reactive_SA_completed_or_incompleted</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_Water_Reactive_P1_P2</name>
+            <conditionLogic>(1 OR 2) AND 3 AND 4 AND 5</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Priority__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>P1</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Priority__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>P2</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.WorkType.Service_Area__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Water</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.WorkType.MSN_TypeOfWork__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Reactive</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>fx_ServiceAppointment_IsNew</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Reactive_Water_Chatter_Group_Id</targetReference>
+            </connector>
+            <label>Water Reactive P1/P2</label>
+        </rules>
+        <rules>
+            <name>Outcome_Wastewater_Reactive_P1_P2</name>
+            <conditionLogic>(1 OR 2) AND 3 AND 4 AND 5</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Priority__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>P1</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Priority__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>P2</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.WorkType.Service_Area__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Wastewater</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.WorkType.MSN_TypeOfWork__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Reactive</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>fx_ServiceAppointment_IsNew</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Reactive_WasteWater_Chatter_Group_Id</targetReference>
+            </connector>
+            <label>Wastewater Reactive P1/P2</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>This decision is used for drip feeding (=auto dispatching). If the currently assigned Service Ressource of the triggering Service Appointment has any other Appointments in status scheduled, then update the status of the next reactive Service Appointment to &quot;Dispatched&quot; automatically. If no further reactive SA exists, then do nothing.</description>
+        <name>Decision_Reactive_SA_completed_or_incompleted</name>
+        <label>Reactive SA completed or incomplete</label>
+        <locationX>1502</locationX>
+        <locationY>1127</locationY>
+        <defaultConnector>
+            <targetReference>Decision_Update_Gantt_Colour_when_SA_Status_changes</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_Check_Completed_Incompleted_Reactive_SA</name>
+            <conditionLogic>1 AND (2 OR 3)</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Reactive_work__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Completed</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Cannot Complete</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Assigned_Resources</targetReference>
+            </connector>
+            <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+            <label>Reactive SA completed or incomplete?</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>This is used to automatically update the Gantt Colours for the Service Appointment triggering this flow, when the status changes to certain status.</description>
+        <name>Decision_Update_Gantt_Colour_when_SA_Status_changes</name>
+        <label>Update Gantt Colour when SA Status changes</label>
+        <locationX>1502</locationX>
+        <locationY>2039</locationY>
+        <defaultConnector>
+            <targetReference>Decision_InlineDueDate_Blank</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_SA_Status_Scheduled</name>
+            <conditionLogic>1 AND 2</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Scheduled</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Color_For_Scheduled_Status</targetReference>
+            </connector>
+            <label>Status &quot;Scheduled&quot;</label>
+        </rules>
+        <rules>
+            <name>Outcome_SA_Dispatched</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Dispatched</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Color_For_Dispatched_Status</targetReference>
+            </connector>
+            <label>Status &quot;Dispatched&quot;</label>
+        </rules>
+        <rules>
+            <name>Outcome_SA_Travel</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Travel</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Color_For_Travel_Status</targetReference>
+            </connector>
+            <label>Status &quot;Travel&quot;</label>
+        </rules>
+        <rules>
+            <name>Outcome_SA_OnSite</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>On Site</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Color_For_OnSite_Status</targetReference>
+            </connector>
+            <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+            <label>Status &quot;OnSite&quot;</label>
+        </rules>
+        <rules>
+            <name>Outcome_SA_Completed</name>
+            <conditionLogic>1 AND 2</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Completed</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Color_For_Completed_Status</targetReference>
+            </connector>
+            <label>Status &quot;Completed&quot;</label>
+        </rules>
+        <rules>
+            <name>Outcome_SA_Cannot_Complete</name>
+            <conditionLogic>1 AND 2</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Cannot Complete</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Color_For_Cannot_Complete_Status</targetReference>
+            </connector>
+            <label>Status &quot;Cannot Complete&quot;</label>
+        </rules>
+        <rules>
+            <name>Outcome_SA_Canceled</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Canceled</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Color_For_Canceled_Status</targetReference>
+            </connector>
+            <label>Status &quot;Canceled&quot;</label>
+        </rules>
+        <rules>
+            <name>Outcome_Status_On_Hold</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>On Hold</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Color_For_On_Hold_Status</targetReference>
+            </connector>
+            <label>Status &quot;On-Hold&quot;</label>
+        </rules>
+        <rules>
+            <name>Outcome_SA_Status_None</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>None</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Color_For_OnSite_Status_0</targetReference>
+            </connector>
+            <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+            <label>Status &quot;None&quot;</label>
+        </rules>
+        <rules>
+            <name>Outcome_Status_Onsite_And_Crew_in_Confined_Space_Entry</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Confined_space_entry__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Confined_space_entry__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_the_colour_of_SA</targetReference>
+            </connector>
+            <label>Status &quot;Onsite&quot; and crew in &quot;Confined Space Entry&quot;</label>
+        </rules>
+        <rules>
+            <name>Outcome_ServiceTerritory_and_Subcontractor_not_in_SF</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ServiceTerritoryId</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Subcontractor_not_in_Salesforce__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>None</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_the_status_to_Scheduled</targetReference>
+            </connector>
+            <label>Check Service Territory and Subcontractor not in Salesforce</label>
+        </rules>
+    </decisions>
+    <description>15/12/21 - V1: Check if the inline_due_date__c field is updated/changed. If the inline_due_date__c field is changed then update the standard due date as per the inline due date. This is because you cannot edit the due date(date-time) field from the list view. 
+https://watercarestp.atlassian.net/browse/MSRS-162
+
+23/12/21 - V2: Add automatic calculation/update of the field &quot;Duration&quot; when either SchedEndDate or SchedStartDate is updated; Removed the initial SA Lookup (as not required); Removed Entry condition that &quot;Inline Due Date&quot; has to change
+
+24/02/22 - V3/4/5: Change record triggered flow start conditions to &quot;when a record is created or changed&quot;; created new decision node to check for missing &quot;Inline Due Date&quot; on Service Appointment and populate accordingly from DueDate if required. New formulas to calculate the date value of the DueDate; New Formula to determine if the SA record is new.
+
+24/02/22 - V6:  Changed Flow to an &quot;After save&quot; record triggered flow after experiencing problems with before saving Flow not firing for newly created Service Appointment records, when they were created via APEX (e.g. the &quot;Auto-Create Service Appointments&quot; trigger on Work Type from FSL)
+
+24/02/22 - V7: Include new Node &quot;Auto-schedule Service Appointment&quot; that checks whether the checkbox &quot;Auto-Schedule from Work Type&quot; is set to &quot;true&quot;. If so, the flow updates the &quot;Auto-Schedule&quot; checkbox on the Service Appointment to &quot;true&quot; in order to auto-schedule it.
+15/03/2022 - V8: Adding the Duration Type field to minutes
+
+18/03/2022 - V9: Removing the Node &quot; Scheduled Start/End Date change&quot; that updated the &quot;Duration field&quot; on the SA after experiencing issues with conflicting other triggers in FSL trying to update at the same time.
+
+30/03/2022 - V10: Update the Gantt color value based on the different SA status
+
+31/03/2022 - V11: Adding condition to exclude the SAs that are in confined space entry. Those SAs will be flagged with Red color till the field crew is inside the confined space.
+
+11/04/2022 - V12: Updating the flow to add the service territory that has the &quot;Subcontractor not using Salesforce&quot; checkbox ticked criteria. The SA should be in status scheduled if the territory is changed with the &quot;subcontractor not using Salesforce&quot; flag.
+
+11/04/2022 - V13: Adding the color code for the new status &quot;On-Hold&quot;
+
+05/05/2022 - V24:  Added Dispatch Logic for Reactive Work; Decision Element &quot;Reactive SA completed or incomplete&quot; and related get/update elements in the path.
+
+07/05/2022 - V25: Removed unnecessary lookup/get elements for &quot;Work Type&quot;, &quot;Work Order&quot; and &quot;Service Territory&quot;  and replaced them with logic within the Decision Elements
+
+11/05/2022 - V27: Added a fault path because if there is no reactive SA in the scheduled status for the resource then it should still go further in the flow to change the color of the SA based on the status.
+
+17/05/2022 - V16: Added the decision element to check if no reactive SA is in scheduled status. Removed the fault path. Added the reactive P1/P2 job chatter notification element. Added the Gantt label update. The Gantt label should take the WO number.
+
+15/06/2022 - V28:Updating the Gantt colors as discussed in the UX feedback
+
+07/11/2022 - V34/35: Amend the decision node &quot;Reactive P1/P2 Jobs&quot; and add the Wastewater Reactive Scenario as requested in ticket MSRS-2409 in addition to Water Reactive only. Fixed the body text in the variable NotificationMessage to enable hyperlinks to Service Appointment triggering this flow; Add &quot;fx_CustomURL&quot; formula to retrieve the URL that is required for creating a hyperlink in a plaintext chatter post.
+
+08/11/2022 - V36: Amended the Element &quot;Get Assigned Resources&quot; to sort by the &quot;Assigned Resource&quot; Record Id in order to get the correct resource esp. in case the SA has been assigned to a &quot;crew&quot;.
+
+14/11/2022 - V37: Added a decision node to check whether the Status of a Service Appointment has been set to Completed or Cannot Complete when assigned to a &quot;Crew&quot; and if so, remove the &quot;location&quot; field on the Parent Work Order again (that has been automatically populated when dispatching a work order to a crew). This has been implemented to address an issue with lingering locations/van stock locations on Field Service Mobile App as described in MSRS-2518
+
+10/01/2023 - V38:  Updated the entry criteria for the decision node &quot;Edited Due Date&quot; changes after experiencing issues when a new Service Appointments has been created via the API and the flow tried to update the field &quot;Due Date&quot; to a value earlier than the &quot;Earliest Start Permitted&quot; value which leads to a validation error on the Service Appointment.</description>
+    <environments>Default</environments>
+    <formulas>
+        <description>Retrieve the Date component from the Date/Time field &quot;DueDate&quot;. This is used later to assign the Date to the field &quot;Inline DueDate&quot; in case it was left blank during record creation.</description>
+        <name>fx_Calculate_InlineDueDate_from_DueDate</name>
+        <dataType>Date</dataType>
+        <expression>DATEVALUE({!$Record.DueDate})</expression>
+    </formulas>
+    <formulas>
+        <description>Calculate the new &quot;Duration&quot; for a Service Appointment after either the &quot;Scheduled Start Date&quot; or &quot;Scheduled End Date&quot; changed</description>
+        <name>fx_Calculate_SA_Duration</name>
+        <dataType>Number</dataType>
+        <expression>({!$Record.SchedEndTime}-{!$Record.SchedStartTime})*24*60</expression>
+        <scale>0</scale>
+    </formulas>
+    <formulas>
+        <description>This formula is used to retrieve the URL of the current Salesforce Org. This then can be used to generate a Hyperlink to records when e.g. posting a chatter notification to a group as used in the node &quot;Reactive P1/P2 jobs&quot; so that users can click on the hyperlink instead of having to search for the mentioned record themselves.</description>
+        <name>fx_CustomDomain</name>
+        <dataType>String</dataType>
+        <expression>LEFT({!$Api.Enterprise_Server_URL_540},FIND(&quot;/services&quot;, {!$Api.Enterprise_Server_URL_540}))</expression>
+    </formulas>
+    <formulas>
+        <description>Determine if the Service Appointment is newly created using the &quot;ISNEW()&quot; formula</description>
+        <name>fx_ServiceAppointment_IsNew</name>
+        <dataType>Boolean</dataType>
+        <expression>ISNEW()</expression>
+    </formulas>
+    <interviewLabel>MSN - Service Appointment - Record-Triggered Updates {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>MSN - Service Appointment - Record-Triggered Updates</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <description>Lookup the ID of the Service Ressource currently assigned to the triggering SA.</description>
+        <name>Get_Assigned_Resources</name>
+        <label>Get Assigned Resources</label>
+        <locationX>1326</locationX>
+        <locationY>1247</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Reactive_SAs_assigned_to_the_Service_Resource</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ServiceAppointmentId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <object>AssignedResource</object>
+        <outputAssignments>
+            <assignToReference>var_ServiceAppointmentId</assignToReference>
+            <field>ServiceAppointmentId</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_ServiceResourceId</assignToReference>
+            <field>ServiceResourceId</field>
+        </outputAssignments>
+        <sortField>Id</sortField>
+        <sortOrder>Asc</sortOrder>
+    </recordLookups>
+    <recordLookups>
+        <description>Attempt to retrieve any further Reactive Service Appointments scheduled to the Service Resource that has been assigned to the triggering  SA.</description>
+        <name>Get_Reactive_SAs_assigned_to_the_Service_Resource</name>
+        <label>Get all Reactive SAs assigned to the Service Resource</label>
+        <locationX>1326</locationX>
+        <locationY>1367</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Decision_No_SA_Assigned_to_ServiceRessource</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Scheduled</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>FSSK__FSK_Assigned_Service_Resource__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>var_ServiceResourceId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>SchedStartTime</field>
+            <operator>GreaterThan</operator>
+            <value>
+                <elementReference>$Record.SchedStartTime</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Reactive_work__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>ServiceAppointment</object>
+        <sortField>SchedStartTime</sortField>
+        <sortOrder>Asc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Attempt to retrieve the ID of the chatter Group &quot;Reactive Wastewater&quot;. This will be used then to send a chatter notification in the subsequent action.</description>
+        <name>Get_Reactive_WasteWater_Chatter_Group_Id</name>
+        <label>Get &quot;Reactive Wastewater&quot; Chatter Group Id</label>
+        <locationX>1502</locationX>
+        <locationY>791</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Notify_ChatterGroup_New_P1_P2_Job</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Name</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Reactive Wastewater</stringValue>
+            </value>
+        </filters>
+        <object>CollaborationGroup</object>
+        <outputAssignments>
+            <assignToReference>var_ChatterGroupId</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <description>Attempt to retrieve the ID of the chatter Group &quot;Reactive Water&quot;. This will be used then to send a chatter notification in the subsequent action.</description>
+        <name>Get_Reactive_Water_Chatter_Group_Id</name>
+        <label>Get &quot;Reactive Water&quot; Chatter Group Id</label>
+        <locationX>1238</locationX>
+        <locationY>791</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Notify_ChatterGroup_New_P1_P2_Job</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Name</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Reactive Water</stringValue>
+            </value>
+        </filters>
+        <object>CollaborationGroup</object>
+        <outputAssignments>
+            <assignToReference>var_ChatterGroupId</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordUpdates>
+        <name>Update_Color_For_Canceled_Status</name>
+        <label>Update Color For Canceled Status</label>
+        <locationX>1634</locationX>
+        <locationY>2159</locationY>
+        <connector>
+            <targetReference>Decision_InlineDueDate_Blank</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>FSL__GanttColor__c</field>
+            <value>
+                <stringValue>#800000</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Color_For_Cannot_Complete_Status</name>
+        <label>Update Color For Cannot Complete Status</label>
+        <locationX>1370</locationX>
+        <locationY>2159</locationY>
+        <connector>
+            <targetReference>Decision_InlineDueDate_Blank</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>FSL__GanttColor__c</field>
+            <value>
+                <stringValue>#FF8989</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Color_For_Completed_Status</name>
+        <label>Update Color For Completed Status</label>
+        <locationX>1106</locationX>
+        <locationY>2159</locationY>
+        <connector>
+            <targetReference>Decision_InlineDueDate_Blank</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>FSL__GanttColor__c</field>
+            <value>
+                <stringValue>#69A6FF</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Color_For_Dispatched_Status</name>
+        <label>Update Color For Dispatched Status</label>
+        <locationX>314</locationX>
+        <locationY>2159</locationY>
+        <connector>
+            <targetReference>Decision_InlineDueDate_Blank</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>FSL__GanttColor__c</field>
+            <value>
+                <stringValue>#FCDB60</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Color_For_On_Hold_Status</name>
+        <label>Update Color For On-Hold Status</label>
+        <locationX>1898</locationX>
+        <locationY>2159</locationY>
+        <connector>
+            <targetReference>Decision_InlineDueDate_Blank</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>FSL__GanttColor__c</field>
+            <value>
+                <stringValue>#9C9B9C</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Color_For_OnSite_Status</name>
+        <label>Update Color For OnSite Status</label>
+        <locationX>842</locationX>
+        <locationY>2159</locationY>
+        <connector>
+            <targetReference>Decision_InlineDueDate_Blank</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>FSL__GanttColor__c</field>
+            <value>
+                <stringValue>#1CCAC2</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Color_For_OnSite_Status_0</name>
+        <label>Update Color For OnSite Status</label>
+        <locationX>2162</locationX>
+        <locationY>2159</locationY>
+        <connector>
+            <targetReference>Decision_InlineDueDate_Blank</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>FSL__GanttColor__c</field>
+            <value>
+                <stringValue>#f1f900</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Color_For_Scheduled_Status</name>
+        <label>Update Color For Scheduled Status</label>
+        <locationX>50</locationX>
+        <locationY>2159</locationY>
+        <connector>
+            <targetReference>Decision_InlineDueDate_Blank</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>FSL__GanttColor__c</field>
+            <value>
+                <stringValue>#148b31</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Color_For_Travel_Status</name>
+        <label>Update Color For Travel Status</label>
+        <locationX>578</locationX>
+        <locationY>2159</locationY>
+        <connector>
+            <targetReference>Decision_InlineDueDate_Blank</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>FSL__GanttColor__c</field>
+            <value>
+                <stringValue>#D279FF</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Update the field &quot;FSSK__FSK_Work_Order__c&quot; on the Service Appointment triggering this flow with the Work Order Id in &quot;ParentRecordId&quot;.</description>
+        <name>Update_Custom_Work_Order_Field</name>
+        <label>Update Custom Work Order Field</label>
+        <locationX>1370</locationX>
+        <locationY>455</locationY>
+        <connector>
+            <targetReference>Decision_Reactive_P1_P2_Jobs</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>FSL__GanttLabel__c</field>
+            <value>
+                <elementReference>var_WorkOrderNumber</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>FSSK__FSK_Work_Order__c</field>
+            <value>
+                <elementReference>$Record.ParentRecordId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Remove the value of the field &quot;Location&quot; on the Parent Work Order again, after a crew completed or cannot completed a job.</description>
+        <name>Update_ParentWO_Location</name>
+        <label>Update Location on Parent Work Order</label>
+        <locationX>1370</locationX>
+        <locationY>3839</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.ParentRecordId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>LocationId</field>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </inputAssignments>
+        <object>WorkOrder</object>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Update the Service Appointment that triggered this flow and populate the checkbox &quot;Auto-Schedule&quot; to &quot;true&quot; in order to auto-schedule the service appointment.</description>
+        <name>Update_ServiceAppointment_AutoSchedule</name>
+        <label>Auto-Schedule Service Appointment</label>
+        <locationX>1370</locationX>
+        <locationY>2831</locationY>
+        <connector>
+            <targetReference>Decision_InlineDueDate_changed</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>FSL__Auto_Schedule__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Update the Service Appointment that triggered this flow with the new DueDate from the user entered &quot;Inline Due Date&quot;</description>
+        <name>Update_ServiceAppointment_DueDate</name>
+        <label>Update Service Appointment Due Date</label>
+        <locationX>1370</locationX>
+        <locationY>3167</locationY>
+        <connector>
+            <targetReference>Decision_Check_if_work_type_is_a_RAR</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>DueDate</field>
+            <value>
+                <elementReference>$Record.Inline_Due_Date__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Update the Service Appointment that triggered this flow and populate the blank &quot;Inline Due Date&quot; variable from the formula &quot;fx_CalculateInlineDueDate_from_DueDate&quot;</description>
+        <name>Update_ServiceAppointment_InlineDueDate</name>
+        <label>Update Service Appointment Inline Due Date</label>
+        <locationX>1370</locationX>
+        <locationY>2495</locationY>
+        <connector>
+            <targetReference>Decision_AutoSchedule_SA_from_Work_Type</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Inline_Due_Date__c</field>
+            <value>
+                <elementReference>fx_Calculate_InlineDueDate_from_DueDate</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_the_colour_of_SA</name>
+        <label>Update the colour of SA</label>
+        <locationX>2426</locationX>
+        <locationY>2159</locationY>
+        <connector>
+            <targetReference>Decision_InlineDueDate_Blank</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>FSL__GanttColor__c</field>
+            <value>
+                <stringValue>#FFA500</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_the_SA</name>
+        <label>Update the SA</label>
+        <locationX>1370</locationX>
+        <locationY>3503</locationY>
+        <connector>
+            <targetReference>Decision_Crew_Updates_Status_to_Completed_CannotComplete</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Is_it_a_RAR__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_the_SA_to_dispatched_status</name>
+        <label>Update the SA to dispatched status</label>
+        <locationX>1414</locationX>
+        <locationY>1727</locationY>
+        <connector>
+            <targetReference>Decision_Update_Gantt_Colour_when_SA_Status_changes</targetReference>
+        </connector>
+        <inputReference>Get_Reactive_SAs_assigned_to_the_Service_Resource</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_the_status_to_Scheduled</name>
+        <label>Update the status to Scheduled</label>
+        <locationX>2690</locationX>
+        <locationY>2159</locationY>
+        <connector>
+            <targetReference>Decision_InlineDueDate_Blank</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Scheduled</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>1376</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Decision_Populate_Custom_Work_Order_Lookup</targetReference>
+        </connector>
+        <object>ServiceAppointment</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+    <textTemplates>
+        <name>ChatterGroup_Notification_Message</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>A new P1/P2 Service Appointment has been created. Please assign to a field crew asap. Please open the Service Appointment {!$Record.AppointmentNumber} under the following link: {!fx_CustomDomain}{!$Record.Id}</text>
+    </textTemplates>
+    <triggerOrder>500</triggerOrder>
+    <variables>
+        <name>AssignedResourceRecord</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+        <objectType>AssignedResource</objectType>
+    </variables>
+    <variables>
+        <name>var_ChatterGroupId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+        <value>
+            <stringValue>0F90p0000008hx4</stringValue>
+        </value>
+    </variables>
+    <variables>
+        <name>var_Group</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <description>Service Appointment Id of the Assigned Resource</description>
+        <name>var_ServiceAppointmentId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <description>The service resource id of the assigned resource</description>
+        <name>var_ServiceResourceId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>var_WorkOrderNumber</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+        <value>
+            <elementReference>$Record.FSSK__FSK_Work_Order__r.WorkOrderNumber</elementReference>
+        </value>
+    </variables>
+</Flow>

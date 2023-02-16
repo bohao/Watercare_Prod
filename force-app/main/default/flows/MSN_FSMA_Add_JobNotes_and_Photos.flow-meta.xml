@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <assignments>
+        <description>Assign the user entered fields &quot;Job Notes&quot; to the variables.</description>
+        <name>Assign_JobNotes</name>
+        <label>Assign Job Notes</label>
+        <locationX>138</locationX>
+        <locationY>1430</locationY>
+        <assignmentItems>
+            <assignToReference>var_JobNote.MSN_JobNote_Details__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>SScreen_Add_JobNotes_Photos_AddJobNotes_TextArea</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_JobNote.MSN_JobNote_Type__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Note</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_JobNote.MSN_Work_Order__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>WorkOrderId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_JobNote.MSN_Service_Appointment__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_JobNote.Work_Order_Line_Item__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>WorkOrderLineItemId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Decision_CreateJobNotes</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Assign the Id handed over from the Field Service Mobile App as the &quot;ParentId&quot; (=the WO Record related to the Service Appointment) to the generic varibale &quot;WorkOrderId&quot; in order to make the flow compatible with the usecase when Work Order Line item is parent to a Servie Appointment.</description>
+        <name>Assign_Parent_WO_Id_to_WorkOrderID_Variable</name>
+        <label>Assign Parent WO Id to WorkOrderID Variable</label>
+        <locationX>50</locationX>
+        <locationY>734</locationY>
+        <assignmentItems>
+            <assignToReference>WorkOrderId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>ParentId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_Service_Appointment_Details</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <description>This Decision is used to check whether the status of the Service Appointment equals &quot;On Site&quot; - the only status that allows the user to use the &quot;Add Job Notes and Photos&quot; feature. If not, then show an error message on screen.</description>
+        <name>decision_CheckServiceAppointmentStatus</name>
+        <label>Check Service Appointment Status</label>
+        <locationX>314</locationX>
+        <locationY>1190</locationY>
+        <defaultConnector>
+            <targetReference>Screen_SA_Status_Error</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>All other SA Status</defaultConnectorLabel>
+        <rules>
+            <name>outcome_SA_Status_OnSite</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>var_Service_Appointment.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>On Site</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Screen_Add_JobNotes_Photos</targetReference>
+            </connector>
+            <label>SA Status is &quot;On Site&quot;</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Check whether any Job Notes have been entered by checking if the variable &quot;var_JobNote&quot; is filled. This can happen from the assignment element after the Flow Screens that prompts the user to enter job notes.</description>
+        <name>Decision_CreateJobNotes</name>
+        <label>Create Job Notes?</label>
+        <locationX>138</locationX>
+        <locationY>1550</locationY>
+        <defaultConnector>
+            <targetReference>Create_new_Job_Note_0</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Create New Job Note</defaultConnectorLabel>
+        <rules>
+            <name>outcome_DoNotCreateJobNote</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>var_JobNote.MSN_JobNote_Details__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>var_JobNote.MSN_JobNote_Details__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+            <label>Do Not Create new Job Note</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Determine the Object Type of the Parent Record Id triggering this flow. This is required to avoid having two flows to cater for the following scenarios:
+1) The &quot;Request Reinstatement&quot; flow was launched from a Service Appointment that is related to a &quot;Work Order&quot;
+2) OR The &quot;Request Reinstatement&quot; flow was launched from a Service Appointment that is related to a &quot;Work Order Line Item&quot;
+
+In order to determine what object type the record Id is from, we find the Object type from the static &quot;Record ID prefix&quot; (first 3 digits of the ID) which is always the same on Standard objects:
+- For &quot;Work Order&quot; objects the prefix is: 0WO
+- For &quot;Work Order Line Items&quot; objects the prefix is: 1WL 
+
+It was deliberately chosen to use those static/hardcoded prefixes for the decision outcomes as it only needs to cater to the above 2 cases and respect especially the Field Service Mobile App limitations in regards FSL Mobile Flow capabilities - even though it might not be best practice in general to use hardcoded elements.</description>
+        <name>Decision_DetermineObjectType_ParentRecord</name>
+        <label>Determine Object Type of Parent Record</label>
+        <locationX>314</locationX>
+        <locationY>614</locationY>
+        <defaultConnector>
+            <targetReference>Screen_UnknownObjectType</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Unknown Parent Object</defaultConnectorLabel>
+        <rules>
+            <name>outcome_Parent_Record_Is_WO</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>ParentId</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>0WO</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Parent_WO_Id_to_WorkOrderID_Variable</targetReference>
+            </connector>
+            <label>Work Order</label>
+        </rules>
+        <rules>
+            <name>outcome_Parent_Record_Is_WOLI</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>ParentId</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>1WL</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_WOLI_ParentWO</targetReference>
+            </connector>
+            <label>Work Order Line Item</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>This decision caters for the usecase, that a &quot;Add Job Notes or Photos&quot; could also be requested from Salesforce Desktop (e.g. by a Job Coordinator) and not only from the Field Service Mobile App. It checks, whether the flow was opened from the Field Service Mobile App or from Desktop in order to request a Reinstatement. If the variable &quot;Id&quot; is filled it is opened from the Mobile App, if the variable &quot;recordId&quot; is filled, then it was opened from Desktop and then populates the &quot;Id&quot; variable to lookup the correct Service Appointment in the next step.</description>
+        <name>Decision_OpenedFromMobileOrDesktop</name>
+        <label>Opened from FSL Mobile App or Desktop?</label>
+        <locationX>314</locationX>
+        <locationY>158</locationY>
+        <defaultConnector>
+            <targetReference>Screen_NoRecordId</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No Record Id</defaultConnectorLabel>
+        <rules>
+            <name>outcome_OpenedFromMobileApp</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Decision_DetermineObjectType_ParentRecord</targetReference>
+            </connector>
+            <label>Field Service Mobile App</label>
+        </rules>
+        <rules>
+            <name>outcome_OpenedFromDesktop</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>recordId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_ParentRecordId_DesktopFlow</targetReference>
+            </connector>
+            <label>Desktop</label>
+        </rules>
+    </decisions>
+    <description>01/03/2022 - V1/2: Used in the Field Service Mobile App as a &quot;Quickaction&quot; item for the field staff to add &quot;Job Notes&quot; or Photos to a job. This was split out from the original flow &quot;MSN - Field Service Mobile App - Add Work Details&quot; flow as requested by the business.  Reference: https://watercarestp.atlassian.net/browse/MSRS-490</description>
+    <formulas>
+        <description>Calculates the estimated time the current job will be completed by</description>
+        <name>fx_Job_End_Time_Estimated</name>
+        <dataType>DateTime</dataType>
+        <expression>{!var_Service_Appointment.SchedEndTime}</expression>
+    </formulas>
+    <interviewLabel>MSN - Field Service Mobile App - Add Job Notes and Photos {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>MSN - Field Service Mobile App - Add Job Notes and Photos</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>FieldServiceMobile</processType>
+    <recordCreates>
+        <description>Create a new &quot;Job Note&quot; record related to the Service Appointment that triggered this flow and Parent Work Order</description>
+        <name>Create_new_Job_Note_0</name>
+        <label>Create new Job Note</label>
+        <locationX>226</locationX>
+        <locationY>1670</locationY>
+        <inputReference>var_JobNote</inputReference>
+    </recordCreates>
+    <recordLookups>
+        <description>Lookup records details from the Service Appointment triggering this flow/subflow when opened from Desktop Salesforce only. The Record Id is handed over by the Desktop Salesforce flow into the Variable &quot;recordId&quot; and has to be copied over into the variable &quot;Id&quot; to make it compatible. Also we assign the &quot;ParentId&quot; variable.</description>
+        <name>Get_ParentRecordId_DesktopFlow</name>
+        <label>Get Parent Record and Assign Variables</label>
+        <locationX>270</locationX>
+        <locationY>278</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Decision_DetermineObjectType_ParentRecord</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <object>ServiceAppointment</object>
+        <outputAssignments>
+            <assignToReference>Id</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>ParentId</assignToReference>
+            <field>ParentRecordId</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <description>Lookup the Service Appointment triggering this Flow from the input variable &quot;recordID&quot; and save all fields in a record variable.</description>
+        <name>Get_Service_Appointment_Details</name>
+        <label>Get Service Appointment Status</label>
+        <locationX>314</locationX>
+        <locationY>1070</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>decision_CheckServiceAppointmentStatus</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Id</elementReference>
+            </value>
+        </filters>
+        <object>ServiceAppointment</object>
+        <outputReference>var_Service_Appointment</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Status</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <description>In case the Service Appointment triggering this flow is related to a Work Order Line Item, then retrieve the Parent Work Order Record from the WOLI and store the Record Ids into variables.</description>
+        <name>Get_WOLI_ParentWO</name>
+        <label>Get Parent WO Record of WOLI and assign variable</label>
+        <locationX>314</locationX>
+        <locationY>734</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Service_Appointment_Details</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>ParentId</elementReference>
+            </value>
+        </filters>
+        <object>WorkOrderLineItem</object>
+        <outputAssignments>
+            <assignToReference>WorkOrderLineItemId</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>WorkOrderId</assignToReference>
+            <field>WorkOrderId</field>
+        </outputAssignments>
+    </recordLookups>
+    <screens>
+        <description>This screen is presented to the Field Service Mobile App user, when opening the quick action &quot;Add Job Notes and Photos&quot; and enables the user to add additional information such as Pictures or Notes to the Work Order / Service Appointment.</description>
+        <name>Screen_Add_JobNotes_Photos</name>
+        <label>Add Job Notes / Photos</label>
+        <locationX>138</locationX>
+        <locationY>1310</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Assign_JobNotes</targetReference>
+        </connector>
+        <fields>
+            <name>Screen_Add_JobNotes_Photos_TakePictureHeading</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Take or upload photos&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_Add_JobNotes_Photos_TakePicture</name>
+            <extensionName>forceContent:fileUpload</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>multiple</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>Upload Files</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>recordId</name>
+                <value>
+                    <elementReference>WorkOrderId</elementReference>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Screen_Add_JobNotes_Photos_JobNotesHeading</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;﻿Add job notes&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>SScreen_Add_JobNotes_Photos_AddJobNotes_TextArea</name>
+            <fieldText>New job note</fieldText>
+            <fieldType>LargeTextArea</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <description>Shows an Error Message to the user in case no Record ID is populated in either the &quot;ID&quot; variable or &quot;recordID&quot; variable</description>
+        <name>Screen_NoRecordId</name>
+        <label>No Record Id</label>
+        <locationX>534</locationX>
+        <locationY>278</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>Screen_NoRecordId_ErrorText</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Error - No Service Appointment Record Id&lt;/b&gt;&lt;/p&gt;&lt;p&gt;It looks like there was no Record ID for the Service Appointment prepopulated when opening this feature.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Please get in touch with your friendly Salesforce Support team and make them aware of this error.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>Shows an Error Message to the user in case the status of the current Service Appointment is not &quot;on site&quot; and hence, the user is not allowed to add work details yet/or anymore.</description>
+        <name>Screen_SA_Status_Error</name>
+        <label>Job Status Error</label>
+        <locationX>490</locationX>
+        <locationY>1310</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Screen_SA_Status_Error_Message</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Error - Invalid job status&lt;/b&gt;&lt;/p&gt;&lt;p&gt;It looks like your Job is not in the right status in order to add work details. Your job might not be started yet or is already completed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Please use the &quot;Update Status&quot; action first to confirm that you are on site.&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <description>Shows an Error Message to the user in case the decision cannot determine what Object type the Parent Record ID in the &quot;ParentId&quot; variable is of. (Has to be either Work Order or Work Order Line Item)</description>
+        <name>Screen_UnknownObjectType</name>
+        <label>Unknown Object Type</label>
+        <locationX>578</locationX>
+        <locationY>734</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>Screen_UnknownObjectType_ErrorMessage</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Error - Unknown Parent Record Type&lt;/b&gt;&lt;/p&gt;&lt;p&gt;It looks like we cannot determine from which parent record (must be Work Order or Work Order Line Item) you attempted to open this feature from.&lt;/p&gt;&lt;p&gt;Please get in touch with your friendly Salesforce Support team and make them aware of this error.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <start>
+        <locationX>188</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Decision_OpenedFromMobileOrDesktop</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <variables>
+        <description>Holds the Record ID of the Service Appointment that triggered this flow. The Record Id is passed into the Flow by a quick action on Service Appointment.</description>
+        <name>Id</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Stores the ParentRecord ID of the record that triggered this flow (usually the Work Order Id of the Service Appointment). This is handed over from the FSL Mobile App into the flow.</description>
+        <name>ParentId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Used to store the Record ID of the &quot;Service Appointment&quot;, when the flow is opened from a Desktop Device.</description>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Record Variable for the Object &quot;Job Note&quot;. Populated by the assignment element &quot;Assign Job Notes&quot; prior to creating a new job note.</description>
+        <name>var_JobNote</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>MSN_JobNotes__c</objectType>
+    </variables>
+    <variables>
+        <description>This Record Variable stores the full Service Appointment record including all fields retrieved from the lookup &quot;Get Service Appointment Details&quot;.</description>
+        <name>var_Service_Appointment</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ServiceAppointment</objectType>
+    </variables>
+    <variables>
+        <description>Required to universally store the ID of the Parent Work Order - either directly parented to the Service Appointment or through the Work Order Line Item.</description>
+        <name>WorkOrderId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Used to store the Work Order Line Item Id in case the Service Appointment is related to a WOLI (instead of a WO). This will then be used to populate WOLI lookup field on the &quot;Job Notes&quot; Record in order to make the Job Note visible on both, the WO and the WOLI.</description>
+        <name>WorkOrderLineItemId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>

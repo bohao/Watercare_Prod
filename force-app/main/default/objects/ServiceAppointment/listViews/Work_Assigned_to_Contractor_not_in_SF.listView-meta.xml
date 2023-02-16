@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Work_Assigned_to_Contractor_not_in_SF</fullName>
+    <columns>Name</columns>
+    <columns>FSSK__FSK_Work_Order__c</columns>
+    <columns>MSN_AssignedServiceResource_Name__c</columns>
+    <columns>Subject</columns>
+    <columns>Status</columns>
+    <columns>WorkType</columns>
+    <columns>ServiceTerritory</columns>
+    <columns>STREET</columns>
+    <columns>CITY</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Subcontractor_not_in_Salesforce__c</field>
+        <operation>equals</operation>
+        <value>1</value>
+    </filters>
+    <filters>
+        <field>Status</field>
+        <operation>equals</operation>
+        <value>None,Scheduled,Dispatched</value>
+    </filters>
+    <label>Assigned to Contractor not in Salesforce</label>
+</ListView>

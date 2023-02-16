@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status_cannot_be_changed_to_Canceled</fullName>
+    <active>true</active>
+    <description>Work Order Status cannot be changed to Canceled</description>
+    <errorConditionFormula>IF(
+  AND(   
+    ISPICKVAL(Status, &apos;Canceled&apos;),
+    OR(
+      ISPICKVAL( PRIORVALUE(Status), &apos;In Progress&apos;),  
+      ISPICKVAL( PRIORVALUE(Status), &apos;Ready for Review&apos;),  
+      ISPICKVAL( PRIORVALUE(Status), &apos;Completed&apos;)
+    )      
+  ), 
+  true, 
+  false
+)</errorConditionFormula>
+    <errorMessage>Status can not be changed to &apos;Canceled&apos; from &apos;In Progress&apos;, &apos;Ready for Review&apos; or &apos;Completed&apos;</errorMessage>
+</ValidationRule>

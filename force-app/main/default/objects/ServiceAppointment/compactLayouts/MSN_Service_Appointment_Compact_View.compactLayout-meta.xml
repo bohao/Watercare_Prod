@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_Service_Appointment_Compact_View</fullName>
+    <fields>AppointmentNumber</fields>
+    <fields>Priority__c</fields>
+    <fields>WorkTypeId</fields>
+    <fields>FSSK__FSK_Assigned_Service_Resource__c</fields>
+    <fields>Status</fields>
+    <fields>SchedStartTime</fields>
+    <fields>SchedEndTime</fields>
+    <label>MSN - Service Appointment Compact View</label>
+</CompactLayout>

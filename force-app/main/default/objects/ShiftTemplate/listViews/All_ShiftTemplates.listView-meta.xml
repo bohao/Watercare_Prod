@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>All_ShiftTemplates</fullName>
+    <columns>Name</columns>
+    <columns>StartTime</columns>
+    <columns>BackgroundColor</columns>
+    <columns>Duration</columns>
+    <columns>ShiftTemplateDurationType</columns>
+    <columns>IsActive</columns>
+    <columns>IsNonStandard</columns>
+    <columns>RecordsetFilterCriteria</columns>
+    <filterScope>Everything</filterScope>
+    <label>All Shift Templates</label>
+</ListView>

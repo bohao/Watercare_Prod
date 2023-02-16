@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Asset_Name</fullName>
+    <active>true</active>
+    <errorConditionFormula>SF_Field_API_Name__c = &apos;Name&apos;</errorConditionFormula>
+    <errorMessage>Asset Name is unable to be mapped as Asset Name format is:
+&lt;SerialNumber&gt;-&lt;CompKey&gt;-&lt;Suburb&gt;</errorMessage>
+</ValidationRule>

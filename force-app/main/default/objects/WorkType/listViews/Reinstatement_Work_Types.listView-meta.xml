@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Reinstatement_Work_Types</fullName>
+    <columns>Name</columns>
+    <columns>EstimatedDuration</columns>
+    <columns>DurationType</columns>
+    <columns>Description</columns>
+    <columns>MSN_ActivityCode__c</columns>
+    <columns>FSL__Due_Date_Offset__c</columns>
+    <columns>MSN_Reinstatement_Execution_Order__c</columns>
+    <columns>MSN_Reinstatement__c</columns>
+    <columns>MSN_Is_Reinstatement_Markout__c</columns>
+    <columns>ShouldAutoCreateSvcAppt</columns>
+    <columns>Service_Area__c</columns>
+    <columns>CreatedDate</columns>
+    <columns>CreatedBy</columns>
+    <columns>MSN_Default_Asset__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Name</field>
+        <operation>contains</operation>
+        <value>Reinstatement</value>
+    </filters>
+    <label>Reinstatement Work Types</label>
+</ListView>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_Service_Product_Code__c</fullName>
+    <description>Legacy &quot;Service Product Code&quot; (SPC) Code. This was used in MSN finance processes (SAP) and is kept here for temporary finance reporting contingency. Replaced by the new &quot;Schedule Items&quot; (on a Contract Schedule), also known as &quot;RFP Code&quot;.</description>
+    <externalId>false</externalId>
+    <label>Service Product Code</label>
+    <length>30</length>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

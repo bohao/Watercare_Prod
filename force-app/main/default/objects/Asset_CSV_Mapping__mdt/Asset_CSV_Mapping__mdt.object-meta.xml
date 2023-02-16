@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>The Asset CSV Upload LWC mappings for Column Names and API Field Names</description>
+    <label>Asset CSV Mapping</label>
+    <pluralLabel>Asset CSV Mappings</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

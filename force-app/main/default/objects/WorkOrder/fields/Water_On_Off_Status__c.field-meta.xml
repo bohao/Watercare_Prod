@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Water_On_Off_Status__c</fullName>
+    <externalId>false</externalId>
+    <label>Water On/Off Status</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>On</fullName>
+                <default>false</default>
+                <label>On</label>
+            </value>
+            <value>
+                <fullName>Off</fullName>
+                <default>false</default>
+                <label>Off</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

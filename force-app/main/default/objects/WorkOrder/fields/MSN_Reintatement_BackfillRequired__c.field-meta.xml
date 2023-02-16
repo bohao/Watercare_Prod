@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_Reintatement_BackfillRequired__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Indicates that &quot;Backfill&quot; is required for a Reinstatement Job. This migh be selected by the field crew when they &quot;Request Reinstatement&quot; from the Mobile app in the feature &quot;Update Job Status&apos;.</description>
+    <externalId>false</externalId>
+    <label>Backfill required?</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

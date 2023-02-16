@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>New_Unscheduled_Jobs</fullName>
+    <columns>Name</columns>
+    <columns>Status</columns>
+    <columns>STREET</columns>
+    <columns>CITY</columns>
+    <columns>FSSK__FSK_Work_Order__c</columns>
+    <columns>Letter_Drop__c</columns>
+    <columns>Letter_Drop_Date__c</columns>
+    <columns>FSL__Auto_Schedule__c</columns>
+    <columns>Inline_Due_Date__c</columns>
+    <columns>Dialysis_Patient__c</columns>
+    <columns>Key_Customer__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Status</field>
+        <operation>equals</operation>
+        <value>None,On Hold</value>
+    </filters>
+    <filters>
+        <field>WorkType</field>
+        <operation>contains</operation>
+        <value>Watermeter - Planned Replacement,Planned Meter Replacement</value>
+    </filters>
+    <label>New/Unassigned Jobs - Planned Meter</label>
+</ListView>

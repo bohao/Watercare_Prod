@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Update Planned Work Order</label>
+    <protected>false</protected>
+    <values>
+        <field>Payload__c</field>
+        <value xsi:type="xsd:string">{
+  &quot;TransactionID&quot;: &quot;&quot;,
+  &quot;WorkOrderNo&quot;: &quot;string&quot;,
+  &quot;ContractorCode&quot;: &quot;MSN&quot;,
+  &quot;Comments&quot;: &quot;string&quot;,
+  &quot;AssetCondition&quot;: &quot;string&quot;,
+  &quot;Crew&quot;: &quot;string&quot;,
+  &quot;StartDate&quot;: &quot;2019-04-17T12:30:00Z&quot;,
+  &quot;CompletedDate&quot;: &quot;2019-04-17T12:30:00Z&quot;,
+  &quot;CompletedBy&quot;: &quot;string&quot;,
+  &quot;ResultCode&quot;: &quot;string&quot;,
+  &quot;Observations&quot;: [
+    {
+      &quot;Code&quot;: &quot;string&quot;,
+      &quot;Description&quot;: &quot;string&quot;,
+      &quot;Value&quot;: &quot;string&quot;,
+      &quot;Date&quot;: &quot;2019-04-17T12:30:00Z&quot;,
+      &quot;Detail&quot;: &quot;string&quot;,
+      &quot;UoM&quot;: &quot;string&quot;
+    }
+  ]
+}</value>
+    </values>
+    <values>
+        <field>Request_Method__c</field>
+        <value xsi:type="xsd:string">PUT</value>
+    </values>
+    <values>
+        <field>Trigger_Object__c</field>
+        <value xsi:type="xsd:string">MSN_JobNotes__c</value>
+    </values>
+</CustomMetadata>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_Cannot_Create_WOLI_CompletedParentWO</fullName>
+    <active>true</active>
+    <description>Validation rule to prevent users from creating a new WOLI, when its Parent WO is already in a &quot;completed&quot; state. This is required as Labour Lines created on Status &quot;Reviewed&quot; get split equally across WOLIs and cannot be amended after being sent to EAM.</description>
+    <errorConditionFormula>AND(
+ISNEW(),
+OR(
+ISPICKVAL( WorkOrder.Status, &apos;Reviewed&apos;),
+ISPICKVAL( WorkOrder.Status, &apos;Completed&apos;), 
+ISPICKVAL( WorkOrder.Status, &apos;Cannot Complete&apos;),
+ISPICKVAL( WorkOrder.Status, &apos;Canceled&apos;),
+ISPICKVAL( WorkOrder.Status, &apos;Rejected&apos;)
+)
+)</errorConditionFormula>
+    <errorMessage>You are not allowed to create new WOLIs when the Parent is already Reviewed, Completed, or Canceled. Reason: Labour Lines get created on the Parent Status &quot;Reviewed&quot;, then get split across all WOLIs and cannot be amended retrospectively in Salesforce.</errorMessage>
+</ValidationRule>

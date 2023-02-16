@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>All_ServiceResources</fullName>
+    <columns>Name</columns>
+    <columns>RelatedRecord</columns>
+    <columns>Description</columns>
+    <columns>ResourceType</columns>
+    <columns>IsActive</columns>
+    <columns>FSL__GanttLabel__c</columns>
+    <columns>MSN_Employee_Code__c</columns>
+    <filterScope>Everything</filterScope>
+    <label>All Service Resources</label>
+</ListView>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Integrate_to_EAM__c</fullName>
+    <defaultValue>true</defaultValue>
+    <description>Determines if the job note will get sent to EAM</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <label>Integrate to EAM</label>
+    <type>Checkbox</type>
+</CustomField>

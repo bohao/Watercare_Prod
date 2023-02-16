@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Wastewater_Sewer_Flushing</fullName>
+    <columns>Name</columns>
+    <columns>Status</columns>
+    <columns>STREET</columns>
+    <columns>CITY</columns>
+    <columns>FSSK__FSK_Work_Order__c</columns>
+    <columns>Letter_Drop__c</columns>
+    <columns>Letter_Drop_Date__c</columns>
+    <columns>ServiceTerritory</columns>
+    <columns>FSL__Auto_Schedule__c</columns>
+    <columns>EarliestStartTime</columns>
+    <columns>Inline_Due_Date__c</columns>
+    <columns>LatestEndTime</columns>
+    <columns>Subject</columns>
+    <columns>WorkType</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Status</field>
+        <operation>equals</operation>
+        <value>None</value>
+    </filters>
+    <filters>
+        <field>WorkType</field>
+        <operation>contains</operation>
+        <value>Sewer Main</value>
+    </filters>
+    <filters>
+        <field>FSSK__FSK_Work_Order__c</field>
+        <operation>notEqual</operation>
+    </filters>
+    <label>Wastewater - Sewer Flushing</label>
+</ListView>

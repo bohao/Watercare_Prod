@@ -1,0 +1,1965 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <assignments>
+        <description>Add the current Work Order record to the Work Order Record Collection - after user chose &quot;Additional Reinstatement&quot; Required.</description>
+        <name>Add_SingleWorkOrderRecord_to_Collection_AdditionalReinstatement</name>
+        <label>Add Work Order to Collection - Additional Reinstatement</label>
+        <locationX>50</locationX>
+        <locationY>2606</locationY>
+        <assignmentItems>
+            <assignToReference>var_WorkOrder_Record_Collection</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>var_WorkOrder_Record</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Screen_SelectSurfaceType</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Add the current Work Order record to the Work Order Record Collection. If no additional Reinstatement is required.</description>
+        <name>Add_SingleWorkOrderRecord_to_Collection_NoAdditionalReinstatement</name>
+        <label>Add Work Order to Collection - No Additional Reinstatement</label>
+        <locationX>314</locationX>
+        <locationY>2606</locationY>
+        <assignmentItems>
+            <assignToReference>var_WorkOrder_Record_Collection</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>var_WorkOrder_Record</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Create_WorkOrder_Records</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Assign Desktop &quot;recordId&quot; into Mobile &quot;Id&quot; variable prior to continuing with the flow.</description>
+        <name>Assign_recordId_into_Id</name>
+        <label>Assign &quot;recordId&quot; into &quot;Id&quot; variable</label>
+        <locationX>336</locationX>
+        <locationY>278</locationY>
+        <assignmentItems>
+            <assignToReference>Id</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_ServiceAppointment_ParentRecordId</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Assign the selected &quot;Surface type&quot; from the previous screen in order to look up the Work Type in the next step.</description>
+        <name>Assign_Surface_Type_Selection</name>
+        <label>Assign Surface Type Selection</label>
+        <locationX>380</locationX>
+        <locationY>1190</locationY>
+        <assignmentItems>
+            <assignToReference>var_SurfaceType_SingleSelection</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_SelectSurfaceType_Radiobutton_Choice</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_SurfaceTypes_Collection</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Screen_SelectSurfaceType_Radiobutton_Choice</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_SurfaceTypes_Collection</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>; </stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_WorkTypes_for_Selected_Surface</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Assign field values to the record variable &quot;var_WorkOrder_Record&quot; prior to creating a new Work Order later in the flow.</description>
+        <name>Assign_WorkOrder_field_values</name>
+        <label>Assign Work Order field values</label>
+        <locationX>182</locationX>
+        <locationY>1790</locationY>
+        <assignmentItems>
+            <assignToReference>var_WorkOrder_Record.WorkTypeId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_WorkTypeRecord.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_WorkOrder_Record.ParentWorkOrderId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_ParentRecord_ParentWorkOrderId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_WorkOrder_Record.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>New</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_WorkOrder_Record.Subject</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_WorkTypeRecord.Name</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_WorkOrder_Record.Description</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_WorkTypeRecord.Description</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_WorkOrder_Record.State</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_ParentRecord_State</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_WorkOrder_Record.City</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_ParentRecord_City</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_WorkOrder_Record.Street</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_ParentRecord_Street</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_WorkOrder_Record.PostalCode</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_ParentRecord_PostalCode</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_WorkOrder_Record.Longitude</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_ParentRecord_Longitude</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_WorkOrder_Record.Latitude</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_ParentRecord_Latitude</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_WorkOrder_Record.Priority</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>P7</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_WorkOrder_Record.ServiceTerritoryId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_ParentRecord_ServiceTerritory</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_WorkOrder_Record.Duration</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_WorkTypeRecord.EstimatedDuration</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_WorkOrder_Record.DurationType</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_WorkTypeRecord.DurationType</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_WorkOrder_Record.RecordTypeId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_WorkOrder_Reinstatement_RecordType</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_WorkOrder_Record.MSN_Reinstatement_LetterdropRequired__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_ReinstatementDetails_Prerequisites_Letterdrop</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_WorkOrder_Record.MSN_Reinstatement_NoParkers__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_ReinstatementDetails_Prerequisites_NoParkers</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_WorkOrder_Record.MSN_Reintatement_BackfillRequired__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_ReinstatementDetails_Prerequisites_Backfill</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_WorkOrder_Record.MSN_Reinstatement_WorkSiteDetails__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_ReinstatementDetails_WorkSite_CheckboxGroup</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_WorkOrder_Record.MSN_Reinstatement_Surface_Width__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_ReinstatementDetails_SurfaceSize_Width</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_WorkOrder_Record.MSN_Reinstatement_Surface_Length__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_ReinstatementDetails_SurfaceSize_Lenght</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_WorkOrder_Record.MSN_Reinstatement_ServiceHazards__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_ReinstatementDetails_Other_ServiceHazardsCheckboxGroup</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_WorkOrder_Record.MSN_Reinstatement_Notes__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_ReinstatementDetails_Other_Notes</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_WorkOrder_Record.MSN_Reinstatement_Markout_Complete__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_WorkOrder_Record.MSN_Steel_Plates_Required__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_ReinstatementDetails_Prerequisites_SteelPlates</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_WorkOrder_Record.MSN_Reinstatement_Surface_Depth__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_ReinstatementDetails_SurfaceSize_Depth</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_WorkOrder_Record.MSN_Reinstatement_BoxingRequired__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_ReinstatementDetails_Prerequisites_Custom_Box_Required</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_WorkOrder_Record.AssetId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_WorkTypeRecord.MSN_Default_Asset__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Screen_TrafficControl</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Assign field values to the record variable &quot;var_WorkOrder_Record&quot; prior to creating a new Work Order later in the flow.</description>
+        <name>Assign_WorkOrder_field_values_0</name>
+        <label>Assign Work Order field values</label>
+        <locationX>50</locationX>
+        <locationY>2150</locationY>
+        <assignmentItems>
+            <assignToReference>var_WorkOrder_Record.MSN_TrafficControl_Required__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_WorkOrder_Record.MSN_TrafficControl_Level__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_TrafficControl_StreetLevel_Picklist</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_WorkOrder_Record.MSN_TrafficControl_Notes__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_TrafficControl_OtherInstructions_Notes</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Screen_AdditionalReinstatement</targetReference>
+        </connector>
+    </assignments>
+    <choices>
+        <description>Used on the screen &quot;Surface Type&quot; to give the user a &quot;Black Exposed&quot; option to choose from</description>
+        <name>ch_BlackExposed_Concrete</name>
+        <choiceText>Concrete - Black Exposed</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Reinstatement - Black Exposed Concrete</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used on the screen &quot;Surface Type&quot; to give the user a &quot;Broom Off&quot; option to choose from</description>
+        <name>ch_BroomOff_Concrete</name>
+        <choiceText>Concrete - Broom Off</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Reinstatement - Broom Off Concrete</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used on the screen &quot;Surface Type&quot; to give the user a &quot;Cobbles/Pavers&quot; option to choose from</description>
+        <name>ch_CobblesPavers</name>
+        <choiceText>Cobbles/Pavers</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Reinstatement - Cobbles/Pavers</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used on the screen &quot;Reinstatement Type&quot; to give the user a &quot;Hard Surface&quot; option to choose from</description>
+        <name>ch_HardSurface</name>
+        <choiceText>Hard Surface</choiceText>
+        <dataType>String</dataType>
+    </choices>
+    <choices>
+        <description>Used on the screen &quot;Surface Type&quot; to give the user a &quot;Hotmix&quot; option to choose from</description>
+        <name>ch_Hotmix</name>
+        <choiceText>Hotmix</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Reinstatement - Hotmix</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used to determine whether the user wants to continue with a specific action. Here: if they want to add an additional Reinstatement step.</description>
+        <name>ch_No</name>
+        <choiceText>No</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>No</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used on the screen &quot;Surface Type&quot; to give the user an &quot;Other (e.g. Fencing)&quot; option to choose from</description>
+        <name>ch_Other</name>
+        <choiceText>Other (e.g. Fencing)</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Reinstatement - Other</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used on the screen &quot;Surface Type&quot; to give the user a &quot;Concrete - Red Chip&quot; option to choose from</description>
+        <name>ch_RedChip_Concrete</name>
+        <choiceText>Concrete - Red Chip</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Reinstatement - Red Chip Concrete</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>ch_ServiceHazard_Other</name>
+        <choiceText>Other (describe in notes)﻿</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Other</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>ch_ServiceHazard_ShallowElectrical</name>
+        <choiceText>Shallow Electrical</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Shallow Electrical</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>ch_ServiceHazard_ShallowGas</name>
+        <choiceText>Shallow Gas</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Shallow Gas</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used on the &quot;Reinstatement Details&quot; screen to specify any service hazards.</description>
+        <name>ch_ServiceHazard_ShallowTelco</name>
+        <choiceText>Shallow Telco</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Shallow Telco</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used on the screen &quot;Surface Type&quot; to give the user a &quot;Special Finish&quot; option to choose from</description>
+        <name>ch_SpecialFinish_Concrete</name>
+        <choiceText>Concrete - Special Finish</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Reinstatement - Special Finish Concrete</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used in the picklists &quot;Depth&quot; of the &quot;Surface Size&quot; section on the Reinstatement Details screen.</description>
+        <name>ch_SurfaceSize_0_0_8</name>
+        <choiceText>80 mm</choiceText>
+        <dataType>Number</dataType>
+        <value>
+            <numberValue>0.08</numberValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used in the picklists &quot;Depth&quot; of the &quot;Surface Size&quot; section on the Reinstatement Details screen.</description>
+        <name>ch_SurfaceSize_0_1</name>
+        <choiceText>100 mm</choiceText>
+        <dataType>Number</dataType>
+        <value>
+            <numberValue>0.1</numberValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used in the picklists &quot;Depth&quot; of the &quot;Surface Size&quot; section on the Reinstatement Details screen.</description>
+        <name>ch_SurfaceSize_0_1_2</name>
+        <choiceText>120 mm</choiceText>
+        <dataType>Number</dataType>
+        <value>
+            <numberValue>0.12</numberValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used in the picklists &quot;Depth&quot; of the &quot;Surface Size&quot; section on the Reinstatement Details screen.</description>
+        <name>ch_SurfaceSize_0_1_5</name>
+        <choiceText>150 mm</choiceText>
+        <dataType>Number</dataType>
+        <value>
+            <numberValue>0.15</numberValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used in the picklists &quot;Depth&quot; of the &quot;Surface Size&quot; section on the Reinstatement Details screen.</description>
+        <name>ch_SurfaceSize_0_1_8</name>
+        <choiceText>180 mm</choiceText>
+        <dataType>Number</dataType>
+        <value>
+            <numberValue>0.18</numberValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used in the picklists &quot;Depth&quot; of the &quot;Surface Size&quot; section on the Reinstatement Details screen.</description>
+        <name>ch_SurfaceSize_0_2</name>
+        <choiceText>200 mm</choiceText>
+        <dataType>Number</dataType>
+        <value>
+            <numberValue>0.2</numberValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used in the picklists of the &quot;Surface Size&quot; section on the Reinstatement Details screen.</description>
+        <name>ch_SurfaceSize_0_5</name>
+        <choiceText>0.5 m</choiceText>
+        <dataType>Number</dataType>
+        <value>
+            <numberValue>0.5</numberValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used in the picklists of the &quot;Surface Size&quot; section on the Reinstatement Details screen.</description>
+        <name>ch_SurfaceSize_1_0</name>
+        <choiceText>1.0 m</choiceText>
+        <dataType>Number</dataType>
+        <value>
+            <numberValue>1.0</numberValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used in the picklists of the &quot;Surface Size&quot; section on the Reinstatement Details screen.</description>
+        <name>ch_SurfaceSize_1_5</name>
+        <choiceText>1.5 m</choiceText>
+        <dataType>Number</dataType>
+        <value>
+            <numberValue>1.5</numberValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used in the picklists of the &quot;Surface Size&quot; section on the Reinstatement Details screen.</description>
+        <name>ch_SurfaceSize_2_0</name>
+        <choiceText>2.0 m</choiceText>
+        <dataType>Number</dataType>
+        <value>
+            <numberValue>2.0</numberValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used in the picklists of the &quot;Surface Size&quot; section on the Reinstatement Details screen.</description>
+        <name>ch_SurfaceSize_2_5</name>
+        <choiceText>2.5 m</choiceText>
+        <dataType>Number</dataType>
+        <value>
+            <numberValue>2.5</numberValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used in the picklists of the &quot;Surface Size&quot; section on the Reinstatement Details screen.</description>
+        <name>ch_SurfaceSize_3_0</name>
+        <choiceText>3.0 m</choiceText>
+        <dataType>Number</dataType>
+        <value>
+            <numberValue>3.0</numberValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used in the picklists of the &quot;Surface Size&quot; section on the Reinstatement Details screen.</description>
+        <name>ch_SurfaceSize_3_5</name>
+        <choiceText>3.5 m</choiceText>
+        <dataType>Number</dataType>
+        <value>
+            <numberValue>3.5</numberValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used in the picklists of the &quot;Surface Size&quot; section on the Reinstatement Details screen.</description>
+        <name>ch_SurfaceSize_4_0</name>
+        <choiceText>4.0 m</choiceText>
+        <dataType>Number</dataType>
+        <value>
+            <numberValue>4.0</numberValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used in the picklists of the &quot;Surface Size&quot; section on the Reinstatement Details screen.</description>
+        <name>ch_SurfaceSize_4_5</name>
+        <choiceText>4.5 m</choiceText>
+        <dataType>Number</dataType>
+        <value>
+            <numberValue>4.5</numberValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used in the picklists of the &quot;Surface Size&quot; section on the Reinstatement Details screen.</description>
+        <name>ch_SurfaceSize_5_0</name>
+        <choiceText>5.0 m</choiceText>
+        <dataType>Number</dataType>
+        <value>
+            <numberValue>5.0</numberValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used in the picklists of the &quot;Surface Size&quot; section on the Reinstatement Details screen.</description>
+        <name>ch_SurfaceSize_5_5</name>
+        <choiceText>5.5 m</choiceText>
+        <dataType>Number</dataType>
+        <value>
+            <numberValue>5.5</numberValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used in the picklists of the &quot;Surface Size&quot; section on the Reinstatement Details screen.</description>
+        <name>ch_SurfaceSize_6_0</name>
+        <choiceText>6.0 m</choiceText>
+        <dataType>Number</dataType>
+        <value>
+            <numberValue>6.0</numberValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used in the picklists of the &quot;Surface Size&quot; section on the Reinstatement Details screen.</description>
+        <name>ch_SurfaceSize_6_5</name>
+        <choiceText>6.5 m</choiceText>
+        <dataType>Number</dataType>
+        <value>
+            <numberValue>6.5</numberValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used in the picklists of the &quot;Surface Size&quot; section on the Reinstatement Details screen.</description>
+        <name>ch_SurfaceSize_7_0</name>
+        <choiceText>7.0 m</choiceText>
+        <dataType>Number</dataType>
+        <value>
+            <numberValue>7.0</numberValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used in the picklists of the &quot;Surface Size&quot; section on the Reinstatement Details screen.</description>
+        <name>ch_SurfaceSize_7_5</name>
+        <choiceText>7.5 m</choiceText>
+        <dataType>Number</dataType>
+        <value>
+            <numberValue>7.5</numberValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used in the picklists of the &quot;Surface Size&quot; section on the Reinstatement Details screen.</description>
+        <name>ch_SurfaceSize_8_0</name>
+        <choiceText>8.0 m</choiceText>
+        <dataType>Number</dataType>
+        <value>
+            <numberValue>8.0</numberValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used as a choice option on the &quot;Traffic Management&quot; screen to specify what level of traffic management they need</description>
+        <name>ch_TrafficControl_Level1</name>
+        <choiceText>Level 1</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Level 1</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used as a choice option on the &quot;Traffic Management&quot; screen to specify what level of traffic management they need</description>
+        <name>ch_TrafficControl_Level2</name>
+        <choiceText>Level 2</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Level 2</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used on the screen &quot;Reinstatement Details&quot; to specify any work site details.</description>
+        <name>ch_WorkSite_CarriagewayRoad</name>
+        <choiceText>Carriageway/Road</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Carriageway/Road</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used on the screen &quot;Reinstatement Details&quot; to specify any work site details.</description>
+        <name>ch_WorkSite_Driveway</name>
+        <choiceText>Driveway</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Driveway</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used on the screen &quot;Reinstatement Details&quot; to specify any work site details.</description>
+        <name>ch_WorkSite_Footpath</name>
+        <choiceText>Footpath</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Footpath</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used on the screen &quot;Reinstatement Details&quot; to specify any work site details.</description>
+        <name>ch_WorkSite_Other</name>
+        <choiceText>Other (describe in notes)</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Other</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used to determine whether the user wants to continue with a specific action. Here: if they want to add an additional Reinstatement step.</description>
+        <name>ch_Yes</name>
+        <choiceText>Yes</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Yes</stringValue>
+        </value>
+    </choices>
+    <decisions>
+        <description>Used to validate the user choice on the previous screen &quot;Additional Reinstatement Required&quot;. If the user chose &quot;yes&quot; then the path takes the user back to the first screen to choose a Reinstatemenet Type. If &quot;no&quot; is selected, the flow ends.</description>
+        <name>Decision_AdditionalReinstatementRequired</name>
+        <label>Is additional reinstatement required?</label>
+        <locationX>182</locationX>
+        <locationY>2486</locationY>
+        <defaultConnector>
+            <targetReference>Add_SingleWorkOrderRecord_to_Collection_NoAdditionalReinstatement</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Additional Reinstatement Not Required</defaultConnectorLabel>
+        <rules>
+            <name>outcome_AdditionalReinstatementRequired</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Screen_AdditionalReinstatementRequired_Choice</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>ch_Yes</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Add_SingleWorkOrderRecord_to_Collection_AdditionalReinstatement</targetReference>
+            </connector>
+            <label>Additional Reinstatement Required</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Determine the Object Type of the Parent Record Id triggering this flow. This is required to avoid having two flows to cater for the following scenarios:
+1) The &quot;Define Reinstatement Scope&quot; flow was launched from a Service Appointment that is related to a &quot;Work Order Line Item&quot; (of the Work Type &quot;Reinstatement - Markout&quot;
+2) OR The &quot;Define Reinstatement Scope&quot; flow was launched from a Service Appointment that is related to a &quot;Work Order&quot; (of the Work Type &quot;Reinstatement - Markout&quot;
+
+In order to determine what object type the record Id is from, we find the Object type from the static &quot;Record ID prefix&quot; (first 3 digits of the ID) which is always the same on Standard objects:
+- For Service Appointment, the prefix is:  08p  (this is handed over when a user enters this flow via e.g. the &quot;Update Status&quot; flow)
+- For &quot;Work Order&quot; objects the prefix is: 0WO
+- For &quot;Work Order Line Items&quot; objects the prefix is: 1WL 
+
+It was deliberately chosen to use those static/hardcoded prefixes for the decision outcomes as it only needs to cater to the above 2 cases and respect especially the Field Service Mobile App limitations in regards FSL Mobile Flow capabilities - even though it might not be best practice in general to use hardcoded elements.</description>
+        <name>Decision_DetermineObjectType_ParentRecord</name>
+        <label>Determine Object Type of Parent Record</label>
+        <locationX>380</locationX>
+        <locationY>614</locationY>
+        <defaultConnector>
+            <targetReference>Screen_UnknownObjectType</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Unknown Object Type</defaultConnectorLabel>
+        <rules>
+            <name>outcome_Parent_Record_Is_WOLI</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>ParentId</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>1WL</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Parent_WOLI</targetReference>
+            </connector>
+            <label>Work Order Line Item</label>
+        </rules>
+        <rules>
+            <name>outcome_Parent_Record_Is_WO</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>ParentId</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>0WO</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Parent_WorkOrder_0</targetReference>
+            </connector>
+            <label>Work Order</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>This decision caters for the usecase, that a &quot;Reinstatement&quot; could also be requested from Salesforce Desktop (e.g. by a Job Coordinator) and not only from the Field Service Mobile App. It checks, whether the flow was opened from the Field Service Mobile App or from Desktop in order to request a Reinstatement. If the variable &quot;Id&quot; is filled it is opened from the Mobile App, if the variable &quot;recordId&quot; is filled, then it was opened from Desktop and then populates the &quot;Id&quot; variable to lookup the correct Service Appointment in the next step.</description>
+        <name>Decision_OpenedFromMobileOrDesktop</name>
+        <label>Opened from FSL Mobile App or Desktop?</label>
+        <locationX>380</locationX>
+        <locationY>158</locationY>
+        <defaultConnector>
+            <targetReference>Screen_NoRecordId</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>outcome_OpenedFromMobileApp</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Decision_DetermineObjectType_ParentRecord</targetReference>
+            </connector>
+            <label>Field Service Mobile App</label>
+        </rules>
+        <rules>
+            <name>outcome_OpenedFromDesktop</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>recordId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_recordId_into_Id</targetReference>
+            </connector>
+            <label>Desktop</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Used to validate the user choice on the previous screen &quot;Traffic Management Required&quot;. If the user chose &quot;yes&quot; then the path adds an Additional Work Order for Traffic Management to the Work Order Collection Variable. If &quot;no&quot; is selected, the flow moves on directly to the creation of Work Orders from the Collection Variable.</description>
+        <name>Decision_TrafficManagementRequired</name>
+        <label>Is Traffic Management required?</label>
+        <locationX>182</locationX>
+        <locationY>2030</locationY>
+        <defaultConnector>
+            <targetReference>Screen_AdditionalReinstatement</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Traffic Management Not Required</defaultConnectorLabel>
+        <rules>
+            <name>outcome_TrafficManagementRequired</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Screen_TrafficControl_Required_Radiobutton</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>ch_Yes</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_WorkOrder_field_values_0</targetReference>
+            </connector>
+            <label>Traffic Management Required</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Validation to check whether the selected work type was looked up successfully - otherwise go to the Default Error Screen. This could happen if the work type records in Salesforce are renamed, as this flow relies on record names to be precise.</description>
+        <name>Decision_WorkType_Found</name>
+        <label>Work Type found?</label>
+        <locationX>380</locationX>
+        <locationY>1430</locationY>
+        <defaultConnector>
+            <targetReference>Screen_UnknownSurfaceType_Error</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Work Type Not Found</defaultConnectorLabel>
+        <rules>
+            <name>outcome_WorkTypeFound</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>var_WorkTypeRecord.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Screen_ReinstatementDetails</targetReference>
+            </connector>
+            <label>Work Type Found</label>
+        </rules>
+    </decisions>
+    <description>21/02/22 - Version 1:  Used as a sub-flow triggered by the &quot;Change Job Status&quot; mobile flow, in order to determine required Reinstatement Scope during a reinstatement &quot;Markout&quot; job. Built from requirements in https://watercarestp.atlassian.net/browse/MSRS-260
+
+23/02/22 - Version 2: Added two boolean variables &quot;var_HotmixRequested&quot; and &quot;var_NoParkersRequested&quot; and two decision elements to determine, whether Hotmix or No Parkers have been requested before in this flow. If so the variables will be set to &quot;true&quot; and the screens for Hotmix and No Parkers will be skipped by the decision. This is to prevent multiple Hotmix or No Parker WOLIs are created when the user chooses &quot;Additional Reinstatement Required = yes&quot; in the last screen.
+
+24/02/22 - Version 3/4:  Changed Assignment Element &quot;Add Single WOLI Record to Collection - No Parkers&quot; to logic &quot;Add&quot; instead of &quot;Add at start&quot; after experiencing problems with Field Service Mobile App only adding &quot;No Parkers&quot; to the record collection and overwriting the others.
+
+21/03/22 - Version 5:  Rework flow according to requirements specified in https://watercarestp.atlassian.net/browse/MSRS-595 and Miro board https://miro.com/app/board/uXjVOckmAH0=/
+
+22/03/22 - Version 6:  Screen &quot;Traffic Control&quot;: Changed radio button &quot;traffic control required?&quot; to be mandatory, made &quot;street-level&quot; picklist a radio button after experiencing issues with the Mobile app not recognizing the picklist as an optional field.
+
+22/03/22 - Version 7:  Added an Update Records Element &quot;Update Markout Complete Flag on Work Order&quot; at the end of the flow. This will be used as a validation in the &quot;Update Job Status&quot; flow to prevent markout crew to complete a markout job without entering the details first.
+
+22/03/22 - Version 8/9/10:  Changed &quot;yes&quot; and &quot;no&quot; choice option and radio button fields to &quot;text&quot; instead of &quot;boolean&quot; after experiencing issues with preselecting values on mobile app.
+
+23/03/22 - Version 11:  Added the work order field &quot;Service Hazards&quot; in the work order get elements and added an assignment element &quot;Assign Service Hazards&quot; in order to prepopulate any service hazards that have been defined on the parent markout work order  by the field crew requesting the markout job originally. 
+
+23/03/22 - Version 12/13: Added a new variable &quot;var_SurfaceType_Collection&quot; in order to save all selected surface types throughout the flow, and then present the selected surface types on the &quot;Additional Reinstatement Required&quot; and &quot;Success&quot; screen as a visual feedback for the user which surface type has already been selected.
+
+23/03/22 - Version 14:  Assigned the variable &quot;Service Hazards&quot; separately direclty in the Screen element &quot;Service Hazards&quot; after experiencing problems on the mobile app.
+
+24/03/22 - Version 15:  Assign the &quot;Reinstatement Markout Complete&quot; field as &quot;true&quot; for all child work orders that are created.
+
+24/03/22 - Version 16: Made copy text corrections in the &quot;Get Record Type&quot; get element.
+
+25/03/22 - Version 17: Added &quot;Is Boxing Required&quot; field into the screen &quot;Reinstatement Details&quot;
+
+01/04/22 - Version 18: In screen &quot;Reinstatement Markout - Traffic Control&quot;, removed the standard value &quot;empty string&quot; out of the Radiobutton choice field &quot;Traffic control required&quot; as this prevented the validation &quot;required&quot; from failing as described in bug https://watercarestp.atlassian.net/browse/MSRS-748
+
+01/04/22 - Version 19:  Apply bugfix for ticket MSRS-595 - Reinstatement Markout Surface Type &apos;Other (e.g Fencing)&apos; generates Error - Unknown Surface Type. Reason was a wrong text string &quot;Other&quot; in the choice element &quot;ch_Other&quot; that should have been &quot;Reinstatement - Other&quot;. Hence it could not find the correct record type when the user selected that picklist option for the &quot;Surface Type&quot;.
+
+27/04/22 - Version 20/21: Extend flow to include a &quot;Depth&quot; picklist field in the screen &quot;Reinstatement Markout - Details&quot; as requested in https://watercarestp.atlassian.net/browse/MSRS-906; Added new choice picklist values 80 - 200 mm
+22/07/2022 - V22: Renaming the boxing required to steel plates required. The API name is not changed only the label is changed
+
+17/08/22 - Version 23: Revert changes made in V22 / Instead of renaming the &quot;Custom Box Required&quot; field to &quot;Steel Plates&quot; introduce a new field &quot;Steel Plates Required&quot; on Work Order and populate this new field instead. See https://watercarestp.atlassian.net/browse/MSRS-1906 for details. 
+
+18/08/22 - Version 24: Add variables for &quot;Custom Box&quot;, &quot;Steel Plates&quot; and &quot;Backfill&quot; in order to be able to prepopulate the values from previously made updates by the Fieldcrew when the Reinstatement has been requested in the first place.
+
+26/08/22 - Version 25: Fix bug where field &quot;Custom Box Required&quot; on Screen &quot;Reinstatement Details&quot; was not populated when the flow creates child work orders.
+
+26/08/22 - Version 26/27: Enhance flow so that all Markout information recorded by the markout field crew is additionally written back into the parent workorder (=markout workorder) of the SA triggering this flow, instead of only setting the flag &quot;markout complete&quot; in the update records element &quot;Update Markout Work Order&quot;.
+
+16/01/23  - Version 28: Updated the &quot;Get Parent Work Order Details&quot; element to retrieve the &quot;RootWorkOrderId&quot;;  Update the &quot;Get Work Type&quot; element and add the field &quot;Default Asset&quot; into the record variable. Update the Assignment element &quot;Assign Work Order field values&quot; accordingly to use the &quot;RootWorkOrderId&quot; as the ParentId and &quot;Asset Id&quot; to be populated from the Work Types &quot;Default Asset&quot;.  The latter is required as EAM needs an Asset Id in order to create a &quot;Child Work Order&quot;.</description>
+    <environments>Default</environments>
+    <formulas>
+        <description>Used to set the &quot;Earliest Start Permitted&quot; field on the new Service Appointment that is created in the flow.</description>
+        <name>fx_SA_EarliestStartPermitted</name>
+        <dataType>DateTime</dataType>
+        <expression>{!$Flow.CurrentDateTime}</expression>
+    </formulas>
+    <formulas>
+        <description>Calculate the new Due Date from the current date/time of the flow + 10 days for the service appointment that is created for Reinstatement</description>
+        <name>fx_ServiceAppointment_DueDate</name>
+        <dataType>DateTime</dataType>
+        <expression>({!$Flow.CurrentDateTime} + 10)</expression>
+    </formulas>
+    <formulas>
+        <description>Calculate the new &quot;Inline Due Date&quot; from the current date/time of the flow + 10 days for the service appointment that is created for Reinstatement. Please note: Inline Due Date is a custom field on the Service Appointment that needs to be populated as well - as it is used to mass update Due Dates directly from list views by the job coordinators and triggers a record triggered flow which then updates the &quot;Due Date&quot; automatically too.</description>
+        <name>fx_ServiceAppointment_InlineDueDate</name>
+        <dataType>Date</dataType>
+        <expression>{!$Flow.CurrentDate}+10</expression>
+    </formulas>
+    <interviewLabel>MSN - Field Service Mobile App - Define Reinstatement Scope {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>MSN - Field Service Mobile App - Define Reinstatement Scope</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>FieldServiceMobile</processType>
+    <recordCreates>
+        <description>Create all Work Order Records from the Work Order Record Collection.</description>
+        <name>Create_WorkOrder_Records</name>
+        <label>Create Work Order Records from Collection</label>
+        <locationX>314</locationX>
+        <locationY>2726</locationY>
+        <connector>
+            <targetReference>Update_Markout_Work_Order</targetReference>
+        </connector>
+        <inputReference>var_WorkOrder_Record_Collection</inputReference>
+    </recordCreates>
+    <recordLookups>
+        <description>Lookup details from the Parent Work Order Line Item related to the Service Appointment triggering this flow. This will be used to prefill fields on the new Work Order or Work Order Line Item created at the end of this flow. As the field values need to cater for both &quot;WOLI&quot; and &quot;WO&quot; records, we store the values in separate variables.</description>
+        <name>Get_Parent_WOLI</name>
+        <label>Get Parent Work Order Line Item</label>
+        <locationX>116</locationX>
+        <locationY>734</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Screen_SelectSurfaceType</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>ParentId</elementReference>
+            </value>
+        </filters>
+        <object>WorkOrderLineItem</object>
+        <outputAssignments>
+            <assignToReference>var_ParentRecord_AssetId</assignToReference>
+            <field>AssetId</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_ParentRecord_City</assignToReference>
+            <field>City</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_ParentRecord_Latitude</assignToReference>
+            <field>Latitude</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_ParentRecord_Longitude</assignToReference>
+            <field>Longitude</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_ParentRecord_PostalCode</assignToReference>
+            <field>PostalCode</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_ParentRecord_ServiceTerritory</assignToReference>
+            <field>ServiceTerritoryId</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_ParentRecord_State</assignToReference>
+            <field>State</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_ParentRecord_Street</assignToReference>
+            <field>Street</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_ParentRecord_WorkOrderId</assignToReference>
+            <field>WorkOrderId</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <description>Lookup details from the Parent Work Order related to the Service Appointment triggering this flow. This will be used to prefill fields on the new Work Order or Work Order Line Item created at the end of this flow.</description>
+        <name>Get_Parent_WorkOrder_0</name>
+        <label>Get Parent Work Order</label>
+        <locationX>380</locationX>
+        <locationY>734</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Screen_SelectSurfaceType</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>ParentId</elementReference>
+            </value>
+        </filters>
+        <object>WorkOrder</object>
+        <outputAssignments>
+            <assignToReference>var_ParentRecord_AssetId</assignToReference>
+            <field>AssetId</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_ParentRecord_City</assignToReference>
+            <field>City</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_ParentRecord_WorkOrderId</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_ParentRecord_Latitude</assignToReference>
+            <field>Latitude</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_ParentRecord_Longitude</assignToReference>
+            <field>Longitude</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_ParentRecord_CustomBoxRequired</assignToReference>
+            <field>MSN_Reinstatement_BoxingRequired__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_ParentRecord_ServiceHazards</assignToReference>
+            <field>MSN_Reinstatement_ServiceHazards__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_ParentRecord_Backfill</assignToReference>
+            <field>MSN_Reintatement_BackfillRequired__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_ParentRecord_SteelPlatesRequired</assignToReference>
+            <field>MSN_Steel_Plates_Required__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_ParentRecord_PostalCode</assignToReference>
+            <field>PostalCode</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_ParentRecord_ParentWorkOrderId</assignToReference>
+            <field>RootWorkOrderId</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_ParentRecord_ServiceTerritory</assignToReference>
+            <field>ServiceTerritoryId</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_ParentRecord_State</assignToReference>
+            <field>State</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_ParentRecord_Street</assignToReference>
+            <field>Street</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <description>Get the Record Type &quot;Reinstatement&quot; for the Work Order Records to be created later in the process.</description>
+        <name>Get_Record_Type_for_Reinstatement_Work_Order</name>
+        <label>Get Record Type for Reinstatement Work Orders</label>
+        <locationX>182</locationX>
+        <locationY>1670</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Assign_WorkOrder_field_values</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>IsActive</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>MSN_Reinstatement_WorkOrder</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>SobjectType</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>WorkOrder</stringValue>
+            </value>
+        </filters>
+        <object>RecordType</object>
+        <outputAssignments>
+            <assignToReference>var_WorkOrder_Reinstatement_RecordType</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <description>When opened from Desktop, lookup the ParentRecordID from the Service Appointment triggering this flow/subflow. Then Store the &quot;ParentRecordId&quot; into the Variable &quot;ParentId&quot; in order to make the mobile flow compatible when opened from Desktop.</description>
+        <name>Get_ServiceAppointment_ParentRecordId</name>
+        <label>Get Service Appointment Parent Record ID</label>
+        <locationX>336</locationX>
+        <locationY>398</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Decision_DetermineObjectType_ParentRecord</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Id</elementReference>
+            </value>
+        </filters>
+        <object>ServiceAppointment</object>
+        <outputAssignments>
+            <assignToReference>ParentId</assignToReference>
+            <field>ParentRecordId</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <description>Retrieve the work type for the surface type selected by the user in the previous screen.</description>
+        <name>Get_WorkTypes_for_Selected_Surface</name>
+        <label>Get Work Type for selected Surface</label>
+        <locationX>380</locationX>
+        <locationY>1310</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Decision_WorkType_Found</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Name</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>var_SurfaceType_SingleSelection</elementReference>
+            </value>
+        </filters>
+        <object>WorkType</object>
+        <outputReference>var_WorkTypeRecord</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Name</queriedFields>
+        <queriedFields>Description</queriedFields>
+        <queriedFields>EstimatedDuration</queriedFields>
+        <queriedFields>DurationType</queriedFields>
+        <queriedFields>MSN_Reinstatement_Execution_Order__c</queriedFields>
+        <queriedFields>MSN_Default_Asset__c</queriedFields>
+    </recordLookups>
+    <recordUpdates>
+        <description>Update the checkbox &quot;Reinstatement Markout Complete&quot; and all selected Markout Details on the parent Work Order of the Service Appointment triggering this flow. This is used later in the &quot;Update Job Status&quot; flow to validate, whether the markout crew has to complete he markout details first, prior to being allowed to close out the job.</description>
+        <name>Update_Markout_Work_Order</name>
+        <label>Update Markout Work Order</label>
+        <locationX>314</locationX>
+        <locationY>2846</locationY>
+        <connector>
+            <targetReference>Screen_Success</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>ParentId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>MSN_Reinstatement_BoxingRequired__c</field>
+            <value>
+                <elementReference>Screen_ReinstatementDetails_Prerequisites_Custom_Box_Required</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>MSN_Reinstatement_LetterdropRequired__c</field>
+            <value>
+                <elementReference>Screen_ReinstatementDetails_Prerequisites_Letterdrop</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>MSN_Reinstatement_Markout_Complete__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>MSN_Reinstatement_NoParkers__c</field>
+            <value>
+                <elementReference>Screen_ReinstatementDetails_Prerequisites_NoParkers</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>MSN_Reinstatement_Notes__c</field>
+            <value>
+                <elementReference>Screen_ReinstatementDetails_Other_Notes</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>MSN_Reinstatement_ServiceHazards__c</field>
+            <value>
+                <elementReference>Screen_ReinstatementDetails_Other_ServiceHazardsCheckboxGroup</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>MSN_Reinstatement_Surface_Depth__c</field>
+            <value>
+                <elementReference>Screen_ReinstatementDetails_SurfaceSize_Depth</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>MSN_Reinstatement_Surface_Length__c</field>
+            <value>
+                <elementReference>Screen_ReinstatementDetails_SurfaceSize_Lenght</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>MSN_Reinstatement_Surface_Width__c</field>
+            <value>
+                <elementReference>Screen_ReinstatementDetails_SurfaceSize_Width</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>MSN_Reinstatement_WorkSiteDetails__c</field>
+            <value>
+                <elementReference>Screen_ReinstatementDetails_WorkSite_CheckboxGroup</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>MSN_Reintatement_BackfillRequired__c</field>
+            <value>
+                <elementReference>Screen_ReinstatementDetails_Prerequisites_Backfill</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>MSN_Steel_Plates_Required__c</field>
+            <value>
+                <elementReference>Screen_ReinstatementDetails_Prerequisites_SteelPlates</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>MSN_TrafficControl_Level__c</field>
+            <value>
+                <elementReference>Screen_TrafficControl_StreetLevel_Picklist</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>MSN_TrafficControl_Notes__c</field>
+            <value>
+                <elementReference>Screen_TrafficControl_OtherInstructions_Notes</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>MSN_TrafficControl_Required__c</field>
+            <value>
+                <elementReference>outcome_TrafficManagementRequired</elementReference>
+            </value>
+        </inputAssignments>
+        <object>WorkOrder</object>
+    </recordUpdates>
+    <screens>
+        <description>Used to prompt the mobile field crew user whether they want to add an additional Reinstatement Request (e.g. additionally for &quot;Special Finish&quot; when they Already requested &quot;Black Exposed&quot; first.</description>
+        <name>Screen_AdditionalReinstatement</name>
+        <label>Reinstatement Markout - Additional Reinstatement</label>
+        <locationX>182</locationX>
+        <locationY>2366</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Decision_AdditionalReinstatementRequired</targetReference>
+        </connector>
+        <fields>
+            <name>Screen_AdditionalReinstatement_Heading</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Is additional reinstatement required?&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;You already selected the following surface types&lt;/span&gt;: &lt;/p&gt;&lt;p&gt;{!var_SurfaceTypes_Collection}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_AdditionalReinstatementRequired_Choice</name>
+            <choiceReferences>ch_Yes</choiceReferences>
+            <choiceReferences>ch_No</choiceReferences>
+            <dataType>String</dataType>
+            <defaultSelectedChoiceReference>ch_No</defaultSelectedChoiceReference>
+            <fieldText>Do you want to add another hard surface?</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>Shows an Error Message to the user in case no Record ID is populated in either the &quot;ID&quot; variable or &quot;recordID&quot; variable.</description>
+        <name>Screen_NoRecordId</name>
+        <label>No Record Id</label>
+        <locationX>600</locationX>
+        <locationY>278</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Screen_UnknownWorkType_ErrorText_0</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Error - No Service Appointment Record Id&lt;/b&gt;&lt;/p&gt;&lt;p&gt;It looks like there was no Record ID for the Service Appointment prepopulated when opening this feature.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Please get in touch with your friendly Salesforce Support team and make them aware of this error.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>Used to prompt the markout crew user to specify further reinstatement details or other specific instructions.</description>
+        <name>Screen_ReinstatementDetails</name>
+        <label>Reinstatement Markout - Details</label>
+        <locationX>182</locationX>
+        <locationY>1550</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Get_Record_Type_for_Reinstatement_Work_Order</targetReference>
+        </connector>
+        <fields>
+            <name>Screen_ReinstatementDetails_PrerequisitesHeader</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255); font-size: 16px;&quot;&gt;Prerequisites&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_ReinstatementDetails_Prerequisites_Letterdrop</name>
+            <dataType>Boolean</dataType>
+            <fieldText>Letterdrop required?</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Screen_ReinstatementDetails_Prerequisites_NoParkers</name>
+            <dataType>Boolean</dataType>
+            <fieldText>No parkers required?</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Screen_ReinstatementDetails_Prerequisites_Backfill</name>
+            <dataType>Boolean</dataType>
+            <defaultValue>
+                <elementReference>var_ParentRecord_Backfill</elementReference>
+            </defaultValue>
+            <fieldText>Backfill required?</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Screen_ReinstatementDetails_Prerequisites_Custom_Box_Required</name>
+            <dataType>Boolean</dataType>
+            <defaultValue>
+                <elementReference>var_ParentRecord_CustomBoxRequired</elementReference>
+            </defaultValue>
+            <fieldText>Custom box required?</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Screen_ReinstatementDetails_Prerequisites_SteelPlates</name>
+            <dataType>Boolean</dataType>
+            <defaultValue>
+                <elementReference>var_ParentRecord_SteelPlatesRequired</elementReference>
+            </defaultValue>
+            <fieldText>Steel plates required?</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Screen_ReinstatementDetails_WorkSiteHeader</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px; background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;Work Site&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_ReinstatementDetails_WorkSite_CheckboxGroup</name>
+            <choiceReferences>ch_WorkSite_Driveway</choiceReferences>
+            <choiceReferences>ch_WorkSite_Footpath</choiceReferences>
+            <choiceReferences>ch_WorkSite_CarriagewayRoad</choiceReferences>
+            <choiceReferences>ch_WorkSite_Other</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Select work site details</fieldText>
+            <fieldType>MultiSelectCheckboxes</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Screen_ReinstatementDetails_SurfaceSizeHeader</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px; background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;Surface Size&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_ReinstatementDetails_SurfaceSize_Lenght</name>
+            <choiceReferences>ch_SurfaceSize_0_5</choiceReferences>
+            <choiceReferences>ch_SurfaceSize_1_0</choiceReferences>
+            <choiceReferences>ch_SurfaceSize_1_5</choiceReferences>
+            <choiceReferences>ch_SurfaceSize_2_0</choiceReferences>
+            <choiceReferences>ch_SurfaceSize_2_5</choiceReferences>
+            <choiceReferences>ch_SurfaceSize_3_0</choiceReferences>
+            <choiceReferences>ch_SurfaceSize_3_5</choiceReferences>
+            <choiceReferences>ch_SurfaceSize_4_0</choiceReferences>
+            <choiceReferences>ch_SurfaceSize_4_5</choiceReferences>
+            <choiceReferences>ch_SurfaceSize_5_0</choiceReferences>
+            <choiceReferences>ch_SurfaceSize_5_5</choiceReferences>
+            <choiceReferences>ch_SurfaceSize_6_0</choiceReferences>
+            <choiceReferences>ch_SurfaceSize_6_5</choiceReferences>
+            <choiceReferences>ch_SurfaceSize_7_0</choiceReferences>
+            <choiceReferences>ch_SurfaceSize_7_5</choiceReferences>
+            <choiceReferences>ch_SurfaceSize_8_0</choiceReferences>
+            <dataType>Number</dataType>
+            <fieldText>Length</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>false</isRequired>
+            <scale>1</scale>
+        </fields>
+        <fields>
+            <name>Screen_ReinstatementDetails_SurfaceSize_Width</name>
+            <choiceReferences>ch_SurfaceSize_0_5</choiceReferences>
+            <choiceReferences>ch_SurfaceSize_1_0</choiceReferences>
+            <choiceReferences>ch_SurfaceSize_1_5</choiceReferences>
+            <choiceReferences>ch_SurfaceSize_2_0</choiceReferences>
+            <choiceReferences>ch_SurfaceSize_2_5</choiceReferences>
+            <choiceReferences>ch_SurfaceSize_3_0</choiceReferences>
+            <choiceReferences>ch_SurfaceSize_3_5</choiceReferences>
+            <choiceReferences>ch_SurfaceSize_4_0</choiceReferences>
+            <choiceReferences>ch_SurfaceSize_4_5</choiceReferences>
+            <choiceReferences>ch_SurfaceSize_5_0</choiceReferences>
+            <choiceReferences>ch_SurfaceSize_5_5</choiceReferences>
+            <choiceReferences>ch_SurfaceSize_6_0</choiceReferences>
+            <choiceReferences>ch_SurfaceSize_6_5</choiceReferences>
+            <choiceReferences>ch_SurfaceSize_7_0</choiceReferences>
+            <choiceReferences>ch_SurfaceSize_7_5</choiceReferences>
+            <choiceReferences>ch_SurfaceSize_8_0</choiceReferences>
+            <dataType>Number</dataType>
+            <fieldText>Width</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>false</isRequired>
+            <scale>1</scale>
+        </fields>
+        <fields>
+            <name>Screen_ReinstatementDetails_SurfaceSize_Depth</name>
+            <choiceReferences>ch_SurfaceSize_0_0_8</choiceReferences>
+            <choiceReferences>ch_SurfaceSize_0_1</choiceReferences>
+            <choiceReferences>ch_SurfaceSize_0_1_2</choiceReferences>
+            <choiceReferences>ch_SurfaceSize_0_1_5</choiceReferences>
+            <choiceReferences>ch_SurfaceSize_0_1_8</choiceReferences>
+            <choiceReferences>ch_SurfaceSize_0_2</choiceReferences>
+            <dataType>Number</dataType>
+            <fieldText>Depth</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>false</isRequired>
+            <scale>2</scale>
+        </fields>
+        <fields>
+            <name>Screen_ReinstatementDetails_OtherInstructionsHeader</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px; background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;Other Instructions&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_ReinstatementDetails_Other_ServiceHazardsCheckboxGroup</name>
+            <choiceReferences>ch_ServiceHazard_ShallowTelco</choiceReferences>
+            <choiceReferences>ch_ServiceHazard_ShallowGas</choiceReferences>
+            <choiceReferences>ch_ServiceHazard_ShallowElectrical</choiceReferences>
+            <choiceReferences>ch_ServiceHazard_Other</choiceReferences>
+            <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>var_ParentRecord_ServiceHazards</elementReference>
+            </defaultValue>
+            <fieldText>Service Hazards (if applicable)</fieldText>
+            <fieldType>MultiSelectCheckboxes</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Screen_ReinstatementDetails_Other_Notes</name>
+            <fieldText>Additional Comments (e.g. Handmix, Construction Work, Special Notes)</fieldText>
+            <fieldType>LargeTextArea</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Screen_ReinstatementDetails_Other_Photos</name>
+            <extensionName>forceContent:fileUpload</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>Upload Photos</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>multiple</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>recordId</name>
+                <value>
+                    <elementReference>ParentId</elementReference>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>Used to prompt the mobile app user to choose between the different surface types such as &quot;Broom Off&quot;, &quot;Black exposed&quot; or &quot;Special Finish&quot; - which triggers different paths in the next decision element.</description>
+        <name>Screen_SelectSurfaceType</name>
+        <label>Reinstatement Markout - Surface Type</label>
+        <locationX>380</locationX>
+        <locationY>1070</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Assign_Surface_Type_Selection</targetReference>
+        </connector>
+        <fields>
+            <name>Screen_SelectSurfaceType_Heading</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Please select the surface type you need.&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_SelectSurfaceType_Radiobutton_Choice</name>
+            <choiceReferences>ch_BroomOff_Concrete</choiceReferences>
+            <choiceReferences>ch_BlackExposed_Concrete</choiceReferences>
+            <choiceReferences>ch_RedChip_Concrete</choiceReferences>
+            <choiceReferences>ch_SpecialFinish_Concrete</choiceReferences>
+            <choiceReferences>ch_Hotmix</choiceReferences>
+            <choiceReferences>ch_CobblesPavers</choiceReferences>
+            <choiceReferences>ch_Other</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Surface type</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <helpText>&lt;p&gt;Depending on your choice, several reinstatement work orders for the selected concrete type will be auto-created.&lt;/p&gt;</helpText>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>Shows a success message after the last step of the process has finished.</description>
+        <name>Screen_Success</name>
+        <label>Reinstatement Markout - Success</label>
+        <locationX>314</locationX>
+        <locationY>2966</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Screen_SuccessMessage</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 18px;&quot;&gt;Success!&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The following reinstatement work orders have been successfully created:&lt;/p&gt;&lt;p&gt;&lt;b&gt;{!var_SurfaceTypes_Collection}&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;﻿&lt;/b&gt;Hit &apos;next&apos; to close this screen and proceed to job completion.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>Used to prompt the markout crew user to specify if they need Traffic Control for the Reinstatement Job.</description>
+        <name>Screen_TrafficControl</name>
+        <label>Reinstatement Markout - Traffic Control</label>
+        <locationX>182</locationX>
+        <locationY>1910</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Decision_TrafficManagementRequired</targetReference>
+        </connector>
+        <fields>
+            <name>Screen_TrafficControl_Required_Header</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Do you need Traffic Control?&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_TrafficControl_Required_Radiobutton</name>
+            <choiceReferences>ch_Yes</choiceReferences>
+            <choiceReferences>ch_No</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Traffic Control required?</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Screen_TrafficControl_OtherInstructions_Header</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255); font-size: 16px;&quot;&gt;Details (only fill in if TC is required)&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_TrafficControl_StreetLevel_Picklist</name>
+            <choiceReferences>ch_TrafficControl_Level1</choiceReferences>
+            <choiceReferences>ch_TrafficControl_Level2</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Select Street Level</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Screen_TrafficControl_OtherInstructions_Notes</name>
+            <fieldText>Additional Comments for Traffic Control</fieldText>
+            <fieldType>LargeTextArea</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>Shows an Error Message to the user in case the decision cannot determine what Object type the Parent Record ID in the &quot;ParentId&quot; variable is of. (Has to be either Work Order or Work Order Line Item)</description>
+        <name>Screen_UnknownObjectType</name>
+        <label>Unknown Object Type</label>
+        <locationX>644</locationX>
+        <locationY>734</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Screen_UnknownObjectType_ErrorMessage</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Error - Unknown Parent Record Type&lt;/b&gt;&lt;/p&gt;&lt;p&gt;It looks like we cannot determine from which parent record (must be Work Order or Work Order Line Item) you attempted to open this feature from.&lt;/p&gt;&lt;p&gt;Please get in touch with your friendly Salesforce Support team and make them aware of this error.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>This error screen is shown, when the &quot;Get Work Order Types&quot; is not finding any allowed work types for the concrete type selected by the user.</description>
+        <name>Screen_UnknownSurfaceType_Error</name>
+        <label>Unknown Surface Type</label>
+        <locationX>578</locationX>
+        <locationY>1550</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>false</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Screen_UnknownSurfaceType_ErrorText</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Error - Unknown Surface Type. &lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;It looks like we couldn&apos;t find any work types for the surface type you selected. Please report this error to your friendly IT support team.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <start>
+        <locationX>254</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Decision_OpenedFromMobileOrDesktop</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <variables>
+        <description>Stores the Record ID of the record that triggered this flow. In this case the Service Appointment ID. This is handed over from the FSL Mobile App into the flow.</description>
+        <name>Id</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <description>Stores the ParentRecord ID of the record that triggered this flow (usually the Work Order Id of the Service Appointment). This is handed over from the FSL Mobile App into the flow.</description>
+        <name>ParentId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <description>Used to store the Record ID of the &quot;Service Appointment&quot;, when the flow is opened from a Desktop Device.</description>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Used as a validation to check, whether the user already has requested &quot;Hotmix&quot; before, in case they selected &quot;Additional Reinstatement Required = yes&quot; in the last screen. This is to prevent that multiple &quot;Hotmix&quot; WOLIs will be created.</description>
+        <name>var_HotmixRequested</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </variables>
+    <variables>
+        <description>Used as a validation to check, whether the user already has requested &quot;No Parkers&quot; before, in case they selected &quot;Additional Reinstatement Required = yes&quot; in the last screen. This is to prevent that multiple &quot;No Parkers&quot; WOLIs will be created.</description>
+        <name>var_NoParkersRequested</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </variables>
+    <variables>
+        <description>Stores the &quot;Asset ID&quot; of the parent record triggering this flow. This will later be assigned to the new Work Order Line Items that will be created.</description>
+        <name>var_ParentRecord_AssetId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Stores the field &quot;Backfill required&quot; of the parent record triggering this flow. This will later be assigned to the new Work Order Line Items that will be created.</description>
+        <name>var_ParentRecord_Backfill</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </variables>
+    <variables>
+        <description>Stores the &quot;City&quot; of the parent record triggering this flow. This will later be assigned to the new Work Order Line Items that will be created.</description>
+        <name>var_ParentRecord_City</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Stores the field &quot;Custom Box Required&quot; of the parent record triggering this flow. This will later be assigned to the new Work Order Line Items that will be created.</description>
+        <name>var_ParentRecord_CustomBoxRequired</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </variables>
+    <variables>
+        <name>var_ParentRecord_Latitude</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+    </variables>
+    <variables>
+        <description>Stores the &quot;Latitude&quot; of the parent record triggering this flow. This will later be assigned to the new Work Order Line Items that will be created.</description>
+        <name>var_ParentRecord_Latitude_text</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>var_ParentRecord_Longitude</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+    </variables>
+    <variables>
+        <description>Stores the &quot;Longitude&quot; of the parent record triggering this flow. This will later be assigned to the new Work Order Line Items that will be created.</description>
+        <name>var_ParentRecord_Longitude_text</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>var_ParentRecord_ParentWorkOrderId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Stores the &quot;Postal Code&quot; of the parent record triggering this flow. This will later be assigned to the new Work Order Line Items that will be created.</description>
+        <name>var_ParentRecord_PostalCode</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>var_ParentRecord_RecordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Stores the &quot;Service Hazards&quot; of the parent record triggering this flow. This will later be used in the Screen &quot;Reinstatement Details&quot; to prepopulate the Screen checkbox group &quot;Service Hazards&quot;.</description>
+        <name>var_ParentRecord_ServiceHazards</name>
+        <dataType>Multipicklist</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Stores the &quot;Service Territory&quot; of the parent record triggering this flow. This will later be assigned to the new Work Order Line Items that will be created.</description>
+        <name>var_ParentRecord_ServiceTerritory</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Stores the &quot;State&quot; of the parent record triggering this flow. This will later be assigned to the new Work Order Line Items that will be created.</description>
+        <name>var_ParentRecord_State</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Stores the field &quot;Steel Plates required&quot; of the parent record triggering this flow. This will later be assigned to the new Work Order Line Items that will be created.</description>
+        <name>var_ParentRecord_SteelPlatesRequired</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </variables>
+    <variables>
+        <description>Stores the &quot;Street&quot; of the parent record triggering this flow. This will later be assigned to the new Work Order Line Items that will be created.</description>
+        <name>var_ParentRecord_Street</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>var_ParentRecord_WorkOrderId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Used to store the Record Type Id of the &quot;Reintatement&quot; Record Type on Work Orders</description>
+        <name>var_Reinstatement_WorkOrder_RecordTypeId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>This Record Variable stores the full Service Appointment record including all fields retrieved from the lookup &quot;Get Service Appointment Details&quot;.</description>
+        <name>var_ServiceAppointment_Record</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ServiceAppointment</objectType>
+    </variables>
+    <variables>
+        <description>Used to store the selected &quot;Surface Type&quot; from the choice selected on the screen &quot;Surface Type&quot;. This is then used to lookup the correct &quot;Work Type&quot; for the surface type. This avoids having to use multiple &quot;get&quot; elements for each of the choices.</description>
+        <name>var_SurfaceType_SingleSelection</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Used to store all surface types selected by the user during the flow in order to show the selection on the &quot;Success&quot; screen as visual feedback which Work Orders have been created at the end of the flow.</description>
+        <name>var_SurfaceTypes_Collection</name>
+        <dataType>Multipicklist</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>This Record Variable stores some details of the Work Order record  retrieved from the lookup &quot;Get Work Order Details&quot; and is also used to create a child work order later in the flow.</description>
+        <name>var_WorkOrder_Record</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>WorkOrder</objectType>
+    </variables>
+    <variables>
+        <description>Used to store multiple Work Order records prior to creating all in the collection with the &quot;Create&quot; element at the end of this flow.</description>
+        <name>var_WorkOrder_Record_Collection</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>WorkOrder</objectType>
+    </variables>
+    <variables>
+        <description>Used to save the Record Type Id of the Work Order Record Type &quot;Reinstatement&quot; - which is used later in the flow to create new Reinstatement Work Orders</description>
+        <name>var_WorkOrder_Reinstatement_RecordType</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>This Record Variable is used to create a Work Order Line Item.</description>
+        <name>var_WorkOrderLineItem_Record</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>WorkOrderLineItem</objectType>
+    </variables>
+    <variables>
+        <description>Used to store multiple Work Order Line Item records that are assigned in the &quot;Loop over Work Types&quot; loop.</description>
+        <name>var_WorkOrderLineItem_Record_Collection</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>WorkOrderLineItem</objectType>
+    </variables>
+    <variables>
+        <description>Store all Work Type records that are allowed for the user selected &quot;concrete type&quot; on the flow screen and then queried with the &quot;Get Work Type&quot; elements thereafter.</description>
+        <name>var_WorkType_Record_Collection</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>WorkType</objectType>
+    </variables>
+    <variables>
+        <description>Stores the ID and other details of the Work Type record looked up with the Get Work Type elements. As the assignment happens immediately after the lookup element into other variables, this Work  Type Record Variable is used multiple times to stores values for the Work Order record type AND Work Order Line Items Record Type.</description>
+        <name>var_WorkTypeRecord</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>WorkType</objectType>
+    </variables>
+</Flow>

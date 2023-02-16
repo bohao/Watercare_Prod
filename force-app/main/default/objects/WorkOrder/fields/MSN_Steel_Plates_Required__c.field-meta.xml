@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_Steel_Plates_Required__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Used e.g. by Job Coordinators and Reinstatement Markout crew members to indicate, whether &quot;Steel Plates&quot; are required on a Reinstatement job. This field also is referenced by the flows &quot;Reinstatement - Markout&quot; and &quot;Create Reinstatement Jobs&quot;.</description>
+    <externalId>false</externalId>
+    <label>Steel Plates Required?</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

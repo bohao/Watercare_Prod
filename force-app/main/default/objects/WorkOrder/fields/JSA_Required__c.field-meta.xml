@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>JSA_Required__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>This field will confirm if job safety analysis is required or not. If the checkbox is true this means the job safety analysis is required for the job</description>
+    <externalId>false</externalId>
+    <label>JSA Required</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

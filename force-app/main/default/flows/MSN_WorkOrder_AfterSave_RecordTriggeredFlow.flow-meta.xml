@@ -1,0 +1,1177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>54.0</apiVersion>
+    <assignments>
+        <description>Assign the Record Id of the Parent Work Order of the record triggering this flow to this variable. This will then be used in the subsequent &quot;Get Child Reinstatement Work Orders&quot;. Please note: we assign this to a separate variable to make the subsequent logic and loop reusable for multiple scenarios.</description>
+        <name>Assign_ParentRecordId_ForGetChildWorkOrders</name>
+        <label>Assign Parent Record Id</label>
+        <locationX>732</locationX>
+        <locationY>1703</locationY>
+        <assignmentItems>
+            <assignToReference>var_ParentWorkOrder_Id</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.ParentWorkOrderId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_Open_Reinstatements_RelatedToParentWO</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Assign the Record Id of the Parent Work Order of the Work Order triggering this flow to this variable. This will then be used in the subsequent &quot;Get Child Reinstatement Work Orders&quot;. Please note: we assign this to a separate variable to make the subsequent logic and loop reusable for multiple scenarios.</description>
+        <name>Assign_ParentWorkOrder_RecordId</name>
+        <label>Assign  Parent Work Order RecordId</label>
+        <locationX>2492</locationX>
+        <locationY>695</locationY>
+        <assignmentItems>
+            <assignToReference>var_ParentWorkOrder_Id</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.ParentWorkOrderId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_Open_Reinstatements_RelatedToParentWO</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Assign the Record Id of the Parent Work Order of the Work Order triggering this flow to this variable. This will then be used in the subsequent &quot;Get Child Work Orders&quot;. Please note: we assign this to a separate variable to make the subsequent logic and loop reusable for multiple scenarios.</description>
+        <name>Assign_ParentWorkOrder_RecordId_StatusReviewed</name>
+        <label>Assign  Parent Work Order RecordId</label>
+        <locationX>1678</locationX>
+        <locationY>695</locationY>
+        <assignmentItems>
+            <assignToReference>var_ParentWorkOrder_Id</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.ParentWorkOrderId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_all_Child_Work_Orders</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Assign the Record Id of the Work Order triggering this flow to this variable. This will then be used in the subsequent &quot;Get Child Reinstatement Work Orders&quot;. Please note: we assign this to a separate variable to make the subsequent logic and loop reusable for multiple scenarios.</description>
+        <name>Assign_WO_RecordId</name>
+        <label>Assign Work Order RecordId</label>
+        <locationX>1964</locationX>
+        <locationY>695</locationY>
+        <assignmentItems>
+            <assignToReference>var_ParentWorkOrder_Id</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_Open_Reinstatements_RelatedToParentWO</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Assign the Record Id of the Work Order triggering this flow to this variable. This will then be used in the subsequent &quot;Get Child Work Orders&quot; element. Please note: we assign this to a separate variable to make the subsequent logic and loop reusable for multiple scenarios.</description>
+        <name>Assign_WorkOrder_RecordId_StatusReviewed</name>
+        <label>Assign Work Order RecordId</label>
+        <locationX>1414</locationX>
+        <locationY>695</locationY>
+        <assignmentItems>
+            <assignToReference>var_ParentWorkOrder_Id</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_all_Child_Work_Orders</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Used to determine if the previous &quot;Get Reinstatement Child Work Orders&quot; element found Reinstatement Work Orders at all - by assigning the count to a variable.</description>
+        <name>Assignment_Count_Reinstatement_WorkOrders</name>
+        <label>Count Reinstatement Child Work Orders</label>
+        <locationX>1601</locationX>
+        <locationY>2135</locationY>
+        <assignmentItems>
+            <assignToReference>var_ReinstatementWorkOrders_Total</assignToReference>
+            <operator>AssignCount</operator>
+            <value>
+                <elementReference>Get_Open_Reinstatements_RelatedToParentWO</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Decision_Reinstatement_Child_Work_Orders_exist</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Increment the value of the Number variable by one in case the current element of the loop is in a &quot;completed&quot; status.  (Ready for review, Completed)</description>
+        <name>Assignment_Increment_WO_Completed_Counter</name>
+        <label>Increment Counter &quot;Work Order Completed&quot;</label>
+        <locationX>1689</locationX>
+        <locationY>2615</locationY>
+        <assignmentItems>
+            <assignToReference>var_ReinstatementWorkOrders_Completed</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <numberValue>1.0</numberValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_Reinstatement_ChildWorkOrders</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Increment the value of the Number variable by one in case the current element of the loop is in an &quot;open&quot; status.  (New, On hold, In Planning, In Progress)</description>
+        <name>Assignment_Increment_WO_Open_Counter</name>
+        <label>Increment Counter &quot;Work Order open&quot;</label>
+        <locationX>1425</locationX>
+        <locationY>2615</locationY>
+        <assignmentItems>
+            <assignToReference>var_ReinstatementWorkOrders_Open</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <numberValue>1.0</numberValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_Reinstatement_ChildWorkOrders</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <description>Check the &quot;Status&quot; of the current Work Order Item in the collection. This will then be used to count, how many open or completed ones are present under the Parent Work Order</description>
+        <name>Decision_Check_Child_Reinstatement_WO_Status</name>
+        <label>Check Child Work Order Status</label>
+        <locationX>1689</locationX>
+        <locationY>2495</locationY>
+        <defaultConnector>
+            <targetReference>Loop_Reinstatement_ChildWorkOrders</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Any other status</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_CurrentWO_Status_Open</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>Loop_Reinstatement_ChildWorkOrders.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>New</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Loop_Reinstatement_ChildWorkOrders.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>On Hold</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Loop_Reinstatement_ChildWorkOrders.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Planning</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Loop_Reinstatement_ChildWorkOrders.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>In Progress</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assignment_Increment_WO_Open_Counter</targetReference>
+            </connector>
+            <label>Work Order Status open</label>
+        </rules>
+        <rules>
+            <name>Outcome_CurrentWO_Status_Completed</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>Loop_Reinstatement_ChildWorkOrders.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Completed</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Loop_Reinstatement_ChildWorkOrders.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Ready for Review</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Loop_Reinstatement_ChildWorkOrders.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Canceled</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assignment_Increment_WO_Completed_Counter</targetReference>
+            </connector>
+            <label>Work Order Status Completed</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>This decision is used to check the current status of the work order triggering the flow. Depending on the outcome it follows different paths.</description>
+        <name>Decision_Determine_WorkOrder_Status</name>
+        <label>Determine Work Order Status</label>
+        <locationX>1601</locationX>
+        <locationY>335</locationY>
+        <defaultConnectorLabel>Any other status</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_WO_Status_IsNew</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>fx_IsNew</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Decision_WorkOrder_is_Reinstatement</targetReference>
+            </connector>
+            <label>Is New</label>
+        </rules>
+        <rules>
+            <name>Outcome_WO_Status_ReadyForReview</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Ready for Review</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Decision_ParentWO_InProgress</targetReference>
+            </connector>
+            <label>Status = Ready for Review</label>
+        </rules>
+        <rules>
+            <name>Outcome_WO_Status_Reviewed</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Reviewed</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Decision_WorkOrder_ParentOrChild_StatusReviewed</targetReference>
+            </connector>
+            <label>Status = Reviewed</label>
+        </rules>
+        <rules>
+            <name>Outcome_WO_Status_Completed</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Completed</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Decision_WorkOrder_IsParentOrChild_StatusCompleted</targetReference>
+            </connector>
+            <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+            <label>Status = Completed</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>This decision is used to determine whether Child Work Orders in an open Status exist under the Parent Work Order. If the previous get element returns &quot;Null&quot;
+, then the Parent Records Record Status will be set to &quot;Completed&quot; accordingly, otherwise left open.</description>
+        <name>Decision_Open_ChildWorkOrders_exist</name>
+        <label>Open Child Work Orders exist?</label>
+        <locationX>1546</locationX>
+        <locationY>1031</locationY>
+        <defaultConnectorLabel>Open Child Work Orders exist</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_No_Open_ChildWorkOrders_exist</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_all_Child_Work_Orders</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_all_Open_WOLIs_for_ParentWorkOrder</targetReference>
+            </connector>
+            <label>No Open Child Work Orders exist</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Used to determine whether the previous Get element found a still open Child Reinstatement Work Order related to the parent of the record triggering this flow. If so, then update the flag &quot;Reinstatement Completed&quot; on the parent Work Order.</description>
+        <name>Decision_Open_Reinstatements_RelatedToParentWO</name>
+        <label>Open Reinstatement Child Work Orders exist?</label>
+        <locationX>1337</locationX>
+        <locationY>2927</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_Reinstatement_WOs_Open</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>var_ReinstatementWorkOrders_Open</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <label>Open Reinstatement WOs exist</label>
+        </rules>
+        <rules>
+            <name>Outcome_Reinstatement_WOs_Completed</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>var_ReinstatementWorkOrders_Completed</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>var_ReinstatementWorkOrders_Total</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Parent_Work_Order</targetReference>
+            </connector>
+            <label>All Reinstatement WOs completed</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>This decision is used to determine whether Work Order Line Items in an open Status exist under the Parent Work Order. If the previous get element returns &quot;Null&quot;
+, then the Parent Records Record Status will be set to &quot;Completed&quot; accordingly, otherwise left open.</description>
+        <name>Decision_Open_WOLIs_exist</name>
+        <label>Open WOLIs related to Parent Work Order exist?</label>
+        <locationX>1392</locationX>
+        <locationY>1271</locationY>
+        <defaultConnectorLabel>Open Child Work Orders exist</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_No_Open_WOLIs_exist</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_all_Open_WOLIs_for_ParentWorkOrder</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_ParentWorkOrder_Status_Completed</targetReference>
+            </connector>
+            <label>No Open WOLIs exist</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>This decision is used to check, whether the parent Work Order of the record triggering this flow has any still yet &quot;open&quot; Service Appointments left. If so, do not update the Parent Work Order Status to &quot;Ready for Review&quot;, otherwise update the Parent WO Status to &quot;Ready for Review&quot;</description>
+        <name>Decision_ParentWO_Check_Open_ServiceAppointments</name>
+        <label>Check if parent WO has open Service Appointments</label>
+        <locationX>710</locationX>
+        <locationY>695</locationY>
+        <defaultConnector>
+            <targetReference>Get_SAs_with_exceeding_labour_hours</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>True</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_ParentWO_Has_Open_ServiceAppointments</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_all_SA_for_Parent_WO</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Parent_WO</targetReference>
+            </connector>
+            <label>False</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>This decision checks, whether the Work Order triggering this flow has a parent Work Order Record, that is not yet in the status &quot;Ready for Review&quot;.</description>
+        <name>Decision_ParentWO_InProgress</name>
+        <label>Does WO have parent not yet in &quot;Ready for Review&quot;?</label>
+        <locationX>864</locationX>
+        <locationY>455</locationY>
+        <defaultConnector>
+            <targetReference>Get_SAs_with_exceeding_labour_hours</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>False</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_ParentWO_InProgress</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ParentWorkOrderId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ParentWorkOrder.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>In Progress</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_all_SA_for_Parent_WO</targetReference>
+            </connector>
+            <label>True</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>The decision is used to determine if:
+- The Work Order triggering this flow is NOT a &quot;Reinstatement&quot; Work Order
+- The Work Order is the Parent itself / no higher level Parent Work Order exists
+- The Work Order not already has the flag &quot;Reinstatement Completed&quot; set to &quot;true&quot;</description>
+        <name>Decision_ParentWorkOrder_ReinstatementRequired</name>
+        <label>Reinstatement required on Parent Work Order?</label>
+        <locationX>2096</locationX>
+        <locationY>575</locationY>
+        <defaultConnectorLabel>False</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_WorkOrder_IsParent_ReinstatementRequired</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Is_Reinstatement__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ParentWorkOrderId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Reinstatement_Completed__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Reinstatement_Required__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_WO_RecordId</targetReference>
+            </connector>
+            <label>True</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Used to determine whether the previous Get element found at least one Child Reinstatement Work Order related to the parent of the record triggering this flow. If so, then update the flag &quot;Reinstatement Completed&quot; on the parent Work Order.</description>
+        <name>Decision_Reinstatement_Child_Work_Orders_exist</name>
+        <label>Reinstatement Child Work Orders exist?</label>
+        <locationX>1601</locationX>
+        <locationY>2255</locationY>
+        <defaultConnectorLabel>False</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_ChildReinstatementWOs_Exist</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>var_ReinstatementWorkOrders_Total</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Loop_Reinstatement_ChildWorkOrders</targetReference>
+            </connector>
+            <label>True</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Check if any Service Appointments with labour hours exceeding the specified maximum allowed time on the &quot;Work Type&quot; exist as looked up in the previous Get Element</description>
+        <name>Decision_ServiceAppointments_With_ExceedingLabour_Exist</name>
+        <label>Check if Service Appointments with exceeding labour hours exist</label>
+        <locationX>864</locationX>
+        <locationY>1247</locationY>
+        <defaultConnector>
+            <targetReference>Decision_WO_IsReinstatement_HasParent_ReadyForReview</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>False</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_ServiceAppointments_ExceedingLabour_Exist</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_SAs_with_exceeding_labour_hours</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_WO</targetReference>
+            </connector>
+            <label>True</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>The decision is used to determine if:
+- The updated Work Order triggering this flow is a &quot;Reinstatement&quot; Work Order
+- The Work Order has a Parent Work Order
+- The Parent Work Order has the flag &quot;Reinstatement required&quot; set to &quot;true&quot;
+- The Parent Work Order not already has the flag &quot;Reinstatement Completed&quot; set to &quot;true&quot;</description>
+        <name>Decision_WO_IsReinstatement_HasParent_Completed</name>
+        <label>Check if Work Order is Reinstatement and has Parent</label>
+        <locationX>2624</locationX>
+        <locationY>575</locationY>
+        <defaultConnectorLabel>False</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_WO_IsReinstatement_HasParent_Completed</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Is_Reinstatement__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ParentWorkOrderId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ParentWorkOrder.Reinstatement_Required__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ParentWorkOrder.Reinstatement_Completed__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_ParentWorkOrder_RecordId</targetReference>
+            </connector>
+            <label>True</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>The decision is used to determine if:
+- The updated Work Order triggering this flow is a &quot;Reinstatement&quot; Work Order
+- The Work Order has a Parent Work Order
+- The Parent Work Order is NOT also &quot;Reinstatement&quot;
+- The Parent Work Order not already has the flag &quot;Reinstatement Completed&quot; set to &quot;true&quot;</description>
+        <name>Decision_WO_IsReinstatement_HasParent_ReadyForReview</name>
+        <label>Check if Work Order is Reinstatement and has Parent</label>
+        <locationX>864</locationX>
+        <locationY>1583</locationY>
+        <defaultConnectorLabel>False</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_WO_IsReinstatement_HasParent_ReadyForReview</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Is_Reinstatement__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ParentWorkOrderId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ParentWorkOrder.Is_Reinstatement__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ParentWorkOrder.Reinstatement_Completed__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_ParentRecordId_ForGetChildWorkOrders</targetReference>
+            </connector>
+            <label>True</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>The decision is used to determine if:
+- The newly created Work Order triggering this flow is a &quot;Reinstatement&quot; Work Order
+- The Work Order has a Parent Work Order
+- The Parent Work Order is NOT also &quot;Reinstatement&quot;
+- The Parent Work Order not already has the flag &quot;Reinstatement Required&quot; set to &quot;true&quot;</description>
+        <name>Decision_WorkOrder_is_Reinstatement</name>
+        <label>Check if new Work Order is Reinstatement and has Parent</label>
+        <locationX>182</locationX>
+        <locationY>455</locationY>
+        <defaultConnectorLabel>False</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_WO_Is_Reinstatement</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Is_Reinstatement__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ParentWorkOrderId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ParentWorkOrder.Is_Reinstatement__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ParentWorkOrder.Reinstatement_Required__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Reinstatement_Required_on_ParentWorkOrder</targetReference>
+            </connector>
+            <label>True</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>This decision is used to determine whether the work order triggering  this flow is a &quot;Parent Work Order&quot;  (field ParentWorkOrder = blank) or a Child underneath a parent and follows different paths accordingly depending on the outcome.</description>
+        <name>Decision_WorkOrder_IsParentOrChild_StatusCompleted</name>
+        <label>Check if Work Order is Parent or Child</label>
+        <locationX>2360</locationX>
+        <locationY>455</locationY>
+        <defaultConnector>
+            <targetReference>Decision_WO_IsReinstatement_HasParent_Completed</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Child Work Order</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_ParentWorkOrder_StatusCompleted</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ParentWorkOrderId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Decision_ParentWorkOrder_ReinstatementRequired</targetReference>
+            </connector>
+            <label>Parent Work Order</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>This decision is used to determine whether the work order triggering  this flow is a &quot;Parent Work Order&quot;  (field ParentWorkOrder = blank) or a Child underneath a parent. If the Work Order is a parent, then attempt to update all related Work Order Line Items to the status &quot;Completed&quot; in order to trigger the integration payload &quot;CompleteChildWorkOrder&quot; to EAM in the separate APEX callout.</description>
+        <name>Decision_WorkOrder_ParentOrChild_StatusReviewed</name>
+        <label>Check if Work Order is Parent or Child</label>
+        <locationX>1546</locationX>
+        <locationY>455</locationY>
+        <defaultConnector>
+            <targetReference>Update_ChildWorkOrder_Status_Completed</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Child Work Order</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_WO_IsParentWorkOrder_StatusReviewed</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ParentWorkOrderId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_WorkOrderLineItems_Status_Complete</targetReference>
+            </connector>
+            <label>Parent Work Order</label>
+        </rules>
+    </decisions>
+    <description>V1-V4 - Initial Version. Set Pricebook on Work Order Creation; Create WO Platform event on WO Complete; Update Parent WorkOrder on Ready for Review when all SAs are completed
+
+15/09/2022 - V5/V6:  Add logic to update Reinstatement Required/Reinstatement Completed flags as requested in https://watercarestp.atlassian.net/browse/MSRS-2145
+
+18/11/2022 - V7: Added logic to update &quot;Contract&quot; Field on Child Order Creation, if Parent has field contract filled in. See https://watercarestp.atlassian.net/browse/MSRS-2350
+
+20/01/2023 - V8: Resaved the flow with new naming convention as a new, additional &quot;before&quot; save record triggered flow on Work Order has been created; Moved parts of the &quot;Is New&quot; branch logic to populate the &quot;Contract&quot; field and &quot;Pricebook&quot; to a new &quot;before save&quot; record triggered flow and removed it in this, record triggered version; Removed the &quot;Create Platform Event&quot; element as it is not required anymore and was legacy of the initial integration design that has not been implemented.
+
+06/02/2023 - V9: Added a &quot;Status = Reviewed&quot; branch to the decision element and added logic to update all related Work Order Line Items in case the Parent Work Order is set to the aforementioned new status &quot;Reviewed&quot;. This then will trigger APEX automation that will generate Labour Lines for the job and sends it via the integration to EAM.
+
+07/02/2023 - V10/11: Added logic into the branch &quot;Status = Reviewed&quot; in order to check whether the triggering Work Order has any open Child Work Orders/WOLIs and if not, automatically update the triggering record to a status = completed.</description>
+    <environments>Default</environments>
+    <formulas>
+        <description>This Formula determines if the Work Order record triggering this flow &quot;Is New&quot;</description>
+        <name>fx_IsNew</name>
+        <dataType>Boolean</dataType>
+        <expression>ISNEW()</expression>
+    </formulas>
+    <interviewLabel>MSN - Work Order - After Save - Record Triggered Flow {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>MSN - Work Order - After Save - Record Triggered Flow</label>
+    <loops>
+        <description>Loop over the previously looked up Child Work Orders in order to determine if any ones are still open</description>
+        <name>Loop_Reinstatement_ChildWorkOrders</name>
+        <label>Loop over Reinstatement Child Work Orders</label>
+        <locationX>1337</locationX>
+        <locationY>2375</locationY>
+        <collectionReference>Get_Open_Reinstatements_RelatedToParentWO</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Decision_Check_Child_Reinstatement_WO_Status</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Decision_Open_Reinstatements_RelatedToParentWO</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>Get_all_Child_Work_Orders</name>
+        <label>Get all Child Work Orders</label>
+        <locationX>1546</locationX>
+        <locationY>911</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Decision_Open_ChildWorkOrders_exist</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ParentWorkOrderId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>var_ParentWorkOrder_Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>WorkOrder</object>
+        <queriedFields>Id</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Attempt to retrieve any open Work Order Line Items that are related to the Parent Work Order. This is used as a validation, in case any are still in an open state, the flow will not set the status of the Parent Work Order to &quot;completed&quot;</description>
+        <name>Get_all_Open_WOLIs_for_ParentWorkOrder</name>
+        <label>Get all open WOLIs for Parent Work Order</label>
+        <locationX>1392</locationX>
+        <locationY>1151</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Decision_Open_WOLIs_exist</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>WorkOrderId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>var_ParentWorkOrder_Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>WorkOrderLineItem</object>
+        <queriedFields>Id</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_all_SA_for_Parent_WO</name>
+        <label>Get all SA for Parent WO</label>
+        <locationX>710</locationX>
+        <locationY>575</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Decision_ParentWO_Check_Open_ServiceAppointments</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ParentRecordId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.ParentWorkOrderId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Cannot Complete</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Canceled</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>ServiceAppointment</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>This Variable is used to store the ID of any open Reinstatement Work Order related to a Parent Work Order of the record triggering this flow. This is then used to determine if any open Reinstatement Work Orders exist and if not, then update the flag &quot;Reinstatement Completed&quot; on the Parent Work Order.</description>
+        <name>Get_Open_Reinstatements_RelatedToParentWO</name>
+        <label>Get Reinstatement Child Work Orders</label>
+        <locationX>1601</locationX>
+        <locationY>2015</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Assignment_Count_Reinstatement_WorkOrders</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ParentWorkOrderId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>var_ParentWorkOrder_Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Is_Reinstatement__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>WorkOrder</object>
+        <queriedFields>Status</queriedFields>
+        <queriedFields>Is_Reinstatement__c</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Find all related Service Appointments where the actual duration &gt; max labor hours of the work type.</description>
+        <name>Get_SAs_with_exceeding_labour_hours</name>
+        <label>Get SAs with exceeding labour hours</label>
+        <locationX>864</locationX>
+        <locationY>1127</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Decision_ServiceAppointments_With_ExceedingLabour_Exist</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ParentRecordId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Actual_Hours_exceed_Max_Labour_Hours__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <object>ServiceAppointment</object>
+        <outputReference>var_ServiceAppointment_Id</outputReference>
+        <queriedFields>Id</queriedFields>
+    </recordLookups>
+    <recordUpdates>
+        <description>This update element is used to automatically set the &quot;Status&quot; of a Child Work Order to &quot;Completed&quot; as soon as it has been set to &quot;reviewed&quot; by the user before. Please note: this only happens on Child Work Orders, as those do not have (grand-) Child Work Orders or WOLIs and usually are completed separately to the main job (e.g. with a dedicated Service Appointment etc.).</description>
+        <name>Update_ChildWorkOrder_Status_Completed</name>
+        <label>Update Child Work Order Status to &quot;Completed&quot;</label>
+        <locationX>1678</locationX>
+        <locationY>575</locationY>
+        <connector>
+            <targetReference>Assign_ParentWorkOrder_RecordId_StatusReviewed</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Parent_WO</name>
+        <label>Update Parent WO</label>
+        <locationX>578</locationX>
+        <locationY>815</locationY>
+        <connector>
+            <targetReference>Get_SAs_with_exceeding_labour_hours</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.ParentWorkOrderId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Ready for Review</stringValue>
+            </value>
+        </inputAssignments>
+        <object>WorkOrder</object>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Update the flag &quot;Reinstatement Completed&quot; on the Parent Record of the work order triggering this flow.</description>
+        <name>Update_Parent_Work_Order</name>
+        <label>Update Parent Work Order</label>
+        <locationX>1337</locationX>
+        <locationY>3047</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.ParentWorkOrderId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Reinstatement_Completed__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <object>WorkOrder</object>
+    </recordUpdates>
+    <recordUpdates>
+        <description>If no open Child Work Orders or Open WOLIs exist under a Parent Work Order, then set the Parent Work Order Status to &quot;Completed&quot;</description>
+        <name>Update_ParentWorkOrder_Status_Completed</name>
+        <label>Update Parent Work Order Status to &quot;Completed&quot;</label>
+        <locationX>1260</locationX>
+        <locationY>1391</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>var_ParentWorkOrder_Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </inputAssignments>
+        <object>WorkOrder</object>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Update the flag &quot;Reinstatement Required&quot; on the Parent Work Order of the Work Order triggering this flow.</description>
+        <name>Update_Reinstatement_Required_on_ParentWorkOrder</name>
+        <label>Update &quot;Reinstatement Required&quot; flag on Parent Work Order</label>
+        <locationX>50</locationX>
+        <locationY>575</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.ParentWorkOrderId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Reinstatement_Required__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <object>WorkOrder</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_WO</name>
+        <label>Update WO</label>
+        <locationX>732</locationX>
+        <locationY>1367</locationY>
+        <connector>
+            <targetReference>Decision_WO_IsReinstatement_HasParent_ReadyForReview</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Labour_Hours_exceed_max_expected_hours__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <description>This element is used to update all related Work Order Line Items of the Parent Work Order triggering this flow to the Status &quot;Completed&quot;. This is required when the Status of the Parent was updated to &quot;Reviewed&quot; , Labour Lines have been created accordingly and the WOLIs are now ready to be sent to EAM via the integration.</description>
+        <name>Update_WorkOrderLineItems_Status_Complete</name>
+        <label>Update all related Work Order Line Items to Status &quot;Completed&quot;</label>
+        <locationX>1414</locationX>
+        <locationY>575</locationY>
+        <connector>
+            <targetReference>Assign_WorkOrder_RecordId_StatusReviewed</targetReference>
+        </connector>
+        <filterLogic>or</filterLogic>
+        <filters>
+            <field>Status</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Cannot Complete</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Canceled</stringValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record.WorkOrderLineItems</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>1475</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Decision_Determine_WorkOrder_Status</targetReference>
+        </connector>
+        <object>WorkOrder</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Draft</status>
+    <variables>
+        <description>This Record Collection Variable is used to store all Reinstatement Work Orders related to a Parent Work Order of the record triggering this flow. This is then used to determine if any open Reinstatement Work Orders exist and if not, then update the flag &quot;Reinstatement Completed&quot; on the Parent Work Order.</description>
+        <name>var_Child_Reinstatement_WorkOrder</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>WorkOrder</objectType>
+    </variables>
+    <variables>
+        <description>Used to store the Id of any open Child Reinstatement Work Order - this is then used in a decision element to determine whether any Reinstatements under a parent Work Order are still open.</description>
+        <name>var_Open_Child_Reinstatement_WorkOrder_Id</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>This variable is used to assign the Record ID of the Work Order that should be checked for Child Reinstatement Work Orders - e.g. either the Parent Work Order of a record triggering this flow, or the parent record itself, in case a user sets the status of the Work Order manually.</description>
+        <name>var_ParentWorkOrder_Id</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Used in the Loop &quot;Loop Over Reinstatement Work Orders&quot; to count the completed Reinstatements related to a Parent Work Order</description>
+        <name>var_ReinstatementWorkOrders_Completed</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+        <value>
+            <numberValue>0.0</numberValue>
+        </value>
+    </variables>
+    <variables>
+        <description>Used in the Loop &quot;Loop Over Reinstatement Work Orders&quot; to count the open Reinstatements related to a Parent Work Order</description>
+        <name>var_ReinstatementWorkOrders_Open</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+        <value>
+            <numberValue>0.0</numberValue>
+        </value>
+    </variables>
+    <variables>
+        <description>This is used to store the count of any Reinstatement Child Work Orders looked up by the element &quot;Get Reinstatement Child Work Orders&quot;.</description>
+        <name>var_ReinstatementWorkOrders_Total</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+        <value>
+            <numberValue>0.0</numberValue>
+        </value>
+    </variables>
+    <variables>
+        <description>This variable is used to store the Id of any Service Appointment with exceeding labour hours as used in the Get Element &quot;Get SAs with exceeding labour hours&quot;</description>
+        <name>var_ServiceAppointment_Id</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ServiceAppointment</objectType>
+    </variables>
+</Flow>

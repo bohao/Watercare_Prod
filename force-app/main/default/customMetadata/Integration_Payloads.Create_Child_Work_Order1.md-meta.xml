@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Create_Child_Work_Order</label>
+    <protected>false</protected>
+    <values>
+        <field>Payload__c</field>
+        <value xsi:type="xsd:string">{
+  &quot;TransactionID&quot;: &quot;eventId&quot;,
+  &quot;ContractorReference&quot;: &quot;{{MSN_Work_Line_Number__c}}&quot;,
+  &quot;WorkOrderNo&quot;: &quot;{{MSN_Root_Work_Order__r.Work_Order_No__c}}&quot;,
+  &quot;ContractorCode&quot;: &quot;MSN&quot;,
+  &quot;Asset&quot;: {
+    &quot;AssetKey&quot;: {{Asset.Comp_Key__c}},
+    &quot;AssetTypeCode&quot;: &quot;&quot;,
+    &quot;AssetName&quot;: &quot;&quot;
+  },
+  &quot;Comments&quot;: &quot;&quot;,
+  &quot;ActivityCode&quot;: &quot;{{WorkType.MSN_ActivityCode__c}}&quot;,
+  &quot;AssetCondition&quot;: &quot;&quot;,
+  &quot;Crew&quot;: &quot;MSN&quot;,
+  &quot;InitiatedDate&quot;: &quot;{{CreatedDate}}&quot;,
+  &quot;StartDate&quot;: &quot;{{CreatedDate}}&quot;,
+  &quot;ResultCode&quot;: &quot;CREATED&quot;,
+  &quot;TransactionType&quot;: &quot;TXN&quot;,
+  &quot;VariationNo&quot;: &quot;&quot;
+}</value>
+    </values>
+    <values>
+        <field>Request_Method__c</field>
+        <value xsi:type="xsd:string">PUT</value>
+    </values>
+    <values>
+        <field>Trigger_Object__c</field>
+        <value xsi:type="xsd:string">WorkOrderLineItem</value>
+    </values>
+</CustomMetadata>

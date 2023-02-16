@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_Confined_Space_Entry</fullName>
+    <columns>Name</columns>
+    <columns>FSSK__FSK_Work_Order__c</columns>
+    <columns>WorkType</columns>
+    <columns>MSN_Activity_Problem_Code__c</columns>
+    <columns>Status</columns>
+    <columns>Priority__c</columns>
+    <columns>ServiceTerritory</columns>
+    <columns>STREET</columns>
+    <columns>CITY</columns>
+    <columns>Expected_time_going_in_confined_space__c</columns>
+    <columns>Expected_time_out_of_confined_space__c</columns>
+    <columns>Name_of_crew_entering_confined_space__c</columns>
+    <columns>Name_of_crew_watching__c</columns>
+    <columns>Name_of_crew_on_standby__c</columns>
+    <columns>Phone_number_of_crew_on_standby__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Status</field>
+        <operation>equals</operation>
+        <value>None,On Hold,Scheduled,Dispatched,Travel,On Site</value>
+    </filters>
+    <filters>
+        <field>Confined_space_entry__c</field>
+        <operation>equals</operation>
+        <value>1</value>
+    </filters>
+    <filters>
+        <field>Crew_out_of_confined_space__c</field>
+        <operation>equals</operation>
+        <value>0</value>
+    </filters>
+    <label>Confined Space Entry</label>
+</ListView>

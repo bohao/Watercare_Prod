@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_WorkType_ActivityCode_Name__c</fullName>
+    <description>This cross object formula concatenates the &quot;Work Type Name&quot; and the &quot;Activity Code&quot; from the Work Type object on the Work Order. This is then e.g. used in the Field Service Mobile App to show the &quot;Activity Code Name&quot; on top of the Work Step screens in order to answer SPOT questions or Schedule Item Codes.</description>
+    <externalId>false</externalId>
+    <formula>IF( ISBLANK(WorkType.MSN_ActivityCode__c),WorkType.Name,WorkType.Name&amp;&quot; (&quot;&amp; WorkType.MSN_ActivityCode__c&amp;&quot;)&quot;)</formula>
+    <label>Work Type - Activity Code Name</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

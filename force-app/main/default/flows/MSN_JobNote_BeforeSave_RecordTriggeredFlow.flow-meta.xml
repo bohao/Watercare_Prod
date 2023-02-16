@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>57.0</apiVersion>
+    <decisions>
+        <description>This decision is used to determine if the record triggering this flow is &quot;New&quot; and of the &quot;Type = Note&quot;. If so, then the flow will follow the outcome path to populate d the fields &quot;Integrate with EAM&quot; and &quot;Service Request Update Code&quot; in order to send it automatically to EAM.</description>
+        <name>Decision_JobNote_Type_Note_IsCreated</name>
+        <label>Job Note of type &quot;Note&quot; is created?</label>
+        <locationX>182</locationX>
+        <locationY>311</locationY>
+        <defaultConnectorLabel>Not new or other type</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_JobNote_IsNew_IsNote</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>fx_JobNote_IsNew</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.MSN_JobNote_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Note</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Integration_Field_Values_on_JobNote</targetReference>
+            </connector>
+            <label>Is New and Is Note</label>
+        </rules>
+    </decisions>
+    <description>16/02/2023 - v1: Initial Version from requirements in defect https://watercarestp.atlassian.net/browse/MSRS-2926. The solution is to updates the fields &quot;Integrate to EAM&quot; and &quot;Service Request Update Codes&quot; for all newly created &quot;Job Notes&quot; of the type &quot;Note&quot; in order to send each job note to EAM/IPS as a separate line which is much more favorable as the old solution to send only one concatenated string of the Job Notes to EAM on completion of the Parent Work Order (which does not happen anymore since the introduction of Child Work Orders).</description>
+    <environments>Default</environments>
+    <formulas>
+        <description>This formula is used to determine whether the triggering Job Note record is newly created by using the formula &quot;ISNEW ()&quot;. If it evaluates to &quot;true&quot; the record is new. This will then be used as criteria in decision elements to only trigger certain actions if the record is new.</description>
+        <name>fx_JobNote_IsNew</name>
+        <dataType>Boolean</dataType>
+        <expression>ISNEW()</expression>
+    </formulas>
+    <interviewLabel>MSN - Job Note - Before Save - Record Triggered Flow {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>MSN - Job Note - Before Save - Record Triggered Flow</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <description>This update element sets the fields &quot;Integrate to EAM&quot; and &quot;Service Request Update Code&quot; in order to trigger the integration after the flow finishes and send the new Job Note to EAM.</description>
+        <name>Update_Integration_Field_Values_on_JobNote</name>
+        <label>Update integration field values on Job Note</label>
+        <locationX>50</locationX>
+        <locationY>431</locationY>
+        <inputAssignments>
+            <field>Integrate_to_EAM__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Service_Request_Update_Code__c</field>
+            <value>
+                <stringValue>COMMT</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>56</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Decision_JobNote_Type_Note_IsCreated</targetReference>
+        </connector>
+        <object>MSN_JobNotes__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

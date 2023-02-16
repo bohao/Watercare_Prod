@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_JobNote_Type__c</fullName>
+    <description>Determines the type of the Job Note eg a user entered &quot;Note&quot; or a system generated &quot;Field Update&quot;.</description>
+    <externalId>false</externalId>
+    <label>Type</label>
+    <required>false</required>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Note</fullName>
+                <default>true</default>
+                <label>Note</label>
+            </value>
+            <value>
+                <fullName>Water On/Off</fullName>
+                <default>false</default>
+                <label>Water On/Off</label>
+            </value>
+            <value>
+                <fullName>Service Restore</fullName>
+                <default>false</default>
+                <label>Service Restore</label>
+            </value>
+            <value>
+                <fullName>Dry Weather Overflow</fullName>
+                <default>false</default>
+                <label>Dry Weather Overflow</label>
+            </value>
+            <value>
+                <fullName>Impact Assessment for Water Off</fullName>
+                <default>false</default>
+                <label>Impact Assessment for Water Off</label>
+            </value>
+            <value>
+                <fullName>Service Request Update Type</fullName>
+                <default>false</default>
+                <label>Service Request Update Type</label>
+            </value>
+            <value>
+                <fullName>Field Update</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Field Update</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

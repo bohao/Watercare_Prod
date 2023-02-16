@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_Default_Asset__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>This field is used to define a default &quot;Dummy&quot; Asset for a Work Type in case no distinct Asset can be linked to a job. This is used esp. in mobile flows when a new Work Order of ancillary Work Types such as Reinstatement or RARs are created. This is required, as EAM demands an Asset/Compkey in the payload that creates a new Child Work Order.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Dummy Asset to be used for ancillary Work Types</inlineHelpText>
+    <label>Default Asset</label>
+    <referenceTo>Asset</referenceTo>
+    <relationshipLabel>Work Types</relationshipLabel>
+    <relationshipName>Work_Types</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

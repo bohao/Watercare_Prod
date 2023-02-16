@@ -1,0 +1,1764 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>57.0</apiVersion>
+    <assignments>
+        <description>Assign the previously entered new &quot;Quantity Consumed&quot; to the record variable of the Data Table prior updating the record.</description>
+        <name>Assign_NewQuantity_ProductsConsumed_Record</name>
+        <label>Assign Quantity to Products Consumed Record</label>
+        <locationX>2338</locationX>
+        <locationY>1478</locationY>
+        <assignmentItems>
+            <assignToReference>Loop_PartsToAdjust.QuantityConsumed</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_AdjustSelectedPart_NewQuantityConsumed</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_ProductConsumed_Record</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>If the Work Order triggering this Flow is a &quot;Child Work Order&quot; then populate the flow record variable with the below-specified values. The difference on Children is the lacking field for &quot;WorkOrderLineItemId&quot; and the &quot;Work Order Number&quot; being taken from the Get Element &quot;Work Order Details&quot; in order to show the Column &quot;Part added to&quot; correctly.</description>
+        <name>Assign_ProductConsumed_FieldValues_Child</name>
+        <label>Assign Product Consumed Field Values - Child</label>
+        <locationX>1478</locationX>
+        <locationY>2810</locationY>
+        <assignmentItems>
+            <assignToReference>var_ProductConsumed_SingleRecord.ProductItemId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_SelectProductItem_DataTable.firstSelectedRow.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ProductConsumed_SingleRecord.QuantityConsumed</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_SelectProductItem_Quantity_Consumed</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ProductConsumed_SingleRecord.WorkOrderId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ProductConsumed_SingleRecord.Description</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_SelectProductItem_Quantity_Notes</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ProductConsumed_SingleRecord.MSN_Consumed_From_Location__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_SelectVanWOLI_Truck_ChoiceLookup.selectedChoiceLabels</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ProductConsumed_SingleRecord.ProductName</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_SelectProductItem_DataTable.firstSelectedRow.ProductName</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ProductConsumed_SingleRecord.MSN_WorkOrder_Number__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_Current_WorkOrder_Details.WorkOrderNumber</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Assign_ProductConsumed_Record_to_Collection</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>If the Work Order triggering this Flow is a &quot;Parent Work Order&quot; then populate the flow record variable with the below specified values.</description>
+        <name>Assign_ProductConsumed_FieldValues_Parent</name>
+        <label>Assign Product Consumed Field Values - Parent</label>
+        <locationX>1214</locationX>
+        <locationY>2810</locationY>
+        <assignmentItems>
+            <assignToReference>var_ProductConsumed_SingleRecord.ProductItemId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_SelectProductItem_DataTable.firstSelectedRow.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ProductConsumed_SingleRecord.QuantityConsumed</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_SelectProductItem_Quantity_Consumed</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ProductConsumed_SingleRecord.WorkOrderId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ProductConsumed_SingleRecord.WorkOrderLineItemId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_SelectVanWOLI_WOLI_DataTable.firstSelectedRow.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ProductConsumed_SingleRecord.Description</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_SelectProductItem_Quantity_Notes</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ProductConsumed_SingleRecord.MSN_Consumed_From_Location__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_SelectVanWOLI_Truck_ChoiceLookup.selectedChoiceLabels</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ProductConsumed_SingleRecord.ProductName</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_SelectProductItem_DataTable.firstSelectedRow.ProductName</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ProductConsumed_SingleRecord.MSN_WorkOrder_Number__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_SelectVanWOLI_WOLI_DataTable.firstSelectedRow.LineItemNumber</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Assign_ProductConsumed_Record_to_Collection</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>This Assignment Element is used to add the user&apos;s selection from the previous screen from the Products Consumed Record Variable to the Products Consumed Record Collection variable.</description>
+        <name>Assign_ProductConsumed_Record_to_Collection</name>
+        <label>Assign Product Consumed Record to Collection</label>
+        <locationX>1346</locationX>
+        <locationY>3026</locationY>
+        <assignmentItems>
+            <assignToReference>var_ProductConsumed_RecordCollection</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>var_ProductConsumed_SingleRecord</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Screen_ProductsConsumed_CheckoutSummary</targetReference>
+        </connector>
+    </assignments>
+    <choices>
+        <description>Used as choice options on radio buttons in screen elements.</description>
+        <name>Choice_AddMoreParts</name>
+        <choiceText>I&apos;d like to add more parts</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>AddMoreParts</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used as choice options on radio buttons in screen elements.</description>
+        <name>Choice_AddParts</name>
+        <choiceText>Add additional parts</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>AddParts</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used as choice options on radio buttons in screen elements.</description>
+        <name>Choice_AmendParts</name>
+        <choiceText>Adjust consumed parts</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>AdjustParts</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used as choice options on radio buttons in screen elements.</description>
+        <name>Choice_CreateProductConsumedRecords</name>
+        <choiceText>I&apos;m finished - add the above parts</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>CreateProductConsumedRecords</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used as choice options on radio buttons in screen elements.</description>
+        <name>Choice_Finished</name>
+        <choiceText>I&apos;m all finished here</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Finished</stringValue>
+        </value>
+    </choices>
+    <decisions>
+        <description>This decision element is used to determine the users choice on the previous screen whether &quot;Add additional parts&quot; or &quot;Adjust consumed parts&quot; has been selected in the radio button choice element.</description>
+        <name>Decision_AddAdjustParts</name>
+        <label>Add or adjust parts?</label>
+        <locationX>1346</locationX>
+        <locationY>878</locationY>
+        <defaultConnector>
+            <targetReference>Screen_SelectVanWOLI</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_AdjustParts_NoSelection</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>ProductsConsumedDataTable.firstSelectedRow.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Screen_PartsUsedOverview_ActionRadiobuttons</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Choice_AmendParts</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Screen_AdjustSelectedParts_NoSelection</targetReference>
+            </connector>
+            <label>Adjust consumed parts - no selection made</label>
+        </rules>
+        <rules>
+            <name>Outcome_AdjustConsumedParts</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Screen_PartsUsedOverview_ActionRadiobuttons</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Choice_AmendParts</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>ProductsConsumedDataTable.firstSelectedRow.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Loop_PartsToAdjust</targetReference>
+            </connector>
+            <label>Adjust consumed parts</label>
+        </rules>
+        <rules>
+            <name>Outcome_AddAdditionalParts</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Screen_PartsUsedOverview_ActionRadiobuttons</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Choice_AddParts</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Screen_SelectVanWOLI</targetReference>
+            </connector>
+            <label>Add additional parts</label>
+        </rules>
+        <rules>
+            <name>Outcome_Finished</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Screen_PartsUsedOverview_ActionRadiobuttons</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Choice_Finished</elementReference>
+                </rightValue>
+            </conditions>
+            <label>I&apos;m Finished</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>This decision is used to determine the user&apos;s choice on the radio buttons in the last screen. Depending if the user chose &quot;Add more parts&quot; or &quot;I&apos;m finished - create the above parts&quot; this decision will take the user back to the &quot;Select Product Items&quot; screen again or go to the last step and create the new Products Consume records.</description>
+        <name>Decision_AddMoreParts</name>
+        <label>Add more parts?</label>
+        <locationX>1346</locationX>
+        <locationY>3266</locationY>
+        <defaultConnector>
+            <targetReference>Create_Records_from_Collection</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_AddMoreParts</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Screen_ProductsConsumed_CheckoutSummary_ActionRadiobuttons</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Choice_AddMoreParts</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <isGoTo>true</isGoTo>
+                <targetReference>Screen_SelectProductItem</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>This Element is used as a validation to prevent users to open this feature prematurely when the Work Order is still in an &quot;in progress&quot; state (= Service Appointments still open) or Work Order already in a &quot;Closed&quot; state. (=Status completed or cannot complete/cancel)</description>
+        <name>Decision_Check_WorkOrder_Status</name>
+        <label>Check Work Order Status</label>
+        <locationX>698</locationX>
+        <locationY>278</locationY>
+        <defaultConnector>
+            <targetReference>Get_all_Van_Locations</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Work Order Status allowed</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_WorkOrderStatus_NotAllowed</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Current_WorkOrder_Details.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Completed</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Get_Current_WorkOrder_Details.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Canceled</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Get_Current_WorkOrder_Details.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Rejected</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Screen_WorkOrder_Status_NotAllowed</targetReference>
+            </connector>
+            <label>WO Status not allowed</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Determine if the Work Order record triggering this flow is a &quot;Parent&quot; (= highest hierarchy, field &quot;ParentWorkOrderID&quot; on Work Order Record is blank) or a Child Work Order related to another Parent Work Order. Depending on the Outcome, assign variables accordingly.</description>
+        <name>Decision_ParentWorkOrder_or_ChildWorkOrder</name>
+        <label>Parent Work Order or Child Work Order?</label>
+        <locationX>1346</locationX>
+        <locationY>2690</locationY>
+        <defaultConnector>
+            <targetReference>Assign_ProductConsumed_FieldValues_Child</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Child Work Order</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_IsParentWorkOrder</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Current_WorkOrder_Details.ParentWorkOrderId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_ProductConsumed_FieldValues_Parent</targetReference>
+            </connector>
+            <label>Parent Work Order</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>This decision element is used to validate the previously entered value for &quot;Quantity Consumed&quot;, as a zero or a negative value would fail in the Update Records element.</description>
+        <name>Decision_Validate_Entered_QuantityConsumed</name>
+        <label>Validate Entered Quantity Consumed</label>
+        <locationX>1942</locationX>
+        <locationY>1358</locationY>
+        <defaultConnector>
+            <targetReference>Assign_NewQuantity_ProductsConsumed_Record</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Quantity Consumed OK</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_QuantityConsumed_IsZero</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Screen_AdjustSelectedPart_NewQuantityConsumed</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Screen_AdjustSelectedPart_ZeroQuantityConfirmation</targetReference>
+            </connector>
+            <label>Quantity Consumed is 0</label>
+        </rules>
+        <rules>
+            <name>Outcome_QuantityConsumed_IsNegative</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Screen_AdjustSelectedPart_NewQuantityConsumed</leftValueReference>
+                <operator>LessThan</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Screen_AdjustSelectedPart_NegativeQuantity</targetReference>
+            </connector>
+            <label>Quantity Consumed is negative</label>
+        </rules>
+    </decisions>
+    <description>26/01/2023 - V1-3: Initial Versions.  See https://watercarestp.atlassian.net/browse/MSRS-138 for details
+
+27/01/2023 - V4: Add decision element and logic to differentiate Parent Work Orders (with WOLIs) and Child Work Orders (without WOLIs) to make flow universally usable on Parent or Child Work Orders.
+
+31/01/2023 - V5: Add logic to handle the &quot;Adjust consumed parts&quot; radio button choice on the first screen element of this flow including logic and error screens to differentiate negative or zero values entered by the user. 
+
+31/01/2023 - V6/V7: Add logic to prevent users from adjusting existing Product Consumed records with values higher than the &quot;Quantity on Hand&quot; on the truck where the part has been consumed from before.
+
+01/02/2023 - V8:  Cleanup not required variables an elements; Add descriptions to every element;
+
+02/02/2023 - V9: Added an additional criteria into the &quot;Get all Consumed Products&quot; element to prevent &quot;Labour&quot; parts from being shown in the Datatable of the screen &quot;Used Parts Overview&quot;
+
+05/02/2023 - V10/11: Added an additional radio button choice option to the first &quot;Overview&quot; screen that gives the user the option to finish the flow without adjusting or adding parts. This became required after opening this flow as a sub-flow from &quot;Work Complete Review&quot; and experiencing a condition where it was not possible to exit out of the sub-flow after only adjusting parts.
+
+06/02/2023 - V12: Remove visual path on flow after experiencing interference when the flow is opened as sub-flow from the &quot;Work Complete Review&quot; parent flow.
+
+10/02/2023 - V13: In the screen &quot;Overview&quot; swapped the column &quot;EAM WO Number&quot; against &quot;Work Type&quot;in the Parts Data Table as requested by the business stakeholders.
+
+14/02/2023 - V14: Added a Validation Decision Element &quot;Work Order Status&quot; and Error Screen in to prevent users from opening the &quot;Add or Adjust Parts&quot; functionality when the Work Order is already in a completed state. Add Fault Lines and Error Screens to all crucial pink data elements.
+
+15/02/2023 - V15: Hotfix for Validation logic firing incorrectly on all statuses but Completed, Rejected, Canceled</description>
+    <dynamicChoiceSets>
+        <description>This choice set is used in an &quot;Choice Lookup&quot; element on the screen &quot;Select Truck &amp; WOLI&quot; and holds all possible (Van-) Locations to choose from for the user. It is populated from the Get Element &quot;Get All Van Locations&quot;.</description>
+        <name>ChoiceSet_VanLocations</name>
+        <collectionReference>Get_all_Van_Locations</collectionReference>
+        <dataType>String</dataType>
+        <displayField>Name</displayField>
+        <object>Location</object>
+        <valueField>Id</valueField>
+    </dynamicChoiceSets>
+    <environments>Default</environments>
+    <interviewLabel>TEST - Add additional Parts Flow {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>MSN - Products Consumed - Add additional Parts - Screen Flow</label>
+    <loops>
+        <description>This element is used to loop over all parts that have been selected by the user on the previous screen.</description>
+        <name>Loop_PartsToAdjust</name>
+        <label>Loop over Parts to adjust</label>
+        <locationX>1458</locationX>
+        <locationY>998</locationY>
+        <collectionReference>ProductsConsumedDataTable.selectedRows</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Get_QuantityOnHand_for_ProductItem</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Get_all_Consumed_Products</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <recordCreates>
+        <description>This element creates all &quot;Products Consumed&quot; records that have been added to the collection variable from the user&apos;s selection on the previous screens.</description>
+        <name>Create_Records_from_Collection</name>
+        <label>Create Records from Collection</label>
+        <locationX>1478</locationX>
+        <locationY>3386</locationY>
+        <faultConnector>
+            <targetReference>Screen_Create_ProductsConsumed_Error</targetReference>
+        </faultConnector>
+        <inputReference>var_ProductConsumed_RecordCollection</inputReference>
+    </recordCreates>
+    <recordDeletes>
+        <description>Delete the previously selected &quot;Products Consumed&quot; (=Part) record in order to send a Quantity Consumed value of 0 to EAM.
+Please note: this is required as Salesforce does not allow the value &quot;0&quot; on Products Consumed records in the field &quot;Quantity Consumed&quot;.</description>
+        <name>Delete_ProductsConsumed_Record</name>
+        <label>Delete Selected Products Consumed Record</label>
+        <locationX>1546</locationX>
+        <locationY>1598</locationY>
+        <connector>
+            <targetReference>Loop_PartsToAdjust</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Screen_Delete_ProductsConsumed_Error</targetReference>
+        </faultConnector>
+        <inputReference>Loop_PartsToAdjust</inputReference>
+    </recordDeletes>
+    <recordLookups>
+        <description>Attempt to retrieve all Work Order Line Items that are related to the Work Order triggering this flow. This is required as Parts always have to be consumed against a Child Work Order in EAM and in a subsequent step, the user will have to choose a WOLI accordingly. If the variable is blank (=no WOLIs exist) the triggering record usually is a Child Work Order and parts can be consumed directly against the Work Order itself. Hence the screen element will not show WOLIs to select from in this case.</description>
+        <name>Get_all_Child_Work_Order_Line_Items</name>
+        <label>Get all Child Work Order Line Items</label>
+        <locationX>1346</locationX>
+        <locationY>518</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_all_Consumed_Products</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>WorkOrderId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>WorkOrderLineItem</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Get all &quot;Products Consumed&quot; records that are related to the Work Order triggering this flow. This will be used to show a list of already consumed parts to the user on the next screen element.</description>
+        <name>Get_all_Consumed_Products</name>
+        <label>Get all Consumed Products</label>
+        <locationX>1346</locationX>
+        <locationY>638</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Screen_PartsUsedOverview</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>WorkOrderId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>ProductName</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Labour Charge</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>ProductConsumed</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Retrieve all available (Van-) &quot;Locations&quot; that are candidates to consume parts from later in the process. This is required in a subsequent step, where users have to specify which Van they want to use to consume parts from, and retrieving all available &quot;Product Items&quot; (=parts) on that van for the user to select from.</description>
+        <name>Get_all_Van_Locations</name>
+        <label>Get all Van Locations</label>
+        <locationX>1346</locationX>
+        <locationY>398</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_all_Child_Work_Order_Line_Items</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>IsMobile</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>IsInventoryLocation</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>MSN_LN_Store_Id__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Location</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Retrieve record details from the Work Order that was triggering the flow. This will be used in subsequent steps to populate information in Screen elements.</description>
+        <name>Get_Current_WorkOrder_Details</name>
+        <label>Get Current Work Order Details</label>
+        <locationX>698</locationX>
+        <locationY>158</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Decision_Check_WorkOrder_Status</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>WorkOrder</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Get all &quot;Product Item&quot; records that are related to the (Van-) Location selected on the previous screen.. This will be used to show a list of available Product Items (=parts) to the user on the next screen element.</description>
+        <name>Get_Product_Items_for_selected_Location</name>
+        <label>Get Product Items for selected Location</label>
+        <locationX>1346</locationX>
+        <locationY>2450</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Screen_SelectProductItem</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>LocationId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Screen_SelectVanWOLI_Truck_ChoiceLookup.selectedChoiceValues</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>ProductItem</object>
+        <sortField>ProductName</sortField>
+        <sortOrder>Asc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>This get element is used to retrieve the &quot;Quantity on Hand&quot; on the Van from which the selected part originally was consumed from. This then is used as a validation to prevent users from increasing the quantity to a value higher than the quantity on hand on the truck.</description>
+        <name>Get_QuantityOnHand_for_ProductItem</name>
+        <label>Get Quantity on Hand for selected Product Item</label>
+        <locationX>1942</locationX>
+        <locationY>1118</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Screen_AdjustSelectedPart</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>LocationId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>ProductsConsumedDataTable.firstSelectedRow.ProductItem.LocationId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>ProductsConsumedDataTable.firstSelectedRow.ProductItemId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>ProductItem</object>
+        <sortField>ProductName</sortField>
+        <sortOrder>Asc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <description>Update the previously selected &quot;Products Consumed&quot; (=Part) record with new values entered by the user.</description>
+        <name>Update_ProductConsumed_Record</name>
+        <label>Update Selected Product Consumed Record</label>
+        <locationX>2338</locationX>
+        <locationY>1598</locationY>
+        <connector>
+            <targetReference>Loop_PartsToAdjust</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Screen_Update_ProductsConsumed_Error</targetReference>
+        </faultConnector>
+        <inputReference>Loop_PartsToAdjust</inputReference>
+    </recordUpdates>
+    <screens>
+        <description>This screen is used to let the user adjust the selected part from the previous screen and make adjustments</description>
+        <name>Screen_AdjustSelectedPart</name>
+        <label>Adjust selected part</label>
+        <locationX>1942</locationX>
+        <locationY>1238</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Decision_Validate_Entered_QuantityConsumed</targetReference>
+        </connector>
+        <fields>
+            <name>Screen_AdjustSelectedPart_Header</name>
+            <extensionName>dhfpi:lwcFlowHeader</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>heading</name>
+                <value>
+                    <stringValue>Adjust selected parts</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>iconSize</name>
+                <value>
+                    <stringValue>large</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>icon</name>
+                <value>
+                    <stringValue>standard:product</stringValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <fields>
+            <name>Screen_AdjustSelectedPart_Subheading_ProductOverview</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(30, 0, 255);&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;You are going to adjust: &lt;/strong&gt;&lt;strong style=&quot;font-size: 16px; background-color: rgb(255, 255, 255); color: rgb(17, 0, 255);&quot;&gt;{!ProductsConsumedDataTable.firstSelectedRow.ProductName}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_AdjustSelectedPart_Section1</name>
+            <fieldType>RegionContainer</fieldType>
+            <fields>
+                <name>Screen_AdjustSelectedPart_Section1_Column1</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>Screen_AdjustSelectedPart_ProductDetailsSubheader</name>
+                    <fieldText>&lt;p&gt;&lt;strong&gt;Product Details:&lt;/strong&gt;&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <fields>
+                    <name>Screen_AdjustSelectedPart_ProductName</name>
+                    <fieldText>&lt;p&gt;Product: {!ProductsConsumedDataTable.firstSelectedRow.ProductName}&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <fields>
+                    <name>Screen_AdjustSelectedPart_FromLocation</name>
+                    <fieldText>&lt;p&gt;Consumed from truck: {!ProductsConsumedDataTable.firstSelectedRow.MSN_Consumed_From_Location__c}&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <fields>
+                    <name>Screen_AdjustSelectedPart_CurrentQuantityConsumed</name>
+                    <fieldText>&lt;p&gt;Quantity currently consumed: {!ProductsConsumedDataTable.firstSelectedRow.QuantityConsumed}&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>6</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <fields>
+                <name>Screen_AdjustSelectedPart_Section1_Column2</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>Screen_AdjustSelectedPart_LinkedTo_Subheader</name>
+                    <fieldText>&lt;p&gt;&lt;strong&gt;Linked to:&lt;/strong&gt;&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <fields>
+                    <name>Screen_AdjustSelectedPart_ProductItemNumber</name>
+                    <fieldText>&lt;p&gt;Product Item: {!ProductsConsumedDataTable.firstSelectedRow.ProductItem.ProductItemNumber}&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <fields>
+                    <name>Screen_AdjustSelectedPart_WorkOrderNumber</name>
+                    <fieldText>&lt;p&gt;Work Order: {!ProductsConsumedDataTable.firstSelectedRow.WorkOrder.WorkOrderNumber}&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <fields>
+                    <name>Screen_AdjustSelectedPart_WOLINumber</name>
+                    <fieldText>&lt;p&gt;Work Order Line Item: {!ProductsConsumedDataTable.firstSelectedRow.WorkOrderLineItem.LineItemNumber}&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>6</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <isRequired>false</isRequired>
+            <regionContainerType>SectionWithoutHeader</regionContainerType>
+        </fields>
+        <fields>
+            <name>Screen_AdjustSelectedPart_Subheading_PartsAdjustment</name>
+            <fieldText>&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;Please enter the adjusted quantity:&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_AdjustSelectedPart_QuantityOnHand</name>
+            <fieldText>&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Quantity available on &lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;{!ProductsConsumedDataTable.firstSelectedRow.MSN_Consumed_From_Location__c}&lt;/span&gt;: &lt;strong&gt;{!Get_QuantityOnHand_for_ProductItem.QuantityOnHand}&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_AdjustSelectedPart_NewQuantityConsumed</name>
+            <dataType>Number</dataType>
+            <defaultValue>
+                <elementReference>Loop_PartsToAdjust.QuantityConsumed</elementReference>
+            </defaultValue>
+            <fieldText>New total Quantity Consumed</fieldText>
+            <fieldType>InputField</fieldType>
+            <helpText>&lt;p&gt;&lt;strong style=&quot;font-size: 14px; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);&quot;&gt;&lt;u&gt;Instructions:  &lt;/u&gt;&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;ol&gt;&lt;li&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;Please enter the new quantity consumed without decimals. &lt;/span&gt;&lt;/li&gt;&lt;li&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;Negative values are not allowed. &lt;/span&gt;&lt;/li&gt;&lt;li&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;You can only add as many parts as are available on the truck the part has been consumed from initially (otherwise please add a part from a different van in the previous step)&lt;/span&gt;&lt;/li&gt;&lt;/ol&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;Examples: &lt;/strong&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;If you want to increase the quantity from 3 to 4 in total:  enter 4.  &lt;/span&gt;&lt;/li&gt;&lt;li&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;If you want to decrease the quantity from 2 to 1: enter 1. &lt;/span&gt;&lt;/li&gt;&lt;li&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;If you want to remove the part and revert the consumption: enter the value &quot;0&quot;.  &lt;/span&gt;&lt;span style=&quot;color: rgb(255, 0, 0); background-color: rgb(255, 255, 255);&quot;&gt;Note:&lt;/span&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt; you will have to confirm this on an additional screen, as the &quot;Parts &amp;amp; Labour&quot; record in Salesforce is going to be &lt;/span&gt;&lt;u style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;deleted&lt;/u&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt; in this case and the full quantity returned in EAM accordingly.&lt;/span&gt;&lt;/li&gt;&lt;/ul&gt;</helpText>
+            <isRequired>true</isRequired>
+            <scale>0</scale>
+            <validationRule>
+                <errorMessage>&lt;p&gt;&quot;New Quantity Consumed&quot; cannot be higher than the total of the &quot;Quantity currently consumed&quot; and the &quot;Quantity available on the truck&quot;.&lt;/p&gt;</errorMessage>
+                <formulaExpression>({!ProductsConsumedDataTable.firstSelectedRow.QuantityConsumed}+{!Get_QuantityOnHand_for_ProductItem.QuantityOnHand} ) &gt;= {!Screen_AdjustSelectedPart_NewQuantityConsumed}</formulaExpression>
+            </validationRule>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <description>This Screen is used as an error screen should the user attempt to set the &quot;Quantity Consumed&quot; to a negative value as this is unsupported by EAM in the payload.</description>
+        <name>Screen_AdjustSelectedPart_NegativeQuantity</name>
+        <label>Quantity Consumed is Negative</label>
+        <locationX>2074</locationX>
+        <locationY>1478</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>false</allowFinish>
+        <allowPause>false</allowPause>
+        <backButtonLabel>Go back to the previous screen</backButtonLabel>
+        <connector>
+            <targetReference>Loop_PartsToAdjust</targetReference>
+        </connector>
+        <fields>
+            <name>Screen_AdjustSelectedPart_NegativeQuantity_Header</name>
+            <extensionName>dhfpi:lwcFlowHeader</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>heading</name>
+                <value>
+                    <stringValue>Quantity Consumed is negative</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>iconSize</name>
+                <value>
+                    <stringValue>medium</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>icon</name>
+                <value>
+                    <stringValue>action:close</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>subHeading</name>
+                <value>
+                    <stringValue>Negative values not allowed in EAM</stringValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <fields>
+            <name>Screen_AdjustSelectedPart_NegativeQuantity_ErrorMessage</name>
+            <fieldText>&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(255, 0, 0); font-size: 14px;&quot;&gt;Error: &lt;/strong&gt;&lt;strong style=&quot;color: rgb(0, 0, 0); font-size: 14px;&quot;&gt; &quot;Quantity Consumed&quot; cannot be negative for part &lt;/strong&gt;&lt;strong style=&quot;color: rgb(17, 0, 255); font-size: 14px;&quot;&gt;{!ProductsConsumedDataTable.firstSelectedRow.ProductName}&lt;/strong&gt;&lt;strong style=&quot;color: rgb(0, 0, 0); font-size: 14px;&quot;&gt;.&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;We cannot continue, as EAM does not accept negative values being sent back in an update. In case the product has been consumed in error, please set the value to &quot;0&quot; on the previous screen. This will then delete the record in Salesforce and send an appropriate update to EAM.   &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px;&quot;&gt;Please use the &quot;Go back to the previous screen&quot; button and change your entry.&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;  &lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <description>This Screen is used as a confirmation screen should the user attempt to set the value for &quot;Quantity Consumed&quot; to &quot;0&quot; as this requires the record to be deleted instead of updated as of validation restrictions within Salesforce.</description>
+        <name>Screen_AdjustSelectedPart_ZeroQuantityConfirmation</name>
+        <label>Quantity Consumed is Zero</label>
+        <locationX>1546</locationX>
+        <locationY>1478</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <backButtonLabel>Go back to the previous screen</backButtonLabel>
+        <connector>
+            <targetReference>Delete_ProductsConsumed_Record</targetReference>
+        </connector>
+        <fields>
+            <name>Screen_AdjustSelectedPart_ZeroQuantity_Header</name>
+            <extensionName>dhfpi:lwcFlowHeader</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>heading</name>
+                <value>
+                    <stringValue>Warning! Quantity consumed set to 0</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>iconSize</name>
+                <value>
+                    <stringValue>medium</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>icon</name>
+                <value>
+                    <stringValue>action:announcement</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>subHeading</name>
+                <value>
+                    <stringValue>Please confirm your entry or go back to the previous screen</stringValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <fields>
+            <name>Screen_AdjustSelectedPart_ZeroQuantity_ConfirmationMessage</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(17, 0, 255);&quot;&gt;﻿&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(255, 0, 0); font-size: 14px;&quot;&gt;Warning!&lt;/strong&gt;&lt;strong style=&quot;font-size: 14px;&quot;&gt;  It looks like you want to set the &quot;Quantity Consumed&quot; for the part &lt;/strong&gt;&lt;strong style=&quot;font-size: 14px; color: rgb(17, 0, 255);&quot;&gt;{!ProductsConsumedDataTable.firstSelectedRow.ProductName}&lt;/strong&gt;&lt;strong style=&quot;font-size: 14px;&quot;&gt; to 0.&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;We can continue, however, be aware that this will:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;ol&gt;&lt;li&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt; &lt;/span&gt;&lt;u style=&quot;font-size: 14px; color: rgb(0, 0, 0);&quot;&gt;Delete&lt;/u&gt;&lt;span style=&quot;font-size: 14px; color: rgb(0, 0, 0);&quot;&gt; &lt;/span&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;the record in Salesforce (Salesforce does not allow 0)&lt;/span&gt;&lt;/li&gt;&lt;li&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt; Update the quantity consumed on this part in EAM to 0. &lt;/span&gt;&lt;/li&gt;&lt;/ol&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px;&quot;&gt;Would you like to continue and delete the parts record?&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;  &lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <nextOrFinishButtonLabel>Confirmed! Delete the record.</nextOrFinishButtonLabel>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <description>This Screen is used as a confirmation screen should the user attempt to set the value for &quot;Quantity Consumed&quot; to &quot;0&quot; as this requires the record to be deleted instead of updated as of validation restrictions within Salesforce.</description>
+        <name>Screen_AdjustSelectedParts_NoSelection</name>
+        <label>No part selected</label>
+        <locationX>314</locationX>
+        <locationY>998</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>false</allowFinish>
+        <allowPause>false</allowPause>
+        <backButtonLabel>Go back to the previous screen</backButtonLabel>
+        <fields>
+            <name>Screen_AdjustSelectedParts_NoSelection_Header</name>
+            <extensionName>dhfpi:lwcFlowHeader</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>heading</name>
+                <value>
+                    <stringValue>Error! No part for adjustment selected.</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>iconSize</name>
+                <value>
+                    <stringValue>medium</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>icon</name>
+                <value>
+                    <stringValue>action:close</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>subHeading</name>
+                <value>
+                    <stringValue>You didn&apos;t select a part to adjust on the previous screen</stringValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <fields>
+            <name>Screen_AdjustSelectedParts_NoSelection_ErrorMessage</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(17, 0, 255);&quot;&gt;﻿&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 18px; color: rgb(255, 0, 0);&quot;&gt;Error!&lt;/strong&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;  It looks like you did not select a part on the previous screen.&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 18px;&quot;&gt;In order to make adjustments to a part, you first need to select a part in the table on the previous screen.   &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;Please use the &quot;Go back to the previous screen&quot; button and make your selection.&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;  &lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <description>This screen is used as an error screen in case the system was not able to create new &quot;Products Consumed&quot; records.</description>
+        <name>Screen_Create_ProductsConsumed_Error</name>
+        <label>Create Products Consumed - Error</label>
+        <locationX>1742</locationX>
+        <locationY>3506</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Screen_Create_ProductsConsumed_Error_Header</name>
+            <extensionName>dhfpi:lwcFlowHeader</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>heading</name>
+                <value>
+                    <stringValue>Error: Cannot add additional parts</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>iconSize</name>
+                <value>
+                    <stringValue>medium</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>icon</name>
+                <value>
+                    <stringValue>action:close</stringValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <fields>
+            <name>Screen_Create_ProductsConsumed_ErrorMessage</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(47, 0, 255);&quot;&gt;﻿&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;background-color: rgb(255, 255, 255); font-size: 18px; color: rgb(255, 0, 0);&quot;&gt;Awww, snap!&lt;/strong&gt;&lt;strong style=&quot;background-color: rgb(255, 255, 255); font-size: 18px;&quot;&gt;  I could not add the selected additional parts for you.&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_Create_ProductsConsumed_ErrorDetails</name>
+            <fieldText>&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 16px; color: rgb(0, 0, 0);&quot;&gt;Unfortunately, the flow could not add the new parts you selected on the previous screen. If you see this screen, it might be that:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;span style=&quot;font-size: 16px; color: rgb(0, 0, 0);&quot;&gt;You don&apos;t have the required access rights to consume products from the selected van&lt;/span&gt;&lt;/li&gt;&lt;li&gt;&lt;span style=&quot;font-size: 16px; color: rgb(0, 0, 0);&quot;&gt;You don&apos;t have the required access rights to create new &quot;Parts &amp;amp; Labour&quot; records&lt;/span&gt;&lt;/li&gt;&lt;li&gt;&lt;span style=&quot;font-size: 16px; color: rgb(0, 0, 0);&quot;&gt;The quantity of the product you selected is not available &lt;/span&gt;&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;span style=&quot;font-size: 16px; color: rgb(0, 0, 0);&quot;&gt;﻿&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 16px; color: rgb(0, 0, 0);&quot;&gt;Please get in touch with your friendly MSN Salesforce Support Team and inform them about this error. &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-size: 16px; color: rgb(0, 0, 0);&quot;&gt;You can close this dialogue now. &lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;&lt;img src=&quot;https://d259t2jj6zp7qm.cloudfront.net/images/v1526924372-trailhead_project_quick_start_lightning_process_builder_icizwb.png&quot; alt=&quot;The Making of the Robotics Ridge at TrailheaDX | Salesforce Developers Blog&quot;&gt;&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <description>This screen is used as an error screen in case the system was not able to delete the selected &quot;Products Consumed&quot; record.</description>
+        <name>Screen_Delete_ProductsConsumed_Error</name>
+        <label>Delete Products Consumed - Error</label>
+        <locationX>1810</locationX>
+        <locationY>1718</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Screen_Delete_ProductsConsumed_Error_Header</name>
+            <extensionName>dhfpi:lwcFlowHeader</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>heading</name>
+                <value>
+                    <stringValue>Error: Cannot delete the selected part</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>iconSize</name>
+                <value>
+                    <stringValue>medium</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>icon</name>
+                <value>
+                    <stringValue>action:close</stringValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <fields>
+            <name>Screen_Delete_ProductsConsumed_ErrorMessage</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(47, 0, 255);&quot;&gt;﻿&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(255, 0, 0); font-size: 18px; background-color: rgb(255, 255, 255);&quot;&gt;Awww, snap!&lt;/strong&gt;&lt;strong style=&quot;font-size: 18px; background-color: rgb(255, 255, 255);&quot;&gt;  I could not delete the selected part for you.&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_Delete_ProductsConsumed_ErrorDetails</name>
+            <fieldText>&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-size: 16px;&quot;&gt;Unfortunately, the flow could not delete the part you selected on the previous screen. If you see this screen, it might be that:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-size: 16px;&quot;&gt;You don&apos;t have the required access rights to delete &quot;Parts &amp;amp; Labour&quot; records&lt;/span&gt;&lt;/li&gt;&lt;li&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-size: 16px;&quot;&gt;The integration of Parts returns to EAM failed&lt;/span&gt;&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-size: 16px;&quot;&gt;﻿&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-size: 16px;&quot;&gt;Please get in touch with your friendly MSN Salesforce Support Team and inform them about this error. &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-size: 16px;&quot;&gt;You can close this dialogue now. &lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;&lt;img src=&quot;https://d259t2jj6zp7qm.cloudfront.net/images/v1526924372-trailhead_project_quick_start_lightning_process_builder_icizwb.png&quot; alt=&quot;The Making of the Robotics Ridge at TrailheaDX | Salesforce Developers Blog&quot;&gt;&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <description>This screen is used as an entry screen when the user opens this flow and shows a list of all currently already consumed products on the Work Order that triggered this flow and on any WOLIs thereunder in case it is a Parent Work Order. From here the user can decide to either &quot;Add additional parts&quot; or &quot;Adjust consumed parts&quot; by making a selection in the table.</description>
+        <name>Screen_PartsUsedOverview</name>
+        <label>Used Parts Overview</label>
+        <locationX>1346</locationX>
+        <locationY>758</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Decision_AddAdjustParts</targetReference>
+        </connector>
+        <fields>
+            <name>Screen_PartsUsedOverview_Header</name>
+            <extensionName>dhfpi:lwcFlowHeader</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>heading</name>
+                <value>
+                    <stringValue>Add or adjust parts</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>iconSize</name>
+                <value>
+                    <stringValue>large</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>icon</name>
+                <value>
+                    <stringValue>standard:product</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>subHeading</name>
+                <value>
+                    <stringValue>Overview</stringValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <fields>
+            <name>Screen_PartsUsedOverview_Heading_PartsUsed</name>
+            <fieldText>&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;1. The following parts have been used on this job &lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>ProductsConsumedDataTable</name>
+            <dataTypeMappings>
+                <typeName>T</typeName>
+                <typeValue>ProductConsumed</typeValue>
+            </dataTypeMappings>
+            <extensionName>flowruntime:datatable</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>Consumed Products Overview</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>selectionMode</name>
+                <value>
+                    <stringValue>SINGLE_SELECT</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>minRowSelection</name>
+                <value>
+                    <numberValue>0.0</numberValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>tableData</name>
+                <value>
+                    <elementReference>Get_all_Consumed_Products</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columns</name>
+                <value>
+                    <stringValue>[{&quot;apiName&quot;:&quot;ProductName&quot;,&quot;guid&quot;:&quot;column-35d4&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:0,&quot;label&quot;:&quot;Product Name&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;apiName&quot;:&quot;QuantityConsumed&quot;,&quot;guid&quot;:&quot;column-59af&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:1,&quot;label&quot;:&quot;Quantity Consumed&quot;,&quot;type&quot;:&quot;number&quot;},{&quot;apiName&quot;:&quot;MSN_Consumed_From_Location__c&quot;,&quot;guid&quot;:&quot;column-dca1&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:2,&quot;label&quot;:&quot;Consumed from&quot;,&quot;type&quot;:&quot;customRichText&quot;},{&quot;apiName&quot;:&quot;MSN_WorkOrder_Number__c&quot;,&quot;guid&quot;:&quot;column-b71e&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:3,&quot;label&quot;:&quot;Work Order Number&quot;,&quot;type&quot;:&quot;customRichText&quot;},{&quot;apiName&quot;:&quot;MSN_WorkType_Name__c&quot;,&quot;guid&quot;:&quot;column-2d82&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:true,&quot;customHeaderLabel&quot;:&quot;Work Type&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:4,&quot;label&quot;:&quot;Work Type Name&quot;,&quot;type&quot;:&quot;customRichText&quot;}]</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>maxRowSelection</name>
+                <value>
+                    <numberValue>1.0</numberValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <fields>
+            <name>Screen_PartsUsedOverview_Heading_Action</name>
+            <fieldText>&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 16px; background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;2. What would you like to do?&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_PartsUsedOverview_ActionRadiobuttons</name>
+            <choiceReferences>Choice_AddParts</choiceReferences>
+            <choiceReferences>Choice_AmendParts</choiceReferences>
+            <choiceReferences>Choice_Finished</choiceReferences>
+            <dataType>String</dataType>
+            <defaultSelectedChoiceReference>Choice_AddParts</defaultSelectedChoiceReference>
+            <fieldText>Please select an action</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <description>This screen is used to give the user &quot;Checkout Summary&quot; which gives them the opportunity to double-check their entries again, prior to creating the selected Products Consumed records in the next and final step.</description>
+        <name>Screen_ProductsConsumed_CheckoutSummary</name>
+        <label>Add Parts - Summary</label>
+        <locationX>1346</locationX>
+        <locationY>3146</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Decision_AddMoreParts</targetReference>
+        </connector>
+        <fields>
+            <name>Screen_ProductsConsumed_CheckoutSummary_Header</name>
+            <extensionName>dhfpi:lwcFlowHeader</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>iconSize</name>
+                <value>
+                    <stringValue>Large</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>heading</name>
+                <value>
+                    <stringValue>Add additional parts</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>icon</name>
+                <value>
+                    <stringValue>standard:product</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>subHeading</name>
+                <value>
+                    <stringValue>Step 3/3:  Finish the process or add more parts</stringValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <fields>
+            <name>Screen_ProductsConsumed_CheckoutSummary_NewParts_Subheading</name>
+            <fieldText>&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;1. You are about to add the following parts&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_ProductsConsumed_CheckoutSummary_NewParts_DataTable</name>
+            <dataTypeMappings>
+                <typeName>T</typeName>
+                <typeValue>ProductConsumed</typeValue>
+            </dataTypeMappings>
+            <extensionName>flowruntime:datatable</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>Data Table</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>selectionMode</name>
+                <value>
+                    <stringValue>NO_SELECTION</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>minRowSelection</name>
+                <value>
+                    <numberValue>0.0</numberValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>tableData</name>
+                <value>
+                    <elementReference>var_ProductConsumed_RecordCollection</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>maxRowSelection</name>
+                <value>
+                    <numberValue>0.0</numberValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columns</name>
+                <value>
+                    <stringValue>[{&quot;apiName&quot;:&quot;ProductName&quot;,&quot;guid&quot;:&quot;column-5dcd&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:0,&quot;label&quot;:&quot;Product Name&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;apiName&quot;:&quot;QuantityConsumed&quot;,&quot;guid&quot;:&quot;column-9880&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:1,&quot;label&quot;:&quot;Quantity Consumed&quot;,&quot;type&quot;:&quot;number&quot;},{&quot;apiName&quot;:&quot;MSN_Consumed_From_Location__c&quot;,&quot;guid&quot;:&quot;column-4b48&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:2,&quot;label&quot;:&quot;Consumed from&quot;,&quot;type&quot;:&quot;customRichText&quot;},{&quot;apiName&quot;:&quot;Description&quot;,&quot;guid&quot;:&quot;column-540f&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:true,&quot;customHeaderLabel&quot;:&quot;Notes&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:3,&quot;label&quot;:&quot;Description&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;apiName&quot;:&quot;MSN_WorkOrder_Number__c&quot;,&quot;guid&quot;:&quot;column-ede1&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:true,&quot;customHeaderLabel&quot;:&quot;Part added to&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:4,&quot;label&quot;:&quot;Work Order Number&quot;,&quot;type&quot;:&quot;customRichText&quot;},{&quot;apiName&quot;:&quot;MSN_EAM_WorkOrder_No__c&quot;,&quot;guid&quot;:&quot;column-93d7&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:5,&quot;label&quot;:&quot;EAM Work Order No.&quot;,&quot;type&quot;:&quot;customRichText&quot;}]</stringValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <fields>
+            <name>Screen_ProductsConsumed_CheckoutSummary_ActionSubheading</name>
+            <fieldText>&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 16px; background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;2. What would you like to do?&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_ProductsConsumed_CheckoutSummary_ActionRadiobuttons</name>
+            <choiceReferences>Choice_CreateProductConsumedRecords</choiceReferences>
+            <choiceReferences>Choice_AddMoreParts</choiceReferences>
+            <dataType>String</dataType>
+            <defaultSelectedChoiceReference>Choice_CreateProductConsumedRecords</defaultSelectedChoiceReference>
+            <fieldText>Please select an action</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <description>This screen is used to let the user select the Product Item and the desired Quantity to be consumed from the previously selected (Van-)Location and added against the previously selected WOLI/CWO.</description>
+        <name>Screen_SelectProductItem</name>
+        <label>Select Product Item</label>
+        <locationX>1346</locationX>
+        <locationY>2570</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Decision_ParentWorkOrder_or_ChildWorkOrder</targetReference>
+        </connector>
+        <fields>
+            <name>Screen_SelectProductItem_Header</name>
+            <extensionName>dhfpi:lwcFlowHeader</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>heading</name>
+                <value>
+                    <stringValue>Add additional parts</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>iconSize</name>
+                <value>
+                    <stringValue>Large</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>icon</name>
+                <value>
+                    <stringValue>standard:product</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>subHeading</name>
+                <value>
+                    <stringValue>Step 2/3: Select a part and enter the quantity consumed</stringValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <fields>
+            <name>Screen_SelectProductItem_Product_Subheader</name>
+            <fieldText>&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;1. Please select the part you would like to add&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_SelectProductItem_DataTable</name>
+            <dataTypeMappings>
+                <typeName>T</typeName>
+                <typeValue>ProductItem</typeValue>
+            </dataTypeMappings>
+            <extensionName>flowruntime:datatable</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>1. Please select the correct part</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>selectionMode</name>
+                <value>
+                    <stringValue>SINGLE_SELECT</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>minRowSelection</name>
+                <value>
+                    <numberValue>1.0</numberValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>tableData</name>
+                <value>
+                    <elementReference>Get_Product_Items_for_selected_Location</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>maxRowSelection</name>
+                <value>
+                    <numberValue>1.0</numberValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columns</name>
+                <value>
+                    <stringValue>[{&quot;apiName&quot;:&quot;ProductName&quot;,&quot;guid&quot;:&quot;column-48cf&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:0,&quot;label&quot;:&quot;Product Name&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;apiName&quot;:&quot;QuantityOnHand&quot;,&quot;guid&quot;:&quot;column-84d8&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:1,&quot;label&quot;:&quot;Quantity On Hand&quot;,&quot;type&quot;:&quot;number&quot;},{&quot;apiName&quot;:&quot;MSN_Part_Type__c&quot;,&quot;guid&quot;:&quot;column-a5dc&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:2,&quot;label&quot;:&quot;Part Type&quot;,&quot;type&quot;:&quot;customRichText&quot;},{&quot;apiName&quot;:&quot;MSN_LN_Material_Key__c&quot;,&quot;guid&quot;:&quot;column-9026&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:3,&quot;label&quot;:&quot;LN Material Key&quot;,&quot;type&quot;:&quot;customRichText&quot;}]</stringValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <fields>
+            <name>Screen_SelectProductItem_Quantity_Subheader</name>
+            <fieldText>&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;2. Please enter the quantity and additional notes&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_SelectProductItem_Quantity_Consumed</name>
+            <dataType>Number</dataType>
+            <fieldText>Quantity Consumed</fieldText>
+            <fieldType>InputField</fieldType>
+            <helpText>&lt;p&gt;&lt;strong style=&quot;font-size: 14px; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);&quot;&gt;&lt;u&gt;Instructions:  &lt;/u&gt;&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;ol&gt;&lt;li&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255);&quot;&gt;Please enter the new quantity consumed without decimals. &lt;/span&gt;&lt;/li&gt;&lt;li&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255);&quot;&gt;Negative values are not allowed. &lt;/span&gt;&lt;/li&gt;&lt;li&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255);&quot;&gt;You can only add as many parts as are available on the truck the part has been consumed from initially (otherwise please add a part from a different van in the previous step)&lt;/span&gt;&lt;/li&gt;&lt;/ol&gt;</helpText>
+            <isRequired>true</isRequired>
+            <scale>0</scale>
+            <validationRule>
+                <errorMessage>&lt;p&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;&quot;Quantity Consumed&quot; has to be greater than 0 and cannot be higher than &quot;Quantity On Hand&quot; for the selected part.&lt;/span&gt;&lt;/p&gt;</errorMessage>
+                <formulaExpression>({!Screen_SelectProductItem_DataTable.firstSelectedRow.QuantityOnHand} &gt;= {!Screen_SelectProductItem_Quantity_Consumed}) &amp;&amp; ({!Screen_SelectProductItem_Quantity_Consumed}&gt;0)</formulaExpression>
+            </validationRule>
+        </fields>
+        <fields>
+            <name>Screen_SelectProductItem_Quantity_Notes</name>
+            <dataType>String</dataType>
+            <fieldText>Additional Notes</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <description>This screen is used to let the user select the appropriate (Van-) Location and - in case the Work Order triggering this flow is a Parent - a Work Order Line item to consume the parts from/to.</description>
+        <name>Screen_SelectVanWOLI</name>
+        <label>Select Van &amp; WOLI</label>
+        <locationX>1346</locationX>
+        <locationY>2330</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Get_Product_Items_for_selected_Location</targetReference>
+        </connector>
+        <fields>
+            <name>Screen_SelectVanWOLI_Header</name>
+            <extensionName>dhfpi:lwcFlowHeader</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>iconSize</name>
+                <value>
+                    <stringValue>large</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>heading</name>
+                <value>
+                    <stringValue>Add additional parts</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>icon</name>
+                <value>
+                    <stringValue>standard:product</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>subHeading</name>
+                <value>
+                    <stringValue>Step 1/3: Select a Truck &amp; Work Order Line Item</stringValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <fields>
+            <name>Screen_SelectVanWOLI_Truck_Subheader</name>
+            <fieldText>&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;1. Select the truck to consume parts from&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_SelectVanWOLI_Truck_Infotext</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 0, 0);&quot;&gt;Please note:&lt;/span&gt; Depending on your choice, in the next screen you will get only parts that are available on the selected truck in EAM/LN as well.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_SelectVanWOLI_Truck_ChoiceLookup</name>
+            <choiceReferences>ChoiceSet_VanLocations</choiceReferences>
+            <extensionName>flowruntime:choiceLookup</extensionName>
+            <fieldText>Select the Van</fieldText>
+            <fieldType>ComponentChoice</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <fields>
+            <name>Screen_SelectVanWOLI_WOLI_Subheader</name>
+            <fieldText>&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;2. Select a Work Order Line Item to add parts to&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>Get_Current_WorkOrder_Details.ParentWorkOrderId</leftValueReference>
+                    <operator>IsNull</operator>
+                    <rightValue>
+                        <booleanValue>true</booleanValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
+            <name>Screen_SelectVanWOLI_WOLI_Infotext</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;font-size: 12px; color: rgb(255, 0, 0);&quot;&gt;Please Note: &lt;/span&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;All parts have to be consumed against a Child Work Order in EAM (=WOLI or Child Work Order in Salesforce). Please select the WOLI to which you want to add parts.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>Get_Current_WorkOrder_Details.ParentWorkOrderId</leftValueReference>
+                    <operator>IsNull</operator>
+                    <rightValue>
+                        <booleanValue>true</booleanValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
+            <name>Screen_SelectVanWOLI_WOLI_DataTable</name>
+            <dataTypeMappings>
+                <typeName>T</typeName>
+                <typeValue>WorkOrderLineItem</typeValue>
+            </dataTypeMappings>
+            <extensionName>flowruntime:datatable</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>Data Table</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>selectionMode</name>
+                <value>
+                    <stringValue>SINGLE_SELECT</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>minRowSelection</name>
+                <value>
+                    <numberValue>1.0</numberValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>tableData</name>
+                <value>
+                    <elementReference>Get_all_Child_Work_Order_Line_Items</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>maxRowSelection</name>
+                <value>
+                    <numberValue>1.0</numberValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columns</name>
+                <value>
+                    <stringValue>[{&quot;apiName&quot;:&quot;LineItemNumber&quot;,&quot;guid&quot;:&quot;column-55ef&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:0,&quot;label&quot;:&quot;Work Order Line Item Number&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;apiName&quot;:&quot;MSN_WorkType_ActivityCode_Name__c&quot;,&quot;guid&quot;:&quot;column-f11c&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:1,&quot;label&quot;:&quot;Work Type - Activity Code Name&quot;,&quot;type&quot;:&quot;customRichText&quot;},{&quot;apiName&quot;:&quot;MSN_WorkType_Asset_Name__c&quot;,&quot;guid&quot;:&quot;column-e760&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:2,&quot;label&quot;:&quot;Work Type and Asset Name&quot;,&quot;type&quot;:&quot;customRichText&quot;},{&quot;apiName&quot;:&quot;MSN_EAM_Work_Order_No__c&quot;,&quot;guid&quot;:&quot;column-f4e3&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:3,&quot;label&quot;:&quot;EAM Work Order Number&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;apiName&quot;:&quot;Status&quot;,&quot;guid&quot;:&quot;column-2c3d&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:4,&quot;label&quot;:&quot;Status&quot;,&quot;type&quot;:&quot;text&quot;}]</stringValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>Get_Current_WorkOrder_Details.ParentWorkOrderId</leftValueReference>
+                    <operator>IsNull</operator>
+                    <rightValue>
+                        <booleanValue>true</booleanValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <description>This screen is used as an error screen in case the system was not able to update the selected &quot;Products Consumed&quot; record.</description>
+        <name>Screen_Update_ProductsConsumed_Error</name>
+        <label>Update Products Consumed - Error</label>
+        <locationX>2602</locationX>
+        <locationY>1718</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Screen_Update_ProductsConsumed_Error_Header</name>
+            <extensionName>dhfpi:lwcFlowHeader</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>heading</name>
+                <value>
+                    <stringValue>Error: Cannot update the quantity of the selected part</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>iconSize</name>
+                <value>
+                    <stringValue>medium</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>icon</name>
+                <value>
+                    <stringValue>action:close</stringValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <fields>
+            <name>Screen_Update_ProductsConsumed_ErrorMessage</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(47, 0, 255);&quot;&gt;﻿&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;background-color: rgb(255, 255, 255); font-size: 18px; color: rgb(255, 0, 0);&quot;&gt;Awww, snap!&lt;/strong&gt;&lt;strong style=&quot;background-color: rgb(255, 255, 255); font-size: 18px;&quot;&gt;  I could not update the new quantity consumed value on the selected part for you.&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_Update_ProductsConsumed_ErrorDetail</name>
+            <fieldText>&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 16px; color: rgb(0, 0, 0);&quot;&gt;Unfortunately, the flow could not update the quantity consumed field on the part you selected on the previous screen. If you see this screen, it might be that:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;span style=&quot;font-size: 16px; color: rgb(0, 0, 0);&quot;&gt;You don&apos;t have the required access rights to delete &quot;Parts &amp;amp; Labour&quot; records&lt;/span&gt;&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;span style=&quot;font-size: 16px; color: rgb(0, 0, 0);&quot;&gt;﻿&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 16px; color: rgb(0, 0, 0);&quot;&gt;Please get in touch with your friendly MSN Salesforce Support Team and inform them about this error. &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-size: 16px; color: rgb(0, 0, 0);&quot;&gt;You can close this dialogue now. &lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;&lt;img src=&quot;https://d259t2jj6zp7qm.cloudfront.net/images/v1526924372-trailhead_project_quick_start_lightning_process_builder_icizwb.png&quot; alt=&quot;The Making of the Robotics Ridge at TrailheaDX | Salesforce Developers Blog&quot;&gt;&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <description>This screen is used as a validation screen in case the user attempts to open the feature on a work order that is already in a &quot;completed&quot; state. This is required as we need to prevent users from sending new Parts to EAM via the integration in case the work order in EAM might already be closed too.</description>
+        <name>Screen_WorkOrder_Status_NotAllowed</name>
+        <label>Work Order Status Not Allowed</label>
+        <locationX>50</locationX>
+        <locationY>398</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Screen_WorkOrder_StatusNotAllowed_Header</name>
+            <extensionName>dhfpi:lwcFlowHeader</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>heading</name>
+                <value>
+                    <stringValue>Error: Work Order Status not allowed</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>iconSize</name>
+                <value>
+                    <stringValue>medium</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>icon</name>
+                <value>
+                    <stringValue>action:close</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>subHeading</name>
+                <value>
+                    <stringValue>You didn&apos;t select a part to adjust on the previous screen</stringValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <fields>
+            <name>Copy_1_of_Screen_AdjustSelectedParts_NoSelection_ErrorMessage</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(47, 0, 255);&quot;&gt;﻿&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;background-color: rgb(255, 255, 255); font-size: 18px; color: rgb(255, 0, 0);&quot;&gt;Awww, snap!&lt;/strong&gt;&lt;strong style=&quot;background-color: rgb(255, 255, 255); font-size: 18px;&quot;&gt;  Your Work Order &lt;/strong&gt;&lt;strong style=&quot;background-color: rgb(255, 255, 255); font-size: 18px; color: rgb(47, 0, 255);&quot;&gt;{!Get_Current_WorkOrder_Details.WorkOrderNumber}&lt;/strong&gt;&lt;strong style=&quot;background-color: rgb(255, 255, 255); font-size: 18px;&quot;&gt; is in a not allowed status &quot;{!Get_Current_WorkOrder_Details.Status}&quot;.&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_WorkOrder_StatusNotAllowed_ErrorDetails</name>
+            <fieldText>&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 16px; color: rgb(0, 0, 0);&quot;&gt;In order to use the &quot;Add or Adjust Parts&quot; functionality, your work order cannot be in a closed state such as &quot;Completed&quot;, &quot;Canceled&quot; or &quot;Rejected&quot;. Reason: we cannot send additional or adjusted Parts to EAM in case the EAM Work Order might be already finance reviewed and closed too.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-size: 16px; color: rgb(0, 0, 0);&quot;&gt;You can close this dialogue now. &lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;&lt;img src=&quot;https://d259t2jj6zp7qm.cloudfront.net/images/v1526924372-trailhead_project_quick_start_lightning_process_builder_icizwb.png&quot; alt=&quot;The Making of the Robotics Ridge at TrailheaDX | Salesforce Developers Blog&quot;&gt;&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <stages>
+        <description>This element is used to define a &quot;Stage&quot; for the visual path component on screen elements.</description>
+        <name>Stage_1_Overview</name>
+        <isActive>false</isActive>
+        <label>Overview</label>
+        <stageOrder>1</stageOrder>
+    </stages>
+    <stages>
+        <description>This element is used to define a &quot;Stage&quot; for the visual path component on screen elements.</description>
+        <name>Stage_2_Select_Van_WorkOrder</name>
+        <isActive>false</isActive>
+        <label>Select Van &amp; Work Order</label>
+        <stageOrder>2</stageOrder>
+    </stages>
+    <stages>
+        <description>This element is used to define a &quot;Stage&quot; for the visual path component on screen elements.</description>
+        <name>Stage_3_SelectParts</name>
+        <isActive>false</isActive>
+        <label>Select Parts</label>
+        <stageOrder>3</stageOrder>
+    </stages>
+    <stages>
+        <description>This element is used to define a &quot;Stage&quot; for the visual path component on screen elements.</description>
+        <name>Stage_4_Summary</name>
+        <isActive>false</isActive>
+        <label>Summary</label>
+        <stageOrder>4</stageOrder>
+    </stages>
+    <start>
+        <locationX>572</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_Current_WorkOrder_Details</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <variables>
+        <description>This variable is populated automatically when the flow is openend from the Work Order triggering the flow and holds the record Id.</description>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>This record collection variable is used to store all Records assigned from the &quot;var_ProductsConsumed_SingleRecord&quot; variable prior to creating (multiple) Products Consumed records in the last step of the flow.</description>
+        <name>var_ProductConsumed_RecordCollection</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ProductConsumed</objectType>
+    </variables>
+    <variables>
+        <description>This record variable is used to store record details of the part that has been chosen by the user to be consumed. This will then get assigned to a record collection variable prior to creation.</description>
+        <name>var_ProductConsumed_SingleRecord</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ProductConsumed</objectType>
+    </variables>
+</Flow>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_Reinstatement__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Determines whether the Work Type is a &quot;Reinstatement&quot; type of work</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Please tick this, if the work is of the type &quot;Reinstatement&quot;. This is required to give mobile field crew the correct options to choose from when they use the &quot;Update Job Status&quot; action</inlineHelpText>
+    <label>Is Reinstatement Work Type</label>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

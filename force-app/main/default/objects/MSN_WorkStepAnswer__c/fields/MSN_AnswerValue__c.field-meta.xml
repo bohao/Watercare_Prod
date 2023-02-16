@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_AnswerValue__c</fullName>
+    <description>Stores the Value of the answer for a specific SPOT question on a Work Step that needs to be sent back to EAM.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Please enter the Answer value that needs to be sent back to EAM (e.g. Y, N, TPD, NOFLT, PRIPRO)</inlineHelpText>
+    <label>Answer Value</label>
+    <length>254</length>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

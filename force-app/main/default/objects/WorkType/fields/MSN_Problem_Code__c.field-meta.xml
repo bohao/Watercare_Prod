@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_Problem_Code__c</fullName>
+    <description>Problem Codes are used for Reactive Work and are a unique identifier for a specific problem that a field crew found during a reactive work type.</description>
+    <externalId>true</externalId>
+    <label>Problem Code</label>
+    <length>25</length>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

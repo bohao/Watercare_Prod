@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>New Work Order</label>
+    <protected>false</protected>
+    <values>
+        <field>Payload__c</field>
+        <value xsi:type="xsd:string">{
+&quot;TransactionID&quot;: &quot;eventId&quot;,
+&quot;WorkOrderNo&quot;: &quot;{{Work_Order_No__c}}&quot;,
+&quot;ContractorReference&quot;: &quot;{{WorkOrderNumber}}&quot;,
+&quot;ContractorCode&quot;: &quot;MSN&quot;
+}</value>
+    </values>
+    <values>
+        <field>Request_Method__c</field>
+        <value xsi:type="xsd:string">PUT</value>
+    </values>
+    <values>
+        <field>Trigger_Object__c</field>
+        <value xsi:type="xsd:string">WorkOrder</value>
+    </values>
+</CustomMetadata>

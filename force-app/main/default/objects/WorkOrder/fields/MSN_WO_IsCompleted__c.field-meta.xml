@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_WO_IsCompleted__c</fullName>
+    <description>This formula checkbox field is used to automatically flag a Work Order as being &quot;completed&quot;, using the StatusCategory field values &quot;Completed&quot;, &quot;Canceled&quot; or &quot;Closed&quot; as valid criteria. Please note: it was deliberately chosen to use a custom field instead of the standard field &quot;Is closed&quot; in order to give the business the opportunity to differentiate the StatusCategorys further instead of having to use only &quot;Closed&quot; for all validly completed statuses. This field is then used e.g. to trigger the creation of a final &quot;Job Note&quot; that will send the concatenated Job Notes string from the Work Order to EAM.</description>
+    <externalId>false</externalId>
+    <formula>OR(
+ISPICKVAL( StatusCategory , &apos;Completed&apos;),
+ISPICKVAL( StatusCategory , &apos;Canceled&apos;),
+ISPICKVAL( StatusCategory , &apos;Closed&apos;)
+)</formula>
+    <label>Is Completed</label>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

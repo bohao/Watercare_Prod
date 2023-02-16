@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_WorkType_Name__c</fullName>
+    <description>This cross object formula field is used to retrieve the Work Type Name + Activity Code from the related Work Order or Work Order Line Item. This is used e.g. in the flow &quot;Work Complete Review&quot; to show the users the related Work Type in a Data Table for Parts.</description>
+    <externalId>false</externalId>
+    <formula>IF( ISBLANK(WorkOrderLineItemId),  WorkOrder.MSN_WorkType_ActivityCode_Name__c ,  WorkOrderLineItem.MSN_WorkType_ActivityCode_Name__c )</formula>
+    <label>Work Type Name</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>MSN_Labor_Product_Id</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>MSN Labor Product Id</shortDescription>
+        <value>01t6D00000EU6dYQAT</value>
+    </labels>
+</CustomLabels>

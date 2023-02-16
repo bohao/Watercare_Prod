@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>56.0</apiVersion>
+    <decisions>
+        <description>This decision is used when a new Work Order Line Item Record is created and determines whether the Parent Work Order record has a &quot;Parent Work Order&quot; itself.</description>
+        <name>Decision_Check_if_Parent_WorkOrder_has_Parent</name>
+        <label>Parent Work Order has (Root-) Parent?</label>
+        <locationX>402</locationX>
+        <locationY>767</locationY>
+        <defaultConnector>
+            <targetReference>Decision_WOLI_ParentWorkOrder_has_Contract</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>False</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_WOLI_ParentWorkOrder_Has_ParentWO</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder.ParentWorkOrderId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Decision_Parent_RootWorkOrder_has_Contract</targetReference>
+            </connector>
+            <label>True</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Check whether the (Root-) Parent of the WOLIs Parent has the field &quot;Contract&quot; populated. If so, then populate this value onto the &quot;Contract&quot; field of the WOLI triggering this flow in a subsequent element.</description>
+        <name>Decision_Parent_RootWorkOrder_has_Contract</name>
+        <label>Parent Root Work Order has Contract?</label>
+        <locationX>182</locationX>
+        <locationY>887</locationY>
+        <defaultConnector>
+            <targetReference>Decision_WorkType_NeedsReview</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_ParentRootWorkOrder_HasContract</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder.RootWorkOrder.MSN_Contract__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Contract_field_on_Work_Order_Line_Item</targetReference>
+            </connector>
+            <label>True</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Check whether the WOLIs Parent Work Order has a value populated in the &quot;Root Work Order&quot; field. If so, copy the Id value into the lookup field &quot;Root Work Order&quot; on the WOLI. Please note: the Parent Work Order always has the field &quot;Root Work Order&quot; populated, this decision is only to make the flow fail-safe.</description>
+        <name>Decision_ParentWO_Has_RootWorkOrder</name>
+        <label>Parent has Root Work Order populated?</label>
+        <locationX>402</locationX>
+        <locationY>431</locationY>
+        <defaultConnector>
+            <targetReference>Decision_Check_if_Parent_WorkOrder_has_Parent</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>False</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_Parent_WO_Has_RootWorkOrder_True</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder.RootWorkOrderId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Field_Root_Work_Order_from_Parent_WO</targetReference>
+            </connector>
+            <label>True</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Check if the Work Order Line Item Triggering this flow is either newly created (IsNew = True) or the Work Type of the WOLI has changed (IsChanged(WorkType)).</description>
+        <name>Decision_Record_New_or_Changed</name>
+        <label>Record IsNew or Work Type IsChanged?</label>
+        <locationX>754</locationX>
+        <locationY>311</locationY>
+        <defaultConnectorLabel>Other Changes</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_WOLI_IsNew</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>fx_Record_IsNew</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Decision_ParentWO_Has_RootWorkOrder</targetReference>
+            </connector>
+            <label>Record IsNew</label>
+        </rules>
+        <rules>
+            <name>Outcome_WorkType_IsChanged</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.WorkTypeId</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Decision_WorkType_NeedsReview</targetReference>
+            </connector>
+            <label>Work Type IsChanged</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Check whether the (Root-) Parent of the WOLIs Parent has the field &quot;Contract&quot; populated. If so, then populate this value onto the &quot;Contract&quot; field of the WOLI triggering this flow in a subsequent element.</description>
+        <name>Decision_WOLI_ParentWorkOrder_has_Contract</name>
+        <label>WOLI Parent Work Order has Contract?</label>
+        <locationX>622</locationX>
+        <locationY>887</locationY>
+        <defaultConnector>
+            <targetReference>Decision_WorkType_NeedsReview</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>False</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_WOLI_ParentWorkOrder_HasContract</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder.MSN_Contract__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Contract_field_on_WOLI_from_ParentWO</targetReference>
+            </connector>
+            <label>True</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Check whether the WorkType of the WOLI triggering this flow has the flag &quot;Must Have Parts&quot; set to &quot;true&quot; or &quot;false&quot; and update the Flag on the Work Order Line Item accordingly. This is used in the &quot;work complete review&quot; process by the JCs in order to identify Missing Parts on a WOLI easily.</description>
+        <name>Decision_WorkType_MustHaveParts</name>
+        <label>Work Type Must Have Parts?</label>
+        <locationX>754</locationX>
+        <locationY>1751</locationY>
+        <defaultConnector>
+            <targetReference>Update_WOLI_MustHaveParts_False</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>False</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_WorkType_MustHaveParts</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.WorkType.Must_have_parts__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.WorkTypeId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_WOLI_MustHaveParts_True</targetReference>
+            </connector>
+            <label>True</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Check whether the Work Type of the Work Order Line Item triggering this flow has the flag &quot;Always needs review&quot; set to true or false. Then update the corresponding flag on the WOLI in the subsequent action elements accordingly.</description>
+        <name>Decision_WorkType_NeedsReview</name>
+        <label>Work Type Always Needs Review?</label>
+        <locationX>754</locationX>
+        <locationY>1415</locationY>
+        <defaultConnector>
+            <targetReference>Update_WOLI_AlwaysNeedsReview_False</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>False</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_WorkType_AlwaysNeedsReview</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.WorkType.Always_needs_review__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.WorkTypeId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_WOLI_AlwaysNeedsReview_True</targetReference>
+            </connector>
+            <label>True</label>
+        </rules>
+    </decisions>
+    <description>20/12/2022 - V1: Initial Version. Moved all functionality from existing After Save Record Triggered Flow &quot;MSN Work Order Line Item Record Triggered Flow&quot; to this before safe version, to make it more efficient and to avoid order-of-execution issues with APEX triggers that prevented the creation of Child Work Orders in EAM;</description>
+    <environments>Default</environments>
+    <formulas>
+        <description>Checks whether the Record &quot;IsNew&quot; (true/false)</description>
+        <name>fx_Record_IsNew</name>
+        <dataType>Boolean</dataType>
+        <expression>ISNEW()</expression>
+    </formulas>
+    <interviewLabel>MSN - Work Order Line Item - Before Save Triggered Flow {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>MSN - Work Order Line Item - Before Save Triggered Flow</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <description>This element updates the field &quot;Contract&quot; on the new WOLI record with the same value for &quot;Contract&quot; as its Parent Work Order. This is required as the field &quot;Contract&quot; is mandatory in the integration payload to EAM.</description>
+        <name>Update_Contract_field_on_WOLI_from_ParentWO</name>
+        <label>Update Contract field on Work Order Line Item</label>
+        <locationX>490</locationX>
+        <locationY>1007</locationY>
+        <connector>
+            <targetReference>Decision_WorkType_NeedsReview</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>MSN_Contract__c</field>
+            <value>
+                <elementReference>$Record.WorkOrder.MSN_Contract__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <description>This element updates the field &quot;Contract&quot; on the new WOLI record with the same value for &quot;Contract&quot; as its Root-/Grand-Parent Work Order. This is required as the field &quot;Contract&quot; is mandatory in the integration payload to EAM.</description>
+        <name>Update_Contract_field_on_Work_Order_Line_Item</name>
+        <label>Update Contract field on Work Order Line Item</label>
+        <locationX>50</locationX>
+        <locationY>1007</locationY>
+        <connector>
+            <targetReference>Decision_WorkType_NeedsReview</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>MSN_Contract__c</field>
+            <value>
+                <elementReference>$Record.WorkOrder.RootWorkOrder.MSN_Contract__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Populate the field &quot;Root Work Order&quot; on the WOLI triggering this flow with the Root Work Order Value from its parent.</description>
+        <name>Update_Field_Root_Work_Order_from_Parent_WO</name>
+        <label>Update Field Root Work Order from Parent WO</label>
+        <locationX>270</locationX>
+        <locationY>551</locationY>
+        <connector>
+            <targetReference>Decision_Check_if_Parent_WorkOrder_has_Parent</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>MSN_Root_Work_Order__c</field>
+            <value>
+                <elementReference>$Record.WorkOrder.RootWorkOrderId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Update the field &quot;Always needs review&quot; on the triggering Work Order Line Item record to &quot;false&quot;</description>
+        <name>Update_WOLI_AlwaysNeedsReview_False</name>
+        <label>Update WOLI - no review needed</label>
+        <locationX>886</locationX>
+        <locationY>1535</locationY>
+        <connector>
+            <targetReference>Decision_WorkType_MustHaveParts</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Work_Type_needs_Work_Complete_Review__c</field>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Update the field &quot;Always needs review&quot; on the triggering Work Order Line Item record to &quot;true&quot;</description>
+        <name>Update_WOLI_AlwaysNeedsReview_True</name>
+        <label>Update WOLI - Always Needs Review</label>
+        <locationX>622</locationX>
+        <locationY>1535</locationY>
+        <connector>
+            <targetReference>Decision_WorkType_MustHaveParts</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Work_Type_needs_Work_Complete_Review__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Update the checkbox field &quot;Must Have Parts&quot; on the Work Order Line Item triggering the flow to &quot;false&quot;.</description>
+        <name>Update_WOLI_MustHaveParts_False</name>
+        <label>Update WOLI - No Parts Needed</label>
+        <locationX>886</locationX>
+        <locationY>1871</locationY>
+        <inputAssignments>
+            <field>Must_have_Parts__c</field>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Update the checkbox field &quot;Must Have Parts&quot; on the Work Order Line Item triggering the flow to &quot;true&quot;.</description>
+        <name>Update_WOLI_MustHaveParts_True</name>
+        <label>Update WOLI - Must Have Parts</label>
+        <locationX>622</locationX>
+        <locationY>1871</locationY>
+        <inputAssignments>
+            <field>Must_have_Parts__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>628</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Decision_Record_New_or_Changed</targetReference>
+        </connector>
+        <object>WorkOrderLineItem</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

@@ -1,0 +1,820 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <choices>
+        <description>Used as a picklist choice in the picklist &quot;What do you want to do&quot; on the initial flow screen that is presented to the user.</description>
+        <name>ch_AddScheduleItemCode</name>
+        <choiceText>Add an additional Schedule Item Code (Planned and Reactive Jobs)</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>AddScheduleItemCode</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used as a picklist choice in the picklist &quot;What do you want to do&quot; on the initial flow screen that is presented to the user.</description>
+        <name>ch_CompleteOpenWorkSteps</name>
+        <choiceText>Complete open work steps (Planned and Reactive Jobs)</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>CompleteOpenWorkSteps</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <description>This choice is only used for Reinstatement - Markout Jobs as an option to launch the subflow &quot;Define Reinstatement Scope&quot;.</description>
+        <name>ch_EnterReinstatementDetails</name>
+        <choiceText>Enter reinstatement details</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>EnterReinstatementDetails</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used to give the user another choice to exit the flow without taking any action.</description>
+        <name>ch_NoAction</name>
+        <choiceText>Don&apos;t enter reinstatement details now</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>NoAction</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used as a picklist choice in the picklist &quot;What do you want to do&quot; on the initial flow screen that is presented to the user.</description>
+        <name>ch_SearchForAsset</name>
+        <choiceText>Search for an asset (Reactive Job)</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>SearchForAsset</stringValue>
+        </value>
+    </choices>
+    <decisions>
+        <description>This Decision is used to check whether the status of the Service Appointment equals &quot;On Site&quot; - the only status that allows the user to use the &quot;Work Done&quot; feature. If not, then show an error message on screen.</description>
+        <name>Decision_CheckServiceAppointmentStatus</name>
+        <label>Check Service Appointment Status</label>
+        <locationX>1282</locationX>
+        <locationY>1070</locationY>
+        <defaultConnector>
+            <targetReference>Screen_WrongJobStatus</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>All other SA Status</defaultConnectorLabel>
+        <rules>
+            <name>outcome_SA_Status_OnSite</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>var_ServiceAppointment_Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>On Site</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Work_Type_Details</targetReference>
+            </connector>
+            <label>SA Status is &quot;On Site&quot;</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Determine the Object Type of the Parent Record Id triggering this flow. This is required to avoid having two flows to cater for the following scenarios:
+1) The &quot;Request Reinstatement&quot; flow was launched from a Service Appointment that is related to a &quot;Work Order&quot;
+2) OR The &quot;Request Reinstatement&quot; flow was launched from a Service Appointment that is related to a &quot;Work Order Line Item&quot;
+
+In order to determine what object type the record Id is from, we find the Object type from the static &quot;Record ID prefix&quot; (first 3 digits of the ID) which is always the same on Standard objects:
+- For &quot;Work Order&quot; objects the prefix is: 0WO
+- For &quot;Work Order Line Items&quot; objects the prefix is: 1WL 
+
+It was deliberately chosen to use those static/hardcoded prefixes for the decision outcomes as it only needs to cater to the above 2 cases and respect especially the Field Service Mobile App limitations in regards FSL Mobile Flow capabilities - even though it might not be best practice in general to use hardcoded elements.</description>
+        <name>Decision_DetermineObjectType_ParentRecord</name>
+        <label>Determine Object Type of Parent Record</label>
+        <locationX>1282</locationX>
+        <locationY>614</locationY>
+        <defaultConnector>
+            <targetReference>Screen_UnknownObjectType</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>outcome_Parent_Record_Is_WO</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>ParentId</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>0WO</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Decision_CheckServiceAppointmentStatus</targetReference>
+            </connector>
+            <label>Work Order</label>
+        </rules>
+        <rules>
+            <name>outcome_Parent_Record_Is_WOLI</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>ParentId</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>1WL</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_ParentRecordId_WOLI</targetReference>
+            </connector>
+            <label>Work Order Line Item</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Determine the choice the user made on the previous screen in the radio button field &quot;What do you want to do?&quot;. Depending on the outcome, launch different subflows for the subsequent actions.</description>
+        <name>Decision_DetermineUserChoice</name>
+        <label>Determine User Choice</label>
+        <locationX>402</locationX>
+        <locationY>1550</locationY>
+        <defaultConnectorLabel>Default Error Path</defaultConnectorLabel>
+        <rules>
+            <name>outcome_SearchInstalledAsset</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Screen_WorkDone_CallToAction_Radiobuttons</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>ch_SearchForAsset</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Subflow_Add_Installed_Asset</targetReference>
+            </connector>
+            <label>Search Installed Asset</label>
+        </rules>
+        <rules>
+            <name>Choice_Complete_Open_WorkSteps</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Screen_WorkDone_CallToAction_Radiobuttons</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>ch_CompleteOpenWorkSteps</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_new_Work_Order_Line_Items</targetReference>
+            </connector>
+            <label>Complete Open Work Steps</label>
+        </rules>
+        <rules>
+            <name>outcome_Add_ScheduleItem</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Screen_WorkDone_CallToAction_Radiobuttons</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>ch_AddScheduleItemCode</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Subflow_Add_Additional_ScheduleItemCode</targetReference>
+            </connector>
+            <label>Add additional Schedule Item</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Used to determine the Work Type of the Service Appointment, triggering this flow. This is used to present different screens with different options to choose from depending on the work type.</description>
+        <name>Decision_DetermineWorkType</name>
+        <label>Determine Job Work Type</label>
+        <locationX>930</locationX>
+        <locationY>1310</locationY>
+        <defaultConnector>
+            <targetReference>Screen_NoActionsAvailable</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Other Work Types</defaultConnectorLabel>
+        <rules>
+            <name>outcome_Water_Wastewater_Job</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>var_WorkType_Record.Service_Area__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Water</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>var_WorkType_Record.Service_Area__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Wastewater</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Screen_WorkDone</targetReference>
+            </connector>
+            <label>Water/Wastewater Job</label>
+        </rules>
+        <rules>
+            <name>outcome_ReinstatementMarkoutJob</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>var_WorkType_Record.MSN_Is_Reinstatement_Markout__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>var_WorkType_Record.Service_Area__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Reinstatement</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Subflow_DefineReinstatementScope</targetReference>
+            </connector>
+            <label>Reinstatement Markout Job</label>
+        </rules>
+        <rules>
+            <name>outcome_OtherReinstatementJob</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>var_WorkType_Record.MSN_Is_Reinstatement_Markout__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>var_WorkType_Record.Service_Area__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Reinstatement</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Screen_NoActionsAvailable</targetReference>
+            </connector>
+            <label>Other Reinstatement Job</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>This decision caters for the usecase, that a &quot;Reinstatement&quot; could also be requested from Salesforce Desktop (e.g. by a Job Coordinator) and not only from the Field Service Mobile App. It checks, whether the flow was opened from the Field Service Mobile App or from Desktop in order to request a Reinstatement. If the variable &quot;Id&quot; is filled it is opened from the Mobile App, if the variable &quot;recordId&quot; is filled, then it was opened from Desktop and then populates the &quot;Id&quot; variable to lookup the correct Service Appointment in the next step.</description>
+        <name>Decision_OpenedFromMobileOrDesktop</name>
+        <label>Opened from FSL Mobile App or Desktop?</label>
+        <locationX>1282</locationX>
+        <locationY>158</locationY>
+        <defaultConnector>
+            <targetReference>Screen_NoRecordId</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>outcome_OpenedFromMobileApp</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_ServiceAppointment_Details_MobileFlow</targetReference>
+            </connector>
+            <label>Field Service Mobile App</label>
+        </rules>
+        <rules>
+            <name>outcome_OpenedFromDesktop</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>recordId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_ServiceAppointment_IDs_DesktopFlow</targetReference>
+            </connector>
+            <label>Desktop</label>
+        </rules>
+    </decisions>
+    <description>02/03/22 - Version 1:  Used as a main action on the Field Service Mobile app as an entry point before kicking off other sub-flows in order to complete necessary steps to complete &quot;work done&quot;. Built from requirements in https://watercarestp.atlassian.net/browse/MSRS-491
+
+04/03/22 - Version 2: Introduced separate &quot;var_ServiceAppointment_Status&quot; variable and changed Validation in &quot;Check Service Appointment Status&quot; decision accordingly, after issues with the Service Appointment Status variable not being populated correctly when opened from Field Service Mobile App.
+
+04/03/22 - Version 2/3: Minor copy text changes on the Radiobutton options and Flow Screens
+
+08/03/22 - Version 4/5: Call subflow &quot;open all worksteps&quot; after add installed assets.
+
+
+08/03/22 - Version 6: New &quot;Get Work Order Line Item&quot; element, new Loop Element to loop over WOLIs and hand over Ids to subflow &quot;Complete open work steps&quot;.
+
+08/03/22 - Version 7: Connected the Outcome &quot;Complete Open Work Steps&quot; to the Get All Open Work Order Line Items element in order to also use the subsequent Loop element to check for any open Work Steps
+
+22/03/22 - Version 8/9: Added another decision element / validation to determine the Work Type and offer a different &quot;Work Done&quot; screen in case of a &quot;Reinstatement Markout&quot; job.
+
+22/03/22 - Version 10: After Feedback from Andrew Swain: removed the initial &quot;Work Done&quot; splash screen in favor of directly launching the subflow, when the Service Appointment/Work Order is a &quot;Reinstatement - Markout&quot; job.
+
+11/04/22 - Version 11:  Addressing an issue when part of the &quot;Work Step&quot; records are only related to the Work Order, when others are related to the Work Order Line Items; Added another &quot;Open Subflow Complete Open Work Steps&quot; at the end of this flow, that hands over the Parent WO Id in order to check for any remaining open Work Steps against the Work Order as well, even when they added another asset (as WOLI).
+
+05/05/2022 - V12: Added Logic to Update a Work Order Line Item Status to &quot;Complete&quot; if all related Work Steps have been completed by adding the Update Element &quot;Update WOLI Status to Complete&quot; in the Loop &quot;Loop over Work Order Line Items&quot;. See details also under https://watercarestp.atlassian.net/browse/MSRS-998.
+
+09/09/2022 - V13: Add additional radio button choice &quot;Add additional Schedule Item Code&quot; onto screen &quot;Work Done&quot;; Added new Outcome into Decision &quot;Determine User Choice&quot;. Added Subflow element after new outcome &quot;Add additional Schedule Item Code&quot;.
+
+19/12/2022 - V14:  Amend the Element &quot;Update WOLI Field &quot;Status&quot; and &quot;End Date&quot;&quot;; Status will now be updated to &quot;Ready for review&quot; and additionally the &quot;End Date&quot; on the WOLI will be populated as well, as of Integration requirements in order to complete a Child Work Order Successfully.</description>
+    <environments>Default</environments>
+    <interviewLabel>MSN - Field Service Mobile App - Work Done {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>MSN - Field Service Mobile App - Work Done Action</label>
+    <loops>
+        <description>Loop over the queried Work Order line Items in order to hand their Record Ids over to the &quot;Complete all open work Steps&quot; subflow to check for any open work steps.</description>
+        <name>Loop_over_Work_Order_Line_Items</name>
+        <label>Loop over Work Order Line Items</label>
+        <locationX>402</locationX>
+        <locationY>2126</locationY>
+        <assignNextValueToReference>var_WorkOrderLineItem_SingleRecord</assignNextValueToReference>
+        <collectionReference>var_WorkOrderLineItem_Collection</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Subflow_Complete_All_Open_Work_Steps_WOLI</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Subflow_Complete_All_Open_Work_Steps_WO</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>FieldServiceMobile</processType>
+    <recordLookups>
+        <description>Get the Ids of any newly created Work Order Line Items - created within the &quot;Add installed asset&quot; flow.</description>
+        <name>Get_new_Work_Order_Line_Items</name>
+        <label>Get new Work Order Line Items</label>
+        <locationX>402</locationX>
+        <locationY>2006</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Loop_over_Work_Order_Line_Items</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>WorkOrderId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>ParentId</elementReference>
+            </value>
+        </filters>
+        <object>WorkOrderLineItem</object>
+        <outputReference>var_WorkOrderLineItem_Collection</outputReference>
+        <queriedFields>Id</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <description>If the Service Appointment is child to a Work Order Line Item, then we need to get the record Id of the Parent Work Order of this WOLI first in order to make the following steps of the flow compatible.</description>
+        <name>Get_ParentRecordId_WOLI</name>
+        <label>Get Parent Work Order of WOLI</label>
+        <locationX>1238</locationX>
+        <locationY>734</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Decision_CheckServiceAppointmentStatus</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>ParentId</elementReference>
+            </value>
+        </filters>
+        <object>WorkOrderLineItem</object>
+        <outputAssignments>
+            <assignToReference>ParentId</assignToReference>
+            <field>WorkOrderId</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <description>Lookup the &quot;Status&quot; of the Service Appointment triggering this flow when opened from Field Service Mobile App. The Record Id is handed over by the Field Service Mobile App into the Variable &quot;Id&quot; and the record Id of its parent record (usually a WO) is handed over into the variable &quot;ParentId&quot;.</description>
+        <name>Get_ServiceAppointment_Details_MobileFlow</name>
+        <label>Get Service Appointment Status</label>
+        <locationX>1018</locationX>
+        <locationY>278</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Decision_DetermineObjectType_ParentRecord</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Id</elementReference>
+            </value>
+        </filters>
+        <object>ServiceAppointment</object>
+        <outputAssignments>
+            <assignToReference>var_ServiceAppointment_Status</assignToReference>
+            <field>Status</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_ServiceAppointment_WorkType</assignToReference>
+            <field>WorkTypeId</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <description>Lookup records details from the Service Appointment triggering this flow/subflow when opened from Desktop Salesforce only. The Record Id is handed over by the Desktop Salesforce flow into the Variable &quot;recordId&quot; and has to be copied over into the variable &quot;Id&quot; to make it compatible. Also we assign the &quot;ParentId&quot; variable.</description>
+        <name>Get_ServiceAppointment_IDs_DesktopFlow</name>
+        <label>Get Service Appointment Record IDs and Status</label>
+        <locationX>1282</locationX>
+        <locationY>278</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Decision_DetermineObjectType_ParentRecord</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <object>ServiceAppointment</object>
+        <outputAssignments>
+            <assignToReference>Id</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>ParentId</assignToReference>
+            <field>ParentRecordId</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_ServiceAppointment_Status</assignToReference>
+            <field>Status</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_ServiceAppointment_WorkType</assignToReference>
+            <field>WorkTypeId</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <description>Retrieve Details from the Work Type of the Service Appointment/Work Order triggering this flow. This will then be used in subsequent validation decision elements to determine what type of work the record is in order to offer the user different screens with different options to choose from.</description>
+        <name>Get_Work_Type_Details</name>
+        <label>Get Work Type Details</label>
+        <locationX>930</locationX>
+        <locationY>1190</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Decision_DetermineWorkType</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>var_ServiceAppointment_WorkType</elementReference>
+            </value>
+        </filters>
+        <object>WorkType</object>
+        <outputReference>var_WorkType_Record</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Name</queriedFields>
+        <queriedFields>MSN_Reinstatement__c</queriedFields>
+        <queriedFields>MSN_Is_Reinstatement_Markout__c</queriedFields>
+        <queriedFields>Service_Area__c</queriedFields>
+    </recordLookups>
+    <recordUpdates>
+        <description>After all &quot;Work Steps&quot; related to the WOLI in the LOOP element have been completed, update the field &quot;Status&quot; on the WOLI to the value &quot;Ready for Review&quot; and set the &quot;End Date&quot; to the current date/time.  Please Note: it has been deliberately decided to place the update element into the Loop (not best practice), as a) in the vast majority of all cases, there only will be one WOLI record in the loop, b) the process to answer the work steps takes a long time and c) the field service mobile app caches the results locally before attempting to synchronise it back to Salesforce.</description>
+        <name>Update_WOLI_Status_EndDate</name>
+        <label>Update WOLI Field &quot;Status&quot; and &quot;End Date&quot;</label>
+        <locationX>490</locationX>
+        <locationY>2366</locationY>
+        <connector>
+            <targetReference>Loop_over_Work_Order_Line_Items</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>var_WorkOrderLineItem_SingleRecord.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>EndDate</field>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Ready for Review</stringValue>
+            </value>
+        </inputAssignments>
+        <object>WorkOrderLineItem</object>
+    </recordUpdates>
+    <screens>
+        <description>This screen is presented to the user as the initial start up screen when the action &quot;Work Done&quot; is opened from the Field Service Mobile App - and the Work Type of the Service Appointment triggering this flow is a Reinstatement Work Type, but not a Markout job.</description>
+        <name>Screen_NoActionsAvailable</name>
+        <label>No actions available</label>
+        <locationX>930</locationX>
+        <locationY>2918</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>Screen_NoActionsAvailable_ErrorMessage</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;No &quot;Work Done&quot; actions available for this type of job.&lt;/b&gt;&lt;/p&gt;&lt;p&gt;It looks like there are no further options to choose from under &quot;Work Done&quot; for your job at this point.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Please use the &quot;Update Job Status&quot; action instead to continue.&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>Shows an Error Message to the user in case no &quot;Record ID&quot; is populated into either the &quot;ID&quot; variable or &quot;recordID&quot; variable when the flow is opened.</description>
+        <name>Screen_NoRecordId</name>
+        <label>No Record Id</label>
+        <locationX>1546</locationX>
+        <locationY>278</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Screen_NoRecordId_ErrorText</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Error - No Service Appointment Record Id&lt;/b&gt;&lt;/p&gt;&lt;p&gt;It looks like we couldn&apos;t determine the unique record ID for your Service Appointment when opening this feature.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Please get in touch with your friendly Salesforce Support team and make them aware of this error.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>Shows an Error Message to the user in case the decision cannot determine what Object type the Parent Record ID in the &quot;ParentId&quot; variable is of. (Has to be either Work Order or Work Order Line Item)</description>
+        <name>Screen_UnknownObjectType</name>
+        <label>Unknown Object Type</label>
+        <locationX>1502</locationX>
+        <locationY>734</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>Screen_UnknownObjectType_ErrorMessage</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Error - Unknown Parent Record Type&lt;/b&gt;&lt;/p&gt;&lt;p&gt;It looks like we cannot determine from which parent record (must be Work Order or Work Order Line Item) you attempted to open this feature from.&lt;/p&gt;&lt;p&gt;Please get in touch with your friendly Salesforce Support team and make them aware of this error.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>This screen is presented to the user as the initial start up screen when the action &quot;Work Done&quot; is opened from the Field Service Mobile App.</description>
+        <name>Screen_WorkDone</name>
+        <label>Work Done</label>
+        <locationX>402</locationX>
+        <locationY>1430</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Decision_DetermineUserChoice</targetReference>
+        </connector>
+        <fields>
+            <name>Screen_WorkDone_CallToAction_Radiobuttons</name>
+            <choiceReferences>ch_SearchForAsset</choiceReferences>
+            <choiceReferences>ch_CompleteOpenWorkSteps</choiceReferences>
+            <choiceReferences>ch_AddScheduleItemCode</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>What do you want to do?</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>Shows an Error Message to the user in case the status of the current Service Appointment is not &quot;on site&quot; and hence, the user is not allowed to add work details yet/or anymore.</description>
+        <name>Screen_WrongJobStatus</name>
+        <label>Wrong Job Status</label>
+        <locationX>1634</locationX>
+        <locationY>1190</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>Screen_WrongJobStatus_ErrorMessage</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Error - Wrong job status&lt;/b&gt;&lt;/p&gt;&lt;p&gt;It looks like your Job is not in the right status in order to add work details. Your job might not be started yet or is already completed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Please use the &quot;Update Status&quot; action first to confirm that you are on site.&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <start>
+        <locationX>1156</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Decision_OpenedFromMobileOrDesktop</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <subflows>
+        <name>Subflow_Add_Additional_ScheduleItemCode</name>
+        <label>Open Add Additional Schedule Item Code</label>
+        <locationX>490</locationX>
+        <locationY>1670</locationY>
+        <flowName>MSN_FSMA_Add_Additional_Schedule_Item_Code</flowName>
+        <inputAssignments>
+            <name>Id</name>
+            <value>
+                <elementReference>Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>ParentId</name>
+            <value>
+                <elementReference>ParentId</elementReference>
+            </value>
+        </inputAssignments>
+    </subflows>
+    <subflows>
+        <description>Opens the subflow &quot;MSN - Field Service Mobile App - Add Installed Asset to Work Order&quot; in order to let the user search for an installed asset and add it as a Work Order Line item during a reactive job.</description>
+        <name>Subflow_Add_Installed_Asset</name>
+        <label>Open Add Installed Asset Subflow</label>
+        <locationX>50</locationX>
+        <locationY>1670</locationY>
+        <connector>
+            <targetReference>Get_new_Work_Order_Line_Items</targetReference>
+        </connector>
+        <flowName>MSN_FSMA_Add_Installed_Asset</flowName>
+        <inputAssignments>
+            <name>Id</name>
+            <value>
+                <elementReference>Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>ParentId</name>
+            <value>
+                <elementReference>ParentId</elementReference>
+            </value>
+        </inputAssignments>
+    </subflows>
+    <subflows>
+        <description>Launch the subflow &quot;MSN - Field Service Mobile App - Complete All Open Work Steps&quot; in order to give field crew the option to answer all open work steps (aka Spot Questions) that might remain on their current job Work Order.</description>
+        <name>Subflow_Complete_All_Open_Work_Steps_WO</name>
+        <label>Open Complete Open Work Steps Subflow - WO</label>
+        <locationX>402</locationX>
+        <locationY>2582</locationY>
+        <flowName>MSN_FSMA_Complete_All_Open_WorkSteps</flowName>
+        <inputAssignments>
+            <name>Id</name>
+            <value>
+                <elementReference>Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>ParentId</name>
+            <value>
+                <elementReference>ParentId</elementReference>
+            </value>
+        </inputAssignments>
+    </subflows>
+    <subflows>
+        <description>Launch the subflow &quot;MSN - Field Service Mobile App - Complete All Open Work Steps&quot; in order to give field crew the option to answer all open work steps (aka Spot Questions) that might remain on their Work Order Line Items.</description>
+        <name>Subflow_Complete_All_Open_Work_Steps_WOLI</name>
+        <label>Open Complete Open Work Steps Subflow - WOLI</label>
+        <locationX>490</locationX>
+        <locationY>2246</locationY>
+        <connector>
+            <targetReference>Update_WOLI_Status_EndDate</targetReference>
+        </connector>
+        <flowName>MSN_FSMA_Complete_All_Open_WorkSteps</flowName>
+        <inputAssignments>
+            <name>Id</name>
+            <value>
+                <elementReference>Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>ParentId</name>
+            <value>
+                <elementReference>var_WorkOrderLineItem_SingleRecord.Id</elementReference>
+            </value>
+        </inputAssignments>
+    </subflows>
+    <subflows>
+        <description>Open the Subflow &quot;MSN - Field Service Mobile App - Define Reinstatement Scope&quot; in order to enter required Reinstatement Details in case the current job is a &quot;Markout job&quot;</description>
+        <name>Subflow_DefineReinstatementScope</name>
+        <label>Open &quot;Define Reinstatement Scope&quot; Subflow</label>
+        <locationX>1018</locationX>
+        <locationY>1430</locationY>
+        <flowName>MSN_FSMA_Define_Reinstatement_Scope</flowName>
+        <inputAssignments>
+            <name>Id</name>
+            <value>
+                <elementReference>Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>ParentId</name>
+            <value>
+                <elementReference>ParentId</elementReference>
+            </value>
+        </inputAssignments>
+    </subflows>
+    <variables>
+        <description>Stores the Record ID of the record that triggered this flow. In this case the Service Appointment ID. This is handed over from the FSL Mobile App into the flow.</description>
+        <name>Id</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <description>Stores the ParentRecord ID of the record that triggered this flow (usually the Work Order Id of the Service Appointment). This is handed over from the FSL Mobile App into the flow.</description>
+        <name>ParentId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <description>Used to store the Record ID of the &quot;Service Appointment&quot;, when the flow is opened from a Desktop Device.</description>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Used to store details from the Service Appointment Triggering this flow.</description>
+        <name>var_ServiceAppointment_Record</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ServiceAppointment</objectType>
+    </variables>
+    <variables>
+        <description>Used in the Validation &quot;Check Service Appointment Status&quot;. Is populated from the Get Service Appointment elements in the beginning of the flow.</description>
+        <name>var_ServiceAppointment_Status</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Used in the Validation &quot;Determine Job Work Type&quot;. Is populated from the Get Service Appointment elements at the beginning of the flow.</description>
+        <name>var_ServiceAppointment_WorkType</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Stores all Work Order Line Items queried by the &quot;Get Work Order Line Items&quot; element - after potential new Work Order Line Items have been added.</description>
+        <name>var_WorkOrderLineItem_Collection</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>WorkOrderLineItem</objectType>
+    </variables>
+    <variables>
+        <description>Stores the Work Order Line Item Ids queried by the &quot;Get Work Order Line Item&quot; records</description>
+        <name>var_WorkOrderLineItem_IDs</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Used in the Loop Element as Loop variable in order to loop over the Work Order Line Item record collection queried in the Get Work Order Line Item Element.</description>
+        <name>var_WorkOrderLineItem_SingleRecord</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>WorkOrderLineItem</objectType>
+    </variables>
+    <variables>
+        <description>Store Details from the Work Type looked up by the &quot;Get Work Type&quot; element</description>
+        <name>var_WorkType_Record</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>WorkType</objectType>
+    </variables>
+</Flow>

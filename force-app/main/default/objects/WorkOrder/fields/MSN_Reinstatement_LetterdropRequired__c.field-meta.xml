@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_Reinstatement_LetterdropRequired__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>This indicates that a &quot;Letterdrop&quot; is required for a Reinstatement Job. This might be selected by the mark out crew when they define the reinstatement scope from the Mobile app in the flow &quot;Define Reinstatement Scope&quot; (launched from &quot;Work Done&quot;).</description>
+    <externalId>false</externalId>
+    <label>Letterdrop required?</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Concatenate_Job_Note__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>determine if a job note will be concatenated on the work order</description>
+    <externalId>false</externalId>
+    <label>Concatenate Job Note</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

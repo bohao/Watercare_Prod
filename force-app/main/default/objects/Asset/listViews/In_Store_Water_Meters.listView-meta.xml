@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>In_Store_Water_Meters</fullName>
+    <columns>ASSET.NAME</columns>
+    <columns>Asset_Type__c</columns>
+    <columns>ASSET.SERIAL_NUMBER</columns>
+    <columns>Comp_Key__c</columns>
+    <columns>ASSET.STATUS</columns>
+    <columns>ASSET.INSTALL_DATE</columns>
+    <columns>House_Number__c</columns>
+    <columns>Location</columns>
+    <columns>Street_Name__c</columns>
+    <columns>Street_Type__c</columns>
+    <columns>Suburb__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Asset_Type__c</field>
+        <operation>equals</operation>
+        <value>Water Meter</value>
+    </filters>
+    <filters>
+        <field>ASSET.STATUS</field>
+        <operation>equals</operation>
+        <value>STORE</value>
+    </filters>
+    <label>In Store Water Meters</label>
+</ListView>

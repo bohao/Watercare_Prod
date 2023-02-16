@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_Labour_Time_Minutes__c</fullName>
+    <description>Calculates the &quot;Billable Labour Time&quot; for the related Service Appointment. The calculation is based on the &quot;Travel Start&quot; date/time to the &quot;Actual End&quot; date/time and returns the result in minutes.This is then used e.g. in the &quot;Work Complete Review&quot; flow to show the user the total labour values on a final confirmation screen prior confirming/finishing the flow.</description>
+    <externalId>false</externalId>
+    <formula>(  ServiceAppointment.ActualEndTime  -  ServiceAppointment.MSN_TravelStart__c  )*24*60</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Total Labour Time (Minutes)</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

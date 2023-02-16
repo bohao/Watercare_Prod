@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Key_Customer__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>https://watercarestp.atlassian.net/browse/MSRS-93</description>
+    <externalId>false</externalId>
+    <label>Key Customer</label>
+    <trackFeedHistory>true</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>AWS Assume Role Dev</label>
+    <protected>false</protected>
+    <values>
+        <field>Endpoint__c</field>
+        <value xsi:type="xsd:string">?Action=AssumeRole&amp;RoleArn=arn:aws:iam::566933467089:role/msn_access_role&amp;ExternalId=salesforce-dev-df42fd7fc4&amp;Version=2011-06-15&amp;RoleSessionName=testSesh</value>
+    </values>
+</CustomMetadata>

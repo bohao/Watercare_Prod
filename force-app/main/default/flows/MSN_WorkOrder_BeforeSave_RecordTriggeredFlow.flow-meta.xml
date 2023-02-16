@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>54.0</apiVersion>
+    <decisions>
+        <description>This decision is used when a new Work Order Record is created and determines whether the new record has a &quot;Parent Work Order&quot;. (= the new record is a &quot;Child Work Order&quot;). If so, then in the subsequent steps check if the parent has the field &quot;Contract&quot; populated and if so then update the new record using the same value for Contract. This is required as the field &quot;Contract&quot; is mandatory in the integration payload to EAM.</description>
+        <name>Decision_Check_if_Work_Order_has_a_Parent</name>
+        <label>Check if Work Order has a Parent</label>
+        <locationX>380</locationX>
+        <locationY>887</locationY>
+        <defaultConnectorLabel>False</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_WorkOrder_Has_Parent_True</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ParentWorkOrderId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Decision_Check_RootWOParent_has_Contract</targetReference>
+            </connector>
+            <label>True</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Check if the parent (root work order) has the field &quot;Contract&quot; populated and if so then update the new, triggering record using the same value for Contract. This is required as the field &quot;Contract&quot; is mandatory in the integration payload to EAM.</description>
+        <name>Decision_Check_RootWOParent_has_Contract</name>
+        <label>Check if Root Work Order Parent has Contract</label>
+        <locationX>182</locationX>
+        <locationY>1007</locationY>
+        <defaultConnectorLabel>False</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_Parent_Has_Contract_True</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ParentWorkOrder.MSN_Contract__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Contract_field_on_new_Child_Work_Order</targetReference>
+            </connector>
+            <label>True</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>This decision is used to check the current status of the work order triggering the flow. Depending on the outcome it follows different paths.</description>
+        <name>Decision_Determine_WorkOrder_Status</name>
+        <label>Determine Work Order Status</label>
+        <locationX>611</locationX>
+        <locationY>311</locationY>
+        <defaultConnectorLabel>Any other status</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_WO_Status_IsNew</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>fx_IsNew</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>DecisionWorkOrder_Has_No_Pricebook</targetReference>
+            </connector>
+            <label>Is New</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Check if a &quot;Pricebook&quot; is already linked on the Work Order upon creation. If not, then populate the field &quot;PriceBook&quot; with the Standard Price book looked up in the subsequent Get Element.</description>
+        <name>DecisionWorkOrder_Has_No_Pricebook</name>
+        <label>Check if Work Order has no Pricebook</label>
+        <locationX>380</locationX>
+        <locationY>431</locationY>
+        <defaultConnector>
+            <targetReference>Decision_Check_if_Work_Order_has_a_Parent</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>False</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_WorkOrder_No_Pricebook</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Pricebook2Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_PriceBook</targetReference>
+            </connector>
+            <label>True</label>
+        </rules>
+    </decisions>
+    <description>20/01/2023 - v1/2:  Initial Version; Moved parts of the existing logic from the &quot;After Save&quot; record triggered flow on Work Order to &quot;before save&quot; after experiencing issues with Integration to EAM could not send the CreateChildWorkOrder payload successfully because of missing fields such as &quot;Contract&quot; on the new work order record.</description>
+    <environments>Default</environments>
+    <formulas>
+        <description>This Formula determines if the Work Order record triggering this flow &quot;Is New&quot;</description>
+        <name>fx_IsNew</name>
+        <dataType>Boolean</dataType>
+        <expression>ISNEW()</expression>
+    </formulas>
+    <interviewLabel>MSN - Work Order - Before Save - Record Triggered Flow {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>MSN - Work Order - Before Save - Record Triggered Flow</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>Get_PriceBook</name>
+        <label>Get PriceBook</label>
+        <locationX>248</locationX>
+        <locationY>551</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Update_Price_Book</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Name</field>
+            <operator>Contains</operator>
+            <value>
+                <stringValue>Standard</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Pricebook2</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <description>This element updates the field &quot;Contract&quot; on the new record with the same value for &quot;Contract&quot; as its parent. This is required as the field &quot;Contract&quot; is mandatory in the integration payload to EAM.</description>
+        <name>Update_Contract_field_on_new_Child_Work_Order</name>
+        <label>Update Contract field on new Child Work Order</label>
+        <locationX>50</locationX>
+        <locationY>1127</locationY>
+        <inputAssignments>
+            <field>MSN_Contract__c</field>
+            <value>
+                <elementReference>$Record.ParentWorkOrder.MSN_Contract__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Price_Book</name>
+        <label>Update Price Book</label>
+        <locationX>248</locationX>
+        <locationY>671</locationY>
+        <connector>
+            <targetReference>Decision_Check_if_Work_Order_has_a_Parent</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Pricebook2Id</field>
+            <value>
+                <elementReference>Get_PriceBook.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>485</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Decision_Determine_WorkOrder_Status</targetReference>
+        </connector>
+        <object>WorkOrder</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+    <variables>
+        <description>This Record Collection Variable is used to store all Reinstatement Work Orders related to a Parent Work Order of the record triggering this flow. This is then used to determine if any open Reinstatement Work Orders exist and if not, then update the flag &quot;Reinstatement Completed&quot; on the Parent Work Order.</description>
+        <name>var_Child_Reinstatement_WorkOrder</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>WorkOrder</objectType>
+    </variables>
+    <variables>
+        <description>Used to store the Id of any open Child Reinstatement Work Order - this is then used in a decision element to determine whether any Reinstatements under a parent Work Order are still open.</description>
+        <name>var_Open_Child_Reinstatement_WorkOrder_Id</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>This variable is used to assign the Record ID of the Work Order that should be checked for Child Reinstatement Work Orders - e.g. either the Parent Work Order of a record triggering this flow, or the parent record itself, in case a user sets the status of the Work Order manually.</description>
+        <name>var_ParentWorkOrder_Id</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Used in the Loop &quot;Loop Over Reinstatement Work Orders&quot; to count the completed Reinstatements related to a Parent Work Order</description>
+        <name>var_ReinstatementWorkOrders_Completed</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+        <value>
+            <numberValue>0.0</numberValue>
+        </value>
+    </variables>
+    <variables>
+        <description>Used in the Loop &quot;Loop Over Reinstatement Work Orders&quot; to count the open Reinstatements related to a Parent Work Order</description>
+        <name>var_ReinstatementWorkOrders_Open</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+        <value>
+            <numberValue>0.0</numberValue>
+        </value>
+    </variables>
+    <variables>
+        <description>This is used to store the count of any Reinstatement Child Work Orders looked up by the element &quot;Get Reinstatement Child Work Orders&quot;.</description>
+        <name>var_ReinstatementWorkOrders_Total</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+        <value>
+            <numberValue>0.0</numberValue>
+        </value>
+    </variables>
+    <variables>
+        <description>This variable is used to store the Id of any Service Appointment with exceeding labour hours as used in the Get Element &quot;Get SAs with exceeding labour hours&quot;</description>
+        <name>var_ServiceAppointment_Id</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ServiceAppointment</objectType>
+    </variables>
+</Flow>

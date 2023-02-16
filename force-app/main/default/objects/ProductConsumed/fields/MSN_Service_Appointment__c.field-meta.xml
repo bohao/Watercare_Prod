@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_Service_Appointment__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>This lookup relationship is used to link a &quot;Products Consumed&quot; record to a specific Service Appointment on which the product has been consumed. This is particularly important in order to identify what type of product (e.g. service product, labout etc.) a specific crew/subcontractor has consumed during their Service Appointment. Otherwise, the Products Consumed records are only linked to a Work Order or Work Order Line Item, making it impossible to tell on which Service Appointment exactly the product has been consumed.</description>
+    <externalId>false</externalId>
+    <label>Service Appointment</label>
+    <referenceTo>ServiceAppointment</referenceTo>
+    <relationshipLabel>Parts &amp; Labor</relationshipLabel>
+    <relationshipName>Products_Consumed</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Water_Shutdown_Application_Status__c</fullName>
+    <externalId>false</externalId>
+    <label>Water Shutdown Application Status</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Submitted</fullName>
+                <default>false</default>
+                <label>Submitted</label>
+            </value>
+            <value>
+                <fullName>Trial Approved</fullName>
+                <default>false</default>
+                <label>Trial Approved</label>
+            </value>
+            <value>
+                <fullName>Shutdown Approved</fullName>
+                <default>false</default>
+                <label>Shutdown Approved</label>
+            </value>
+            <value>
+                <fullName>Cancelled</fullName>
+                <default>false</default>
+                <label>Cancelled</label>
+            </value>
+            <value>
+                <fullName>Completed without Approval</fullName>
+                <default>false</default>
+                <label>Completed without Approval</label>
+            </value>
+            <value>
+                <fullName>Covid-19 On Hold</fullName>
+                <default>false</default>
+                <label>Covid-19 On Hold</label>
+            </value>
+            <value>
+                <fullName>Incomplete</fullName>
+                <default>false</default>
+                <label>Incomplete</label>
+            </value>
+            <value>
+                <fullName>On Hold</fullName>
+                <default>false</default>
+                <label>On Hold</label>
+            </value>
+            <value>
+                <fullName>Postponed</fullName>
+                <default>false</default>
+                <label>Postponed</label>
+            </value>
+            <value>
+                <fullName>Waiting Information</fullName>
+                <default>false</default>
+                <label>Waiting Information</label>
+            </value>
+            <value>
+                <fullName>Waiting Key Account Approval</fullName>
+                <default>false</default>
+                <label>Waiting Key Account Approval</label>
+            </value>
+            <value>
+                <fullName>With Key Account</fullName>
+                <default>false</default>
+                <label>With Key Account</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

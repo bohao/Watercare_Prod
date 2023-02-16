@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sharingCriteriaRules>
+        <fullName>Share_MSN_Van_Locations_with_MSN_JC</fullName>
+        <accessLevel>Read</accessLevel>
+        <description>Share any MSN Van Locations that has a &quot;LN Store ID&quot; starting with VH with MSN JC</description>
+        <label>Share MSN Van Locations with MSN JC</label>
+        <sharedTo>
+            <role>MSN_Job_Coordinator</role>
+        </sharedTo>
+        <criteriaItems>
+            <field>MSN_LN_Store_Id__c</field>
+            <operation>startsWith</operation>
+            <value>VH</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>MSN_LN_Store_Id__c</field>
+            <operation>notEqual</operation>
+            <value></value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>true</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+</SharingRules>

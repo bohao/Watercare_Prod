@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>54.0</apiVersion>
+    <decisions>
+        <description>If the assigned service resource is of the Resource Type &quot;Crew&quot;, then try to determine the assigned &quot;Location&quot; of the service ressource record (field location on service ressource) and if filled, then update the field &quot;Location&quot; on the parent Work Order with this Location. This is required , so that Crew members can see and consume parts from the Crew van on their Field Service mobile apps.</description>
+        <name>Decision_Assigned_Resource_is_a_Crew</name>
+        <label>Assigned Resource is a Crew?</label>
+        <locationX>1106</locationX>
+        <locationY>1223</locationY>
+        <defaultConnector>
+            <targetReference>Decision_Previously_Assigned_Resource_was_a_Crew</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_AssignedRessource_IsCrew</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ServiceResource.ResourceType</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>C</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Decision_Crew_has_Location</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Determine whether the Service Ressource Record has the field &quot;Location&quot; populated. If so, update the Parent Record (WO or WOLI) of the assigned Service Appointment and populate the field &quot;Location&quot; with the identical one from the Service Resource.</description>
+        <name>Decision_Crew_has_Location</name>
+        <label>Crew Service Resource has Location?</label>
+        <locationX>578</locationX>
+        <locationY>1343</locationY>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_CrewHasLocation</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ServiceResource.LocationId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Decision_SA_ParentRecord_WO_or_WOLI</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Determine if the Parent Record of the Service Appointment linked to the Assignment record triggering this flow is linked to a Work Order or Work Order Line Item. This is required as the lookup field &quot;ParentRecordId&quot; on the Service Appointment is polymorphic and can be linked to different objects such as WO, WOLI, Asset etc.</description>
+        <name>Decision_Is_SA_ParentRecord_WO_or_WOLI_PreviousCrew</name>
+        <label>Is SA Parent Record a WO or WOLI?</label>
+        <locationX>1370</locationX>
+        <locationY>1463</locationY>
+        <defaultConnectorLabel>Unhandled Parent Record</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_Work_Order_PreviousCrew</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ServiceAppointment.ParentRecordId</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>0WO</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Location_on_Work_Order_PreviousCrew</targetReference>
+            </connector>
+            <label>Work Order</label>
+        </rules>
+        <rules>
+            <name>Outcome_Work_Order_Line_Item_PreviousCrew</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ServiceAppointment.ParentRecordId</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>1WL</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Location_on_Work_Order_Line_Item_PreviousCrew</targetReference>
+            </connector>
+            <label>Work Order Line Item</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>This additional decision is required, as Salesforce Field Service does not seem to &quot;delete&quot; a resource assignment record, in case a Service Appointment is rescheduled with e.g. the buttons &quot;Get Candidates&quot;, &quot;Reschedule&quot; (on the Gantt) or dragging and dropping to another resource on the Gantt - instead Field Service updates the first &quot;assigned resource&quot; record to the newly assigned Service resource. This prevented the &quot;Location&quot; field on WO being taken off again, as this only triggers in the other flow &quot;MSN - Assigned Resource - Before Delete&quot; trigger.</description>
+        <name>Decision_Previously_Assigned_Resource_was_a_Crew</name>
+        <label>Previously Assigned Resource was a crew?</label>
+        <locationX>1634</locationX>
+        <locationY>1343</locationY>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_Previous_Resource_was_a_Crew</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record__Prior.ServiceResource.ResourceType</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>C</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Decision_Is_SA_ParentRecord_WO_or_WOLI_PreviousCrew</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Determine if the Parent Record of the Service Appointment linked to the Assignment record triggering this flow is linked to a Work Order or Work Order Line Item. This is required as the lookup field &quot;ParentRecordId&quot; on the Service Appointment is polymorphic and can be linked to different objects such as WO, WOLI, Asset etc.</description>
+        <name>Decision_SA_ParentRecord_WO_or_WOLI</name>
+        <label>Is SA Parent Record a WO or WOLI?</label>
+        <locationX>314</locationX>
+        <locationY>1463</locationY>
+        <defaultConnectorLabel>Unhandled Parent Record</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_Parent_Is_WorkOrder</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ServiceAppointment.ParentRecordId</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>0WO</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Location_on_Work_Order</targetReference>
+            </connector>
+            <label>Work Order</label>
+        </rules>
+        <rules>
+            <name>Outcome_Parent_Is_WorkOrderLineItem</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ServiceAppointment.ParentRecordId</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>1WL</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Location_on_WorkOrderLineItem</targetReference>
+            </connector>
+            <label>Work Order Line Item</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Check whether the Parent Work Order of the Service Appointment triggering this Flow has a Parent Work Order itself (=Grandparent of the SA). This additional decision is required after experiencing issues when trying to access the Grandparent WOs ID directly in the previous decision element, but the custom &quot;FSSK_Work Order__c&quot; field was blank.</description>
+        <name>Decision_ServiceAppointment_has_GrandparentWorkOrder</name>
+        <label>Service Appointment has Parent Work Order?</label>
+        <locationX>952</locationX>
+        <locationY>791</locationY>
+        <defaultConnector>
+            <targetReference>Decision_Assigned_Resource_is_a_Crew</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>False</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_ServiceAppointment_has_GrandparentWorkOrder</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ServiceAppointment.FSSK__FSK_Work_Order__r.ParentWorkOrderId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Share_Grandparent_Work_Order_with_Assigned_User</targetReference>
+            </connector>
+            <label>True</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Check whether the Service Appointment triggering this Flow is related to a Work Order.</description>
+        <name>Decision_ServiceAppointment_has_ParentWorkOrder</name>
+        <label>Service Appointment has Parent Work Order?</label>
+        <locationX>1106</locationX>
+        <locationY>671</locationY>
+        <defaultConnector>
+            <targetReference>Decision_Assigned_Resource_is_a_Crew</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>False</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_ServiceAppointment_has_ParentWorkOrder</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ServiceAppointment.ParentRecordId</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>0WO</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>fx_AssignedResource_IsNew</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ServiceResource.RelatedRecordId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ServiceAppointment.FSSK__FSK_Work_Order__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Decision_ServiceAppointment_has_GrandparentWorkOrder</targetReference>
+            </connector>
+            <label>True</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>As soon as the Assigned Resource record is created or changed, and the related Service Appointment record is either in the status &quot;Scheduled&quot; or &quot;Dispatched&quot;, then update the custom field &quot;Assigned Service Resource&quot; (from Field Service Starter Kit, FSSK__FSK_Assigned_Service_Resource__c). Please note: this functionality has been moved from the FSSK process builder &quot; FSSK Assigned Resource Process&quot; in order to prevent multiple record triggered activities (and legacy process builders) from firing at the same time and to future proof the solution using only flow instead of process builder.</description>
+        <name>Decision_ServiceAppointment_Status_Scheduled_or_Dispatched</name>
+        <label>Related Service Appointment in Status Scheduled or Dispatched?</label>
+        <locationX>1106</locationX>
+        <locationY>335</locationY>
+        <defaultConnector>
+            <targetReference>Decision_ServiceAppointment_has_ParentWorkOrder</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_ServiceAppointment_Status_Scheduled_or_Dispatched</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ServiceAppointment.StatusCategory</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Scheduled</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ServiceAppointment.StatusCategory</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Dispatched</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Subflow_Set_AssignedResource_on_ServiceAppointment</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <description>06/05/2022 - V1:  Introduced new triggered flow on &quot;Assigned Ressource Object&quot;. This is used in order to automatically share a Parent Work Order with the assigned service resource that carries out a child work order and otherwise would not be allowed to access the parent Work Order record as of &quot;Private&quot; sharing rules.
+
+28/10/2022 - V2: Add functionality to automatically update the field &quot;Location&quot; on Work Order, if the Assigned Service Ressource is of the type &quot;Crew&quot; and a location has been defined in the &quot;Location&quot; lookup field of the crew Service Ressource record. This is required to enable crew members to see and consume &quot;Parts&quot; of their assigned crew van on their mobile apps. See: https://watercarestp.atlassian.net/browse/MSRS-2410
+
+08/11/2022 - V3:  Added logic into the node &quot;Assigned Resource is a Crew?&quot; so that the use case can be handled, where a service appointment is &quot;rescheduled&quot; (e.g. with Get Candidates, Reschedule or Drag and drop on Gantt) which does not delete the first &quot;Assigned Ressource&quot; record, but overwrites/updates it with the new assigned service resource record, preventing that our other automation in the flow &quot;MSN - Assigned Resource - Before Delete&quot; trigger works correctly.
+
+09/11/2022 - V4:  Added condition requirements into the Decision &quot;Service Appointment has Grandparent Work Order?&quot; to additionally check, whether the Service Resource is linked to a &quot;User&quot; record (=not null/blank), after experiencing errors when scheduling e.g. Reinstatement Service Appointments that have a Grandparent Work Order to Service Crews (Problem Identified in UAT).
+
+09/01/2022 - V5: Migrated the logic from the &quot;Field Service Starter Kit&quot; process builder &quot;FSSK Assigned Resource Process&quot; into this record-triggered flow for future-proofing and prevention of using multiple record-triggered activities on the Assigned Resource object.
+
+02/02/2022 - V8: Added additional decision criteria into the node &quot;Service Appointment has Grandparent Work Order?&quot; after experiencing issues when trying to access the Grandparent WOs ID directly in the decision element, but the custom &quot;FSSK_Work Order__c&quot; field was blank.</description>
+    <environments>Default</environments>
+    <formulas>
+        <description>Determine if the Assigned Resource record is newly created using the &quot;ISNEW()&quot; formula</description>
+        <name>fx_AssignedResource_IsNew</name>
+        <dataType>Boolean</dataType>
+        <expression>ISNEW()</expression>
+    </formulas>
+    <interviewLabel>MSN - Assigned Resource - After Save Trigger {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>MSN - Assigned Resource - After Save Trigger</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <name>Share_Grandparent_Work_Order_with_Assigned_User</name>
+        <label>Share Grandparent Work Order with Assigned User</label>
+        <locationX>820</locationX>
+        <locationY>911</locationY>
+        <connector>
+            <targetReference>Decision_Assigned_Resource_is_a_Crew</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>AccessLevel</field>
+            <value>
+                <stringValue>Read</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ParentId</field>
+            <value>
+                <elementReference>$Record.ServiceAppointment.FSSK__FSK_Work_Order__r.ParentWorkOrderId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>RowCause</field>
+            <value>
+                <stringValue>Manual</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>UserOrGroupId</field>
+            <value>
+                <elementReference>$Record.ServiceResource.RelatedRecordId</elementReference>
+            </value>
+        </inputAssignments>
+        <object>WorkOrderShare</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordUpdates>
+        <description>Update the field &quot;Location&quot; on the Work Order that is parent to the Service Appointment assigned to the Resource Assignment Record triggering this flow.</description>
+        <name>Update_Location_on_Work_Order</name>
+        <label>Update Location on Work Order</label>
+        <locationX>50</locationX>
+        <locationY>1583</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.ServiceAppointment.ParentRecordId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>LocationId</field>
+            <value>
+                <elementReference>$Record.ServiceResource.LocationId</elementReference>
+            </value>
+        </inputAssignments>
+        <object>WorkOrder</object>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Update the field &quot;Location&quot; on the Work Order Line Item that is parent to the Service Appointment assigned to the Resource Assignment Record triggering this flow.</description>
+        <name>Update_Location_on_Work_Order_Line_Item_PreviousCrew</name>
+        <label>Update Location on Work Order Line Item</label>
+        <locationX>1370</locationX>
+        <locationY>1583</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.ServiceAppointment.ParentRecordId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>LocationId</field>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </inputAssignments>
+        <object>WorkOrderLineItem</object>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Update the field &quot;Location&quot; on the Work Order that is parent to the Service Appointment assigned to the Resource Assignment Record triggering this flow to &quot;blank&quot;.</description>
+        <name>Update_Location_on_Work_Order_PreviousCrew</name>
+        <label>Update Location on Work Order</label>
+        <locationX>1106</locationX>
+        <locationY>1583</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.ServiceAppointment.ParentRecordId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>LocationId</field>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </inputAssignments>
+        <object>WorkOrder</object>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Update the field &quot;Location&quot; on the Work Order Line Item that is parent to the Service Appointment assigned to the Resource Assignment Record triggering this flow.</description>
+        <name>Update_Location_on_WorkOrderLineItem</name>
+        <label>Update Location on Work Order Line Item</label>
+        <locationX>314</locationX>
+        <locationY>1583</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.ServiceAppointment.ParentRecordId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>LocationId</field>
+            <value>
+                <elementReference>$Record.ServiceResource.LocationId</elementReference>
+            </value>
+        </inputAssignments>
+        <object>WorkOrderLineItem</object>
+    </recordUpdates>
+    <start>
+        <locationX>980</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Decision_ServiceAppointment_Status_Scheduled_or_Dispatched</targetReference>
+        </connector>
+        <object>AssignedResource</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Draft</status>
+    <subflows>
+        <description>When the Service Resource Record is created or changes and the Status Category of the related Service Appointment is &quot;Scheduled&quot; or &quot;Dispatched&quot;, then launch the provided flow &quot;FSSK Populate Custom Assigned Service Resource Lookup&quot; from Field Service Starter Kit.</description>
+        <name>Subflow_Set_AssignedResource_on_ServiceAppointment</name>
+        <label>Set Assigned Resource on Service Appointment</label>
+        <locationX>974</locationX>
+        <locationY>455</locationY>
+        <connector>
+            <targetReference>Decision_ServiceAppointment_has_ParentWorkOrder</targetReference>
+        </connector>
+        <flowName>FSSK__FSK_Set_Assign_Service_Resource_On_Service_Appointment</flowName>
+        <inputAssignments>
+            <name>ServiceAppointmentId</name>
+            <value>
+                <elementReference>$Record.ServiceAppointmentId</elementReference>
+            </value>
+        </inputAssignments>
+    </subflows>
+</Flow>

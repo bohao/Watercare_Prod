@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_Reinstatement_Surface_Depth__c</fullName>
+    <description>Used on Reinstatement Work Orders by Markout crew to record the required material depth for hard surfaces (e.g. concrete or hotmix.)</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Please enter the required reinstatement surface depth in meters.</inlineHelpText>
+    <label>Surface Depth (m)</label>
+    <precision>4</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

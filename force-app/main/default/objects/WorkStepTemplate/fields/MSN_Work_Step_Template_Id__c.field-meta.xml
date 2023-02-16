@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_Work_Step_Template_Id__c</fullName>
+    <description>Used to map the ID of the &quot;Work Step Template&quot; record into the &quot;Work Step&quot; upon creation. The ID is used in Field Service Mobile Flows to look up the originating &quot;Work Step Template&quot; and its related &quot;Work Step Answers&quot; for every Work Step in order to show a choice record set of possible answers to the user in the flow.</description>
+    <externalId>false</externalId>
+    <formula>CASESAFEID(Id)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Work Step Template ID</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

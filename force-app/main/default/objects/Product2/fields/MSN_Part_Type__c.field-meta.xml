@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_Part_Type__c</fullName>
+    <description>Used for grouping of parts of a similar type to allow users to filter the long list quickly on the field service mobile app.</description>
+    <externalId>false</externalId>
+    <label>Part  Type</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetName>MSN_Part_Type</valueSetName>
+    </valueSet>
+</CustomField>

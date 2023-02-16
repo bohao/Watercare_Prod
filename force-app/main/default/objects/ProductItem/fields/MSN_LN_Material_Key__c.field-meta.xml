@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_LN_Material_Key__c</fullName>
+    <description>This cross-object formula field is used to retrieve the unique &quot;LN Material Key&quot; from the Product and populate the field on the Product Item. This is then used e.g. by the field crew on their Field Service Mobile App to consume Products by scanning a printed Barcode (= LN Material Key) of the Product instead of having to search for it manually in the app.</description>
+    <externalId>false</externalId>
+    <formula>Product2.MSN_LN_Material_Key__c</formula>
+    <label>LN Material Key</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_ScheduleItem_Description__c</fullName>
+    <description>Used to store a short description for the &quot;Schedule Item&quot; (aka &quot;RFP Code&quot;).</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Please enter a short description for the Schedule Item (aka &quot;RFP Code&quot;).</inlineHelpText>
+    <label>Item Description</label>
+    <length>1024</length>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>LongTextArea</type>
+    <visibleLines>5</visibleLines>
+</CustomField>

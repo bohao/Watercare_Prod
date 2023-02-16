@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_TrafficControl_Required__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>This indicates that &quot;Traffic Control&quot; is required for a Reinstatement Job. This might be selected by the mark out crew when they define the reinstatement scope from the Mobile app in the flow &quot;Define Reinstatement Scope&quot; (launched from &quot;Work Done&quot;).</description>
+    <externalId>false</externalId>
+    <label>Traffic Control Required?</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

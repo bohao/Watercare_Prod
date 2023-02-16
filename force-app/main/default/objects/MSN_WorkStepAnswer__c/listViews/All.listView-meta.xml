@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>All</fullName>
+    <columns>NAME</columns>
+    <columns>MSN_AnswerLabel__c</columns>
+    <columns>MSN_AnswerValue__c</columns>
+    <columns>MSN_Sort_Order__c</columns>
+    <columns>MSN_WorkStepTemplate__c</columns>
+    <filterScope>Everything</filterScope>
+    <label>All</label>
+</ListView>

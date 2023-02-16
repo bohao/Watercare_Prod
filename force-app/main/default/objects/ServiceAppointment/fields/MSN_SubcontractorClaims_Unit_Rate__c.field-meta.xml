@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_SubcontractorClaims_Unit_Rate__c</fullName>
+    <description>Used in the Subcontractor Claims process, where subcontractors download a report in Salesforce and fill in missing details such as the agreed &quot;Unit Rate&quot; for each of the Work Orders they have completed.</description>
+    <externalId>false</externalId>
+    <label>Unit Rate</label>
+    <precision>8</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Currency</type>
+</CustomField>

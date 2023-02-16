@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_Reinstatement_ServiceHazards__c</fullName>
+    <description>Used to store Service Hazards identified from the mobile field crew when Requesting Reinstatement from the Field Service Mobile App.</description>
+    <externalId>false</externalId>
+    <label>Service Hazards</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Shallow Telco</fullName>
+                <default>false</default>
+                <label>Shallow Telco</label>
+            </value>
+            <value>
+                <fullName>Shallow Gas</fullName>
+                <default>false</default>
+                <label>Shallow Gas</label>
+            </value>
+            <value>
+                <fullName>Shallow Electrical</fullName>
+                <default>false</default>
+                <label>Shallow Electrical</label>
+            </value>
+            <value>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <label>Other</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <visibleLines>4</visibleLines>
+</CustomField>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Reactive_Work_Queue_ServiceAppointment</fullName>
+    <filterScope>Queue</filterScope>
+    <label>Reactive Work Queue</label>
+    <queue>Reactive_Work_Queue</queue>
+    <sharedTo>
+        <allInternalUsers></allInternalUsers>
+    </sharedTo>
+</ListView>

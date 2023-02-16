@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Role xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseAccessLevel>None</caseAccessLevel>
+    <contactAccessLevel>Edit</contactAccessLevel>
+    <description>Pipe Benders - Field Crew</description>
+    <mayForecastManagerShare>false</mayForecastManagerShare>
+    <name>Pipe Benders - Field Crew</name>
+    <opportunityAccessLevel>Edit</opportunityAccessLevel>
+    <parentRole>Pipe_Benders_Job_Co_Ordinator</parentRole>
+</Role>

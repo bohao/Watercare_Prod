@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Flat__c</fullName>
+    <description>Created for unit/apartment address as the standard address field don&apos;t accept the unit/apartment number. Ex- Unit1E/4 St Paul street.</description>
+    <externalId>false</externalId>
+    <label>Flat</label>
+    <length>50</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Quantity_Consumed_Diff__c</fullName>
+    <description>Quantity consumed difference atter changing QuantityConsumed. It&apos;s being used to update EAM quantity.</description>
+    <externalId>false</externalId>
+    <formula>if(QuantityConsumed &gt; Previous_Quantity__c, QuantityConsumed -  Previous_Quantity__c, Previous_Quantity__c - QuantityConsumed)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Quantity Consumed Diff</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

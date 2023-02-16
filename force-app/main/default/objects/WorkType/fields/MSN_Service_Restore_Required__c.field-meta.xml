@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_Service_Restore_Required__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Used to define whether a specific Work Type requires a &quot;Service Restore&quot; before the mobile field crew is allowed to complete the job. This is validated in the Field Service Mobile App in the &quot;Update Job Status&quot; Flow.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Select if this work type requires a &quot;Service Restore&quot; before the mobile field crew is allowed to complete the job.</inlineHelpText>
+    <label>Service Restore Required</label>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_Parent_WorkOrderId__c</fullName>
+    <description>This cross object formula is used to retrieve the Record Id of the related Service Appointments parent Work Order, in order to use this to lookup all Assigned Resources in the &quot;Work Complete Review&quot; that are assigned to Service Appointments under the Parent Work Order. This is required to give users a preview of how many Labour Lines are going to be created when the &quot;Work Complete Review&quot; flow finishes.</description>
+    <externalId>false</externalId>
+    <formula>CASESAFEID(ServiceAppointment.FSSK__FSK_Work_Order__c)</formula>
+    <label>Parent Work Order</label>
+    <required>false</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

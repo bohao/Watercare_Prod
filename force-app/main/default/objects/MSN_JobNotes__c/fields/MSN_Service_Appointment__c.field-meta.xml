@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_Service_Appointment__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Lookup to a Service Appointment this Job note might be related to in addition to its parent Work Order.</description>
+    <externalId>false</externalId>
+    <label>Service Appointment</label>
+    <referenceTo>ServiceAppointment</referenceTo>
+    <relationshipLabel>Job Notes</relationshipLabel>
+    <relationshipName>Job_Notes</relationshipName>
+    <required>false</required>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

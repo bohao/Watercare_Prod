@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_ServiceAppointment_Number__c</fullName>
+    <description>This cross object formula is used to retrieve the &quot;Service Appointment Number&quot; string value from the related Service Resource record, in order to show a data table of all Service Resources and their total labour time on each SA in the flow &quot;Work Complete Review&quot;. This is useful so that the JC can see a preview on how many Labour Lines will be created for each of the Crew after the flow finishes.</description>
+    <externalId>false</externalId>
+    <formula>ServiceAppointment.AppointmentNumber</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Service Appointment Number</label>
+    <required>false</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

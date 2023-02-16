@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_URL__c</fullName>
+    <description>Used to store a URL to an external Website (e.g. Powerapps) or similar that a user is supposed to open directly from the FSL mobile app &quot;work plan&quot; in order to complete an external process step.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Optional. Enter a URL to e.g. an external Website (e.g. Powerapps) that the user is supposed to visit in order to complete an external process step.</inlineHelpText>
+    <label>External URL</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Url</type>
+</CustomField>

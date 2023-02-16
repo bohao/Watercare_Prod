@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_WorkStep_SortOrder__c</fullName>
+    <description>This formula field ist used in the Field Service Mobile Flow &quot;Complete all open Work Steps&quot;  to address a sorting order issue in Field Serivce Mobile App that prevents any work steps showing up in the correct &quot;ExecutionOrder&quot; defined on a work step. As the Field Service Mobile Flows currently cannot sort correctly when using a numerical field (like Execution order),  followed the suggestion on Trailblazer Community to introduce a formula field instead that converts the numerical value into a text string with leading zeros. See here for details: 
+https://trailhead.salesforce.com/trailblazer-community/feed/0D54S00000EABVV</description>
+    <externalId>false</externalId>
+    <formula>LPAD( TEXT(ExecutionOrder), 3, &quot;0&quot;)</formula>
+    <label>Sort Order</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

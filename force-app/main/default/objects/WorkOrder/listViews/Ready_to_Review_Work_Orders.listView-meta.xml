@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Ready_to_Review_Work_Orders</fullName>
+    <columns>Name</columns>
+    <columns>WorkType</columns>
+    <columns>Priority</columns>
+    <columns>STREET</columns>
+    <columns>CITY</columns>
+    <columns>Work_Type_always_requires_review__c</columns>
+    <columns>Missing_Parts__c</columns>
+    <columns>Labour_Hours_exceed_max_expected_hours__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Status</field>
+        <operation>equals</operation>
+        <value>Ready for Review</value>
+    </filters>
+    <filters>
+        <field>Work_Type_always_requires_review__c</field>
+        <operation>equals</operation>
+        <value>0</value>
+    </filters>
+    <filters>
+        <field>Labour_Hours_exceed_max_expected_hours__c</field>
+        <operation>equals</operation>
+        <value>0</value>
+    </filters>
+    <filters>
+        <field>Missing_Parts__c</field>
+        <operation>equals</operation>
+        <value>0</value>
+    </filters>
+    <label>Ready to Review Work Orders</label>
+</ListView>

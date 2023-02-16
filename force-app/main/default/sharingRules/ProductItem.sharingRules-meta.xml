@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sharingOwnerRules>
+        <fullName>MSN_Field_Crew_Read_Write_Access_to_Product_Items</fullName>
+        <accessLevel>Edit</accessLevel>
+        <description>Share &quot;Product Items&quot; with MSN Field Crew. This is required in order to enable a field crew user to &quot;unconsume&quot; (=delete) a Product Consumed record in case they inadvertently consumed a wrong part.</description>
+        <label>MSN - Field Crew - Read/Write Access to Product Items</label>
+        <sharedTo>
+            <role>MSN_Field_Crew</role>
+        </sharedTo>
+        <sharedFrom>
+            <allInternalUsers></allInternalUsers>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>MSN_Job_Coordinators_Read_Write_Access_to_Product_Items</fullName>
+        <accessLevel>Edit</accessLevel>
+        <description>Share &quot;Product Items&quot; with MSN Job Coordinators. This is required in order to enable a Job Coordinator user to add or remove &quot;Products Consumed&quot; records to add missing or remove incorrect parts.</description>
+        <label>MSN Job Coordinator - Write Access to Product Items</label>
+        <sharedTo>
+            <role>MSN_Job_Coordinator</role>
+        </sharedTo>
+        <sharedFrom>
+            <allInternalUsers></allInternalUsers>
+        </sharedFrom>
+    </sharingOwnerRules>
+</SharingRules>

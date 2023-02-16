@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Scheduled_DateTime_for_Water_Turn_On__c</fullName>
+    <description>Date and time when the water is turned on. The first screen which appears when the field engineer selects the water on option. This should take the default current date and time of the system and they can adjust the datetime too.</description>
+    <externalId>false</externalId>
+    <label>Scheduled DateTime for Water Turn On</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>DateTime</type>
+</CustomField>

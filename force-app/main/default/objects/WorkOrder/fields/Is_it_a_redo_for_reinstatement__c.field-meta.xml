@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Is_it_a_redo_for_reinstatement__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>If the reinstatement job is completed before and this is a redo for the same job at the same address</description>
+    <externalId>false</externalId>
+    <inlineHelpText>If the reinstatement job is completed before and this is a redo for the same job at the same address, please tick the checkbox</inlineHelpText>
+    <label>Is it a redo for reinstatement</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

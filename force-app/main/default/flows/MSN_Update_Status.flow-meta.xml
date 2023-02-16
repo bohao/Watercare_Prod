@@ -1,0 +1,3250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <assignments>
+        <description>Add extended time to the scheduled end time and add Notes</description>
+        <name>Assign_ExtendedTime_JobNotes_fromPreStartActivities</name>
+        <label>Add extended time and Notes</label>
+        <locationX>1630</locationX>
+        <locationY>2030</locationY>
+        <assignmentItems>
+            <assignToReference>var_ServiceAppointment.SchedEndTime</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_PreStartActions_NewEstimatedCompletionTime</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_JobNoteRecord.MSN_JobNote_Details__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_PreStartActions_Job_Notes</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_JobNoteRecord.MSN_JobNote_Type__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Note</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_JobNoteRecord.MSN_Work_Order__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_WorkOrderId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_JobNoteRecord.MSN_Service_Appointment__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_JobNoteRecord.Work_Order_Line_Item__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_WorkOrderLineItemId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Decision_WorkOrderLineItem_FromTravel</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>If the Parent record is a Work Order Line Item, then set the variable &quot;var_ParentIsWorkOrderLineItem&quot; to &quot;true&quot;. This will be used later in the flow for various validation checks.</description>
+        <name>Assign_IsWorkOrderLineItem_Variable_true</name>
+        <label>Set Is Work Order Line Item Variable to true</label>
+        <locationX>3029</locationX>
+        <locationY>854</locationY>
+        <assignmentItems>
+            <assignToReference>var_ParentIsWorkOrderLineItem</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_Parent_WO_Details</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Assign Job Note details entered by the user on the previous &quot;Pre Start Activities&quot; Screen</description>
+        <name>Assign_JobNoteDetails_fromPreStartActivities</name>
+        <label>Assign Job Notes</label>
+        <locationX>2158</locationX>
+        <locationY>2030</locationY>
+        <assignmentItems>
+            <assignToReference>var_JobNoteRecord.MSN_JobNote_Details__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_PreStartActions_Job_Notes</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_JobNoteRecord.MSN_Work_Order__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_WorkOrderId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_JobNoteRecord.MSN_Service_Appointment__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_JobNoteRecord.MSN_JobNote_Type__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Note</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_JobNoteRecord.Work_Order_Line_Item__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_WorkOrderLineItemId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Decision_WorkOrderLineItem_FromTravel</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Assign a new &quot;DueDate&quot; into the variable &quot;var_ServiceAppointment.DueDate&quot; from the Formula &quot;fx_Calculate_New_DueDate&quot;. This is only required if the DueDate of the Service Appointment triggering this flow already is in the past and otherwise would throw an error if the flow attempts to create/clone a new revisit Service Appointment with an expired DueDate. Also, reset the &quot;Inline Due Date&quot; to blank (this will update automatically by another record triggered flow after creation of the Service Appointment).</description>
+        <name>Assign_new_DueDate_to_SA_Prior_Creation</name>
+        <label>Assign new &quot;Due Date&quot; to SA Status prior creation</label>
+        <locationX>2554</locationX>
+        <locationY>2150</locationY>
+        <assignmentItems>
+            <assignToReference>var_ServiceAppointment.DueDate</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>fx_Calculate_New_Revisit_SA_DueDate</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ServiceAppointment.Inline_Due_Date__c</assignToReference>
+            <operator>Assign</operator>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_Work_Type_Details</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Assign the Service Appointment &quot;STatus&quot; field to &quot;On Hold&quot; in case the crew picked the incompletion reason &quot;Job on hold&quot; into the Record Variable &quot;var_Service_Appointment&quot; prior to creating a new Revisit Service Appointment from the Variable.</description>
+        <name>Assign_On_Hold_SA_Status_prior_creation</name>
+        <label>Assign &quot;On Hold&quot; SA Status prior creation</label>
+        <locationX>2554</locationX>
+        <locationY>2726</locationY>
+        <assignmentItems>
+            <assignToReference>var_ServiceAppointment.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>On Hold</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Create_Additional_Revisit_Service_Appointment</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Assign Desktop &quot;recordId&quot; into Mobile &quot;Id&quot; variable</description>
+        <name>Assign_recordId_into_Id</name>
+        <label>Assign &quot;recordId&quot; into &quot;Id&quot; variable</label>
+        <locationX>2985</locationX>
+        <locationY>278</locationY>
+        <assignmentItems>
+            <assignToReference>Id</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_Parent_RecordId</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>When field crew confirms they are travelling to their next job, update Service Appointment status to &quot;Travel&quot; and capture the &quot;Travel Start&quot; time.</description>
+        <name>Assign_UpdateSAStatus_FromDispatched</name>
+        <label>Update SA Status and Travel Start - from Dispatched</label>
+        <locationX>351</locationX>
+        <locationY>2402</locationY>
+        <assignmentItems>
+            <assignToReference>var_ServiceAppointment.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Travel</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ServiceAppointment.MSN_TravelStart__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Decision_WorkOrderLineItem_FromDispatched</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Add Job Notes, Status = Complete, Set Actual End Date/Time</description>
+        <name>Assign_UpdateSAStatus_FromOnSite</name>
+        <label>Update SA Status and Job Completion Values - from On Site</label>
+        <locationX>3819</locationX>
+        <locationY>4718</locationY>
+        <assignmentItems>
+            <assignToReference>var_ServiceAppointment.Job_Notes__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_JobCompletion_Job_Notes</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ServiceAppointment.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>stComplete</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ServiceAppointment.ActualEndTime</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ServiceAppointment.ActualDuration</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>fx_ActualDuration</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_JobNoteRecord.MSN_JobNote_Details__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_JobCompletion_Job_Notes</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_JobNoteRecord.MSN_JobNote_Type__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Note</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_JobNoteRecord.MSN_Work_Order__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_WorkOrderId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_JobNoteRecord.MSN_Service_Appointment__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_JobNoteRecord.Work_Order_Line_Item__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_WorkOrderLineItemId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ServiceAppointment.SchedEndTime</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Decision_WorkOrderLineItem_FromOnSite</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Update Actual Start, Scheduled Start and Scheduled End and set Service Appointment Status to &quot;On Site&quot;</description>
+        <name>Assign_UpdateSAStatus_FromTravel</name>
+        <label>Update SA Status and Actual Start - from Travel</label>
+        <locationX>1894</locationX>
+        <locationY>1670</locationY>
+        <assignmentItems>
+            <assignToReference>var_ServiceAppointment.ActualStartTime</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ServiceAppointment.SchedStartTime</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ServiceAppointment.SchedEndTime</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>fx_Estimated_JobCompletionTime</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ServiceAppointment.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>On Site</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Screen_PreStartActions</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Add Job Notes, Incompletion Reason and Status for current Service Appointment etc.</description>
+        <name>Assign_UpdateSAStatus_Incomplete</name>
+        <label>Update SA Status and Job Incompletion Details</label>
+        <locationX>2686</locationX>
+        <locationY>1790</locationY>
+        <assignmentItems>
+            <assignToReference>var_ServiceAppointment.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>stIncomplete</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ServiceAppointment.MSN_Incompletion_Reason__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_JobIncomplete_Reason_Picklist</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ServiceAppointment.ActualEndTime</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_JobNoteRecord.MSN_JobNote_Details__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_JobIncomplete_Reason_Freetext</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_JobNoteRecord.MSN_JobNote_Type__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Note</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_JobNoteRecord.MSN_Work_Order__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_WorkOrderId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_JobNoteRecord.MSN_Service_Appointment__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_JobNoteRecord.Work_Order_Line_Item__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_WorkOrderLineItemId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_Values_OnIncomplete</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Update completed date on WO</description>
+        <name>Assign_UpdateWO_EndDate</name>
+        <label>Update Work Order End Date</label>
+        <locationX>3951</locationX>
+        <locationY>4958</locationY>
+        <assignmentItems>
+            <assignToReference>var_WorkOrder.EndDate</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_ServiceAppointment.ActualEndTime</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Update_Work_Order_Values_0_0</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Update Start Date, Travel Start and Status fields on the WO</description>
+        <name>Assign_UpdateWOFields_Travel</name>
+        <label>Update WO Status and Start Dates</label>
+        <locationX>510</locationX>
+        <locationY>3434</locationY>
+        <assignmentItems>
+            <assignToReference>var_WorkOrder.StartDate</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_ServiceAppointment.MSN_TravelStart__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_WorkOrder.Travel_Start__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_ServiceAppointment.MSN_TravelStart__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_WorkOrder.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>In Progress</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Update_Work_Order_Values_0_0</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Update the Status and Start date on the WOLI</description>
+        <name>Assign_UpdateWOLIStatus_FromTravel</name>
+        <label>Update WOLI Status and Start Date</label>
+        <locationX>50</locationX>
+        <locationY>2642</locationY>
+        <assignmentItems>
+            <assignToReference>var_WorkOrderLineItem.StartDate</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_ServiceAppointment.MSN_TravelStart__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_WorkOrderLineItem.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>In Progress</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_WorkOrderLineItem.Id</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_WorkOrderLineItemId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Decision_WorkOrderLineItem_UpdateRecord_Validation</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Update the Status and Start date on the WOLI</description>
+        <name>Assign_UpdateWOLIStatus_FromTravel_0</name>
+        <label>Update WOLI Status and Start Date</label>
+        <locationX>3687</locationX>
+        <locationY>4958</locationY>
+        <assignmentItems>
+            <assignToReference>var_WorkOrderLineItem.EndDate</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_ServiceAppointment.ActualEndTime</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_WorkOrderLineItem.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_WorkOrderLineItem.Id</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_WorkOrderLineItemId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Decision_WorkOrderLineItem_UpdateRecord_Validation</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Update custom field SA status on WO to &quot;On-site&quot; and the Work Order Status to &quot;In Progress&quot;</description>
+        <name>Assign_UpdateWOStatus_OnSite</name>
+        <label>Update WO Status</label>
+        <locationX>2026</locationX>
+        <locationY>2606</locationY>
+        <assignmentItems>
+            <assignToReference>var_WorkOrder.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>In Progress</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_Work_Order_Values_0_0</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Assign or Reset Additional Values on the Record Variable &quot;var_Service_Appointment&quot; prior to creating a new Revisit Service Appointment from the Variable.</description>
+        <name>Assign_Values_for_Revisit_Service_Appointment</name>
+        <label>Assign Values for Revisit SA prior creation</label>
+        <locationX>2686</locationX>
+        <locationY>2486</locationY>
+        <assignmentItems>
+            <assignToReference>var_ServiceAppointment.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>None</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ServiceAppointment.StatusCategory</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>None</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ServiceAppointment.MSN_Revisit__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ServiceAppointment.SchedStartTime</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_ResetDateTimeValues</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ServiceAppointment.SchedEndTime</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_ResetDateTimeValues</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ServiceAppointment.ActualStartTime</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_ResetDateTimeValues</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ServiceAppointment.ActualEndTime</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_ResetDateTimeValues</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ServiceAppointment.MSN_Incompletion_Reason__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ServiceAppointment.MSN_Previous_Service_Appointment__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ServiceAppointment.MSN_TravelStart__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_ResetDateTimeValues</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ServiceAppointment.Duration</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_WorkType.EstimatedDuration</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ServiceAppointment.EarliestStartTime</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ServiceAppointment.DurationType</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_WorkType.DurationType</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Decision_Check_IncompletionReason_OnHold</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Assign the Work Order Record Id from &quot;Parent Id&quot; to &quot;WorkOrderId&quot; in order to make it universally usable throughout the flow. This is required as this flow can either be triggered from a Service Appointment directly related to a Work Order OR to a Work Order Line Item, which has a Parent Work Order.</description>
+        <name>Assign_Work_Order_Id</name>
+        <label>Assign Work Order Id to generic Variable</label>
+        <locationX>2765</locationX>
+        <locationY>734</locationY>
+        <assignmentItems>
+            <assignToReference>var_WorkOrderId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>ParentId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_Parent_WO_Details</targetReference>
+        </connector>
+    </assignments>
+    <choices>
+        <description>Used in the Screen &quot;update job status&quot; when the user wants to confirm they have completed their job.</description>
+        <name>ch_Complete</name>
+        <choiceText>Completed</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <elementReference>stComplete</elementReference>
+        </value>
+    </choices>
+    <choices>
+        <description>Used in all &quot;update job status&quot; screens when the user wants to choose the &quot;Cannot complete&quot; path for a job.</description>
+        <name>ch_Incomplete</name>
+        <choiceText>Cannot Complete</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <elementReference>stIncomplete</elementReference>
+        </value>
+    </choices>
+    <choices>
+        <description>Used in several screens to determine whether the user wants to continue with a specific action/subflow. Currently used a) to determine if the user wants to continue to the &quot;Answer Open Work Steps&quot; subflow, when attempting to close a job when work steps are still open. and b) to check whether the user wants to request reinstatement for their current job</description>
+        <name>ch_No</name>
+        <choiceText>No</choiceText>
+        <dataType>Boolean</dataType>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used in the validation/decision element &quot;Water on/off or Service not Restored&quot;</description>
+        <name>ch_NoServiceRestore</name>
+        <choiceText>Continue without &quot;Service Restore&quot;</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>NoServiceRestore</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>ch_NoWaterOn</name>
+        <choiceText>Continue without &quot;Water On/Off&quot;</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>NoWaterOn</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used in the validation/decision element &quot;Water on/off or Service not Restored&quot;</description>
+        <name>ch_NoWaterOrServiceRestore</name>
+        <choiceText>Continue without &quot;Water On/Off&quot; or &quot;Service Restore&quot;</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>NoWaterOrServiceRestore</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used in the Screen &quot;update job status&quot; when the user wants to confirm they have arrived on site.</description>
+        <name>ch_OnSite</name>
+        <choiceText>Arrived on site</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <elementReference>stOnSite</elementReference>
+        </value>
+    </choices>
+    <choices>
+        <description>Used in the validation/decision element &quot;Water on/off or Service not Restored&quot;</description>
+        <name>ch_ServiceRestore</name>
+        <choiceText>Update &quot;Service Restore&quot; status</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>ServiceRestore</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used in the Screen &quot;update job status&quot; when the user wants to confirm they are on their way to the job.</description>
+        <name>ch_Travel</name>
+        <choiceText>Travel to site</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <elementReference>stTravel</elementReference>
+        </value>
+    </choices>
+    <choices>
+        <name>ch_WaterOn</name>
+        <choiceText>Update &quot;Water On/Off&quot; status</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>WaterOn</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>ch_WaterOnOrServiceRestore</name>
+        <choiceText>Update &quot;Water On/Off&quot; or &quot;Service Restore&quot;</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>WaterOnOrServiceRestore</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used in several screens to determine whether the user wants to continue with a specific action/subflow. Currently used a) to determine if the user wants to continue to the &quot;Answer Open Work Steps&quot; subflow, when attempting to close a job when work steps are still open. and b) to check whether the user wants to request reinstatement for their current job</description>
+        <name>ch_Yes</name>
+        <choiceText>Yes</choiceText>
+        <dataType>Boolean</dataType>
+        <value>
+            <booleanValue>true</booleanValue>
+        </value>
+    </choices>
+    <constants>
+        <name>stComplete</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Completed</stringValue>
+        </value>
+    </constants>
+    <constants>
+        <name>stIncomplete</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Cannot Complete</stringValue>
+        </value>
+    </constants>
+    <constants>
+        <name>stOnSite</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>On Site</stringValue>
+        </value>
+    </constants>
+    <constants>
+        <name>stTravel</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Travel</stringValue>
+        </value>
+    </constants>
+    <decisions>
+        <description>This decision is used as a validation and checks whether any other Service Appointments are still open and in status &quot;On Site&quot;, in order to prevent, that the Field Crew can start another job before they haven&apos;t closed out their previous one.</description>
+        <name>Decision_Check_for_open_SAs_OnSite</name>
+        <label>Check for open Service Appointments still &quot;On Site&quot;</label>
+        <locationX>792</locationX>
+        <locationY>1550</locationY>
+        <defaultConnector>
+            <targetReference>Get_Open_ServiceAppointments_Travel</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>False</defaultConnectorLabel>
+        <rules>
+            <name>outcome_OpenServiceAppointments_OnSite</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>var_Open_ServiceAppointments</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Screen_CompletePreviousJob</targetReference>
+            </connector>
+            <label>True</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>This decision is used as a validation and checks whether any other Service Appointments are still open and in status &quot;Travel&quot;, in order to prevent, that the Field Crew can start another job before they haven&apos;t closed out their previous one.</description>
+        <name>Decision_Check_for_open_SAs_Travel</name>
+        <label>Check for open Service Appointments still &quot;In Travel&quot;</label>
+        <locationX>990</locationX>
+        <locationY>1790</locationY>
+        <defaultConnector>
+            <targetReference>Screen_StatusUpdate_ConfirmTravel</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>False</defaultConnectorLabel>
+        <rules>
+            <name>outcome_OpenServiceAppointments_Travel</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>var_Open_ServiceAppointments</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <isGoTo>true</isGoTo>
+                <targetReference>Screen_CompletePreviousJob</targetReference>
+            </connector>
+            <label>True</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Check whether the Crew selected &quot;Job on hold&quot; as the incompletion reason. If so, set the status of the new service appointment that is cloned to &quot;On Hold&quot;</description>
+        <name>Decision_Check_IncompletionReason_OnHold</name>
+        <label>Check if Incompletion Reason is &quot;On Hold&quot;</label>
+        <locationX>2686</locationX>
+        <locationY>2606</locationY>
+        <defaultConnector>
+            <targetReference>Create_Additional_Revisit_Service_Appointment</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Any other Incompletion Reason</defaultConnectorLabel>
+        <rules>
+            <name>Incompletion_Reason_JobOnHold</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Screen_JobIncomplete_Reason_Picklist</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Job on hold</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_On_Hold_SA_Status_prior_creation</targetReference>
+            </connector>
+            <label>Incompletion Reason is &quot;Job on hold&quot;</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Only if the Work Order Status is &quot;New&quot;, then update the Parent Work Order status accordingly, otherwise only update the Service Appointment Status.</description>
+        <name>Decision_Check_WO_Status_From_Dispatched</name>
+        <label>Check Work Order Status</label>
+        <locationX>652</locationX>
+        <locationY>2642</locationY>
+        <defaultConnector>
+            <targetReference>Update_Service_Appointment_Values</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Any other WO Status</defaultConnectorLabel>
+        <rules>
+            <name>outcome_WO_Status_Check_FromDispatched</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>var_WorkOrder.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>New</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>var_WorkOrder.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Planning</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>var_WorkOrder.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>On Hold</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_all_Child_Work_Order_Line_Items_Travel</targetReference>
+            </connector>
+            <label>WO status is &quot;New&quot;, &quot;Planning&quot; or &quot;On Hold&quot;</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Only if the Work Order Status is &quot;New&quot; or &quot;Planning&quot;, then update the Parent Work Order status accordingly, otherwise only update the Service Appointment Status.</description>
+        <name>Decision_Check_WO_Status_From_Travel</name>
+        <label>Check Work Order Status</label>
+        <locationX>2158</locationX>
+        <locationY>2486</locationY>
+        <defaultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Update_Service_Appointment_Values</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Any other WO Status</defaultConnectorLabel>
+        <rules>
+            <name>outcome_WO_Status_Check_FromTravel</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>var_WorkOrder.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>New</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>var_WorkOrder.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>On Hold</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>var_WorkOrder.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Planning</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_UpdateWOStatus_OnSite</targetReference>
+            </connector>
+            <label>WO status is &quot;New&quot;, &quot;On Hold&quot; or &quot;Planning&quot;</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Check if Field crew selected to extend the time.</description>
+        <name>Decision_CheckForExtendedTime</name>
+        <label>Check for extended time</label>
+        <locationX>1894</locationX>
+        <locationY>1910</locationY>
+        <defaultConnector>
+            <targetReference>Assign_JobNoteDetails_fromPreStartActivities</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No extended time added</defaultConnectorLabel>
+        <rules>
+            <name>outcome_CheckExtendedTimeDecision_ValidTimeAdded</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Screen_PreStartActions_NewEstimatedCompletionTime</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Screen_PreStartActions_NewEstimatedCompletionTime</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <elementReference>var_ServiceAppointment.ActualStartTime</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_ExtendedTime_JobNotes_fromPreStartActivities</targetReference>
+            </connector>
+            <label>Extended time added and valid</label>
+        </rules>
+        <rules>
+            <name>outcome_CheckExtendedTimeDecision_InvalidTimeAdded</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Screen_PreStartActions_NewEstimatedCompletionTime</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Screen_PreStartActions_NewEstimatedCompletionTime</leftValueReference>
+                <operator>LessThan</operator>
+                <rightValue>
+                    <elementReference>var_ServiceAppointment.ActualStartTime</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Screen_NewCompletionTimeInvalid</targetReference>
+            </connector>
+            <label>Extended time added and not valid</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Check whether any Job Notes have been entered by checking if the variable &quot;var_JobNote&quot; is filled. This can happen from the assignment elements after each of the Flow Screens that prompt the user to enter job notes.</description>
+        <name>Decision_CreateJobNotes</name>
+        <label>Create Job Notes?</label>
+        <locationX>2686</locationX>
+        <locationY>3062</locationY>
+        <defaultConnectorLabel>Do not create Job Note</defaultConnectorLabel>
+        <rules>
+            <name>outcome_CreateJobNote</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>var_JobNoteRecord.MSN_JobNote_Details__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Create_new_Job_Note</targetReference>
+            </connector>
+            <label>Create new Job Note</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Determine the Object Type of the Parent Record Id triggering this flow. This is required to avoid having two flows to cater for the following scenarios:
+1) The &quot;Update Status&quot; flow was launched from a Service Appointment that is related to a &quot;Work Order Line Item&quot;
+2) OR The &quot;Update Status&quot; flow was launched from a Service Appointment that is related to a &quot;Work Order&quot;
+
+In order to determine what object type the record Id is from, we find the Object type from the static &quot;Record ID prefix&quot; (first 3 digits of the ID) which is always the same on Standard objects:
+- For Service Appointment, the prefix is:  08p  (this is handed over when a user enters this flow via e.g. the &quot;Update Status&quot; flow)
+- For &quot;Work Order&quot; objects the prefix is: 0WO
+- For &quot;Work Order Line Items&quot; objects the prefix is: 1WL 
+
+It was deliberately chosen to use those static/hardcoded prefixes for the decision outcomes as it only needs to cater to the above 2 cases and respect especially the Field Service Mobile App limitations in regards FSL Mobile Flow capabilities - even though it might not be best practice in general to use hardcoded elements.</description>
+        <name>Decision_DetermineObjectType_ParentRecord</name>
+        <label>Determine Object Type of Parent Record</label>
+        <locationX>3029</locationX>
+        <locationY>614</locationY>
+        <defaultConnector>
+            <targetReference>Screen_UnknownObjectType</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Unknown Object Type</defaultConnectorLabel>
+        <rules>
+            <name>outcome_Parent_Record_Is_WO</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>ParentId</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>0WO</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Work_Order_Id</targetReference>
+            </connector>
+            <label>Work Order</label>
+        </rules>
+        <rules>
+            <name>outcome_Parent_Record_Is_WOLI</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>ParentId</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>1WL</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Parent_WOLI_Details</targetReference>
+            </connector>
+            <label>Work Order Line Item</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Determine the current Status of the Service Appointment triggering this flow and execute the outcomes accordingly.</description>
+        <name>Decision_DetermineSAStatus</name>
+        <label>Determine Service Appointment Status</label>
+        <locationX>3029</locationX>
+        <locationY>1310</locationY>
+        <defaultConnector>
+            <targetReference>Screen_Default_Error</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>outcome_StatusBasedDecision_Dispatched</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>var_ServiceAppointment.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Dispatched</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Open_ServiceAppointments_OnSite</targetReference>
+            </connector>
+            <label>Dispatched</label>
+        </rules>
+        <rules>
+            <name>outcome_StatusBasedDecision_InTravel</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>var_ServiceAppointment.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Travel</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Screen_StatusUpdate_ArrivedOnSite</targetReference>
+            </connector>
+            <label>In Travel</label>
+        </rules>
+        <rules>
+            <name>outcome_StatusBasedDecision_OnSite</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>var_ServiceAppointment.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>On Site</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Decision_WaterOff_or_ServiceNotRestored</targetReference>
+            </connector>
+            <label>On Site</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Depending on the choice selected on the previous screen (Do you want to enter reinstatement details - Yes/No?) either launch the sub-flow or end this flow.</description>
+        <name>Decision_EnterMarkoutDetails</name>
+        <label>Enter Markout Details?</label>
+        <locationX>3478</locationX>
+        <locationY>3950</locationY>
+        <defaultConnectorLabel>Do not enter Subflow</defaultConnectorLabel>
+        <rules>
+            <name>outcome_EnterMarkoutDetailsSubflow</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Screen_EnterReinstatementDetails_EnterReinstatementNowPrompt</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>ch_Yes</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Subflow_Reinstatement_Markout</targetReference>
+            </connector>
+            <label>Enter Markout Subflow</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Check whether the Work Type of the Current Service Appointment (and its Parent WOLI) are flagged as either &quot;Is Reinstatement Work Type&quot; or &quot;Is Markout Work Type&quot; and execute different paths accordingly. If the WorkType is not a Reinstatement work type, then execute the default path and go to the screen &quot;Reinstatement Required&quot;.</description>
+        <name>Decision_IsReinstatementJob</name>
+        <label>Is Reinstatement Job?</label>
+        <locationX>4017</locationX>
+        <locationY>3590</locationY>
+        <defaultConnector>
+            <targetReference>Screen_ReinstatementRequired</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Not a Reinstatement Job</defaultConnectorLabel>
+        <rules>
+            <name>outcome_ReinstatementMarkoutJob</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>var_WorkType.MSN_Is_Reinstatement_Markout__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Decision_Reinstatement_Details_Complete</targetReference>
+            </connector>
+            <label>Reinstatement Markout Job</label>
+        </rules>
+        <rules>
+            <name>outcome_OtherReinstatementJob</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>var_WorkType.MSN_Reinstatement__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Decision_Parent_WO_StartDate_Populated</targetReference>
+            </connector>
+            <label>Other Reinstatement Job</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>This decision caters for the usecase, that a &quot;Update Status&quot; could also be requested from Salesforce Desktop (e.g. by a Job Coordinator) and not only from the Field Service Mobile App. It checks, whether the flow was opened from the Field Service Mobile App or from Desktop at the beginning of the flow. If the variable &quot;Id&quot; is filled it is opened from the Mobile App, if the variable &quot;recordId&quot; is filled, then it was opened from Desktop and then populates the &quot;Id&quot; variable to prevent failure in the next step</description>
+        <name>Decision_OpenedFromMobileOrDesktop</name>
+        <label>Opened from FSL Mobile App or Desktop?</label>
+        <locationX>3029</locationX>
+        <locationY>158</locationY>
+        <defaultConnector>
+            <targetReference>Screen_NoRecordId</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>outcome_OpenedFromMobileApp</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Decision_DetermineObjectType_ParentRecord</targetReference>
+            </connector>
+            <label>Field Service Mobile App</label>
+        </rules>
+        <rules>
+            <name>outcome_OpenedFromDesktop</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>recordId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_recordId_into_Id</targetReference>
+            </connector>
+            <label>Desktop</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Check whether the Parent Record of the Service Appointment triggering this flow was a Work Order or Work Order Line Item. Depending on outcome a different validation for &quot;Open Work Steps&quot; is required and the flow will follow a different path accordingly.</description>
+        <name>Decision_OpenWorkSteps_Validation</name>
+        <label>Open Work Steps Validation</label>
+        <locationX>4017</locationX>
+        <locationY>2342</locationY>
+        <defaultConnector>
+            <targetReference>Get_All_Work_Order_Line_Items_Completed</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Work Order</defaultConnectorLabel>
+        <rules>
+            <name>outcome_ParentIsWorkOrderLineItem_BeforeReinstatementRequired_0</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>var_ParentIsWorkOrderLineItem</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Subflow_CompleteOpenWorkSteps_WOLI</targetReference>
+            </connector>
+            <label>Work Order Line Item</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Check whether the &quot;Start Date&quot; of the parent Work Order has been populated, if not, show an error message. This is required as the flow otherwise cannot set the &quot;End Date&quot; on the Work Order when updating the job status to &quot;Completed&quot;</description>
+        <name>Decision_Parent_WO_StartDate_Populated</name>
+        <label>Is Parent Work Order Start Date Populated?</label>
+        <locationX>4017</locationX>
+        <locationY>4478</locationY>
+        <defaultConnector>
+            <targetReference>Screen_ParentWO_StartDate_Blank</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>False</defaultConnectorLabel>
+        <rules>
+            <name>outcome_Parent_WO_StartDate_Populated_True</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>var_WorkOrder.StartDate</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Screen_JobCompletion</targetReference>
+            </connector>
+            <label>True</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Check whether the flag &quot;Reinstatement Markout Complete&quot; is already set to &quot;true&quot;. If so, skip the validation, if not then prompt the user to open the subflow &quot;Define Reinstatement Scope&quot;.</description>
+        <name>Decision_Reinstatement_Details_Complete</name>
+        <label>Reinstatement Details Complete?</label>
+        <locationX>3676</locationX>
+        <locationY>3710</locationY>
+        <defaultConnector>
+            <targetReference>Decision_Parent_WO_StartDate_Populated</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Markout Details Complete</defaultConnectorLabel>
+        <rules>
+            <name>outcome_MarkoutDetailsNotComplete</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>var_WorkOrder.MSN_Reinstatement_Markout_Complete__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Screen_EnterReinstatementDetails</targetReference>
+            </connector>
+            <label>Markout Details Not Complete</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Determine whether Reinstatement is required for a job or not depending on the users choice in the previous screen.  If so, then launch the subflow &quot;MSN - Field Service Mobile Flow - Request Reinstatement&quot;.</description>
+        <name>Decision_ReinstatementRequired</name>
+        <label>Is Reinstatement Required?</label>
+        <locationX>4358</locationX>
+        <locationY>3830</locationY>
+        <defaultConnector>
+            <targetReference>Decision_Parent_WO_StartDate_Populated</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Reinstatement NOT Required</defaultConnectorLabel>
+        <rules>
+            <name>outcome_ReinstatementRequired</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Screen_ReinstatementRequired_Choice</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>ch_Yes</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Subflow_RequestReinstatement_0</targetReference>
+            </connector>
+            <label>Reinstatement Required</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Validation if the &quot;DueDate&quot; date/time field of the Service Appointment triggering this flow is already in the past. If so, then the flow needs to update the DueDate to a future date/time prior to creating/cloning the new revisit Service Appointment in the subsequent element &quot;Create Additional Revisit Service Appointment&quot;.</description>
+        <name>Decision_SA_DueDate_Expired</name>
+        <label>Check if current SA DueDate is expired</label>
+        <locationX>2686</locationX>
+        <locationY>2030</locationY>
+        <defaultConnector>
+            <targetReference>Get_Work_Type_Details</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>DueDate not expired</defaultConnectorLabel>
+        <rules>
+            <name>outcome_SA_DueDate_expired</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>var_ServiceAppointment.DueDate</leftValueReference>
+                <operator>LessThanOrEqualTo</operator>
+                <rightValue>
+                    <elementReference>$Flow.CurrentDateTime</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_new_DueDate_to_SA_Prior_Creation</targetReference>
+            </connector>
+            <label>DueDate expired</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Check choice selected by the user on the screen &quot;Update Job Status&quot; and handle &quot;Travelling&quot; vs. &quot;Cannot Complete&quot;</description>
+        <name>Decision_StatusDispatched_CheckUpdatedJobStatus</name>
+        <label>Check Updated Job Status - Dispatched</label>
+        <locationX>792</locationX>
+        <locationY>2282</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>outcome_DispatchedDecision_Travelling</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Screen_ConfirmTravel_StatusUpdate_Radiobuttons</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>ch_Travel</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_UpdateSAStatus_FromDispatched</targetReference>
+            </connector>
+            <label>Travelling</label>
+        </rules>
+        <rules>
+            <name>outcome_DispatchedDecision_CannotComplete</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Screen_ConfirmTravel_StatusUpdate_Radiobuttons</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>ch_Incomplete</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <isGoTo>true</isGoTo>
+                <targetReference>Screen_Job_Incomplete</targetReference>
+            </connector>
+            <label>Cannot Complete</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Check choice selected by the user on the screen &quot;Update Job Status&quot; and handle choices &quot;Onsite&quot; vs. &quot;Cannot Complete&quot;</description>
+        <name>Decision_StatusInTravel_CheckUpdatedJobStatus</name>
+        <label>Check Updated Job Status - In Travel</label>
+        <locationX>2488</locationX>
+        <locationY>1550</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>outcome_InTravelDecision_ArrivedOnSite</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Screen_StatusUpdate_ArrivedOnSite_Radiobuttons</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>ch_OnSite</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_UpdateSAStatus_FromTravel</targetReference>
+            </connector>
+            <label>On Site</label>
+        </rules>
+        <rules>
+            <name>outcome_InTravelDecision_CannotComplete</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Screen_StatusUpdate_ArrivedOnSite_Radiobuttons</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>ch_Incomplete</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Screen_Job_Incomplete</targetReference>
+            </connector>
+            <label>Cannot Complete</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Check choice selected by the user on the screen &quot;Update Job Status&quot; and handle choices &quot;Complete&quot; vs. &quot;Cannot Complete&quot;</description>
+        <name>Decision_StatusOnSite_CheckUpdatedJobStatus</name>
+        <label>Check Updated Job Status - On Site</label>
+        <locationX>4473</locationX>
+        <locationY>2222</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>outcome_OnSiteDecision_Complete</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Screen_UpdateJobStatus_Radiobuttons</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>ch_Complete</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Decision_OpenWorkSteps_Validation</targetReference>
+            </connector>
+            <label>Complete</label>
+        </rules>
+        <rules>
+            <name>outcome_OnSiteDecision_CannotComplete</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Screen_UpdateJobStatus_Radiobuttons</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>ch_Incomplete</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <isGoTo>true</isGoTo>
+                <targetReference>Screen_Job_Incomplete</targetReference>
+            </connector>
+            <label>Cannot Complete</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Used to determine the users choice on the previous screen. In case the user chose &quot;Turn on Water&quot; or &quot;Restore Service&quot;</description>
+        <name>Decision_TurnWaterOn_RestoreService</name>
+        <label>Turn Water On/Restore Service?</label>
+        <locationX>4385</locationX>
+        <locationY>1670</locationY>
+        <defaultConnector>
+            <targetReference>Screen_UpdateStatus_OnSite</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Continue without Water On/Service Restore</defaultConnectorLabel>
+        <rules>
+            <name>outcome_Open_Service_Restore_Subflow</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>Screen_Validation_ServiceNotRestored_RadioButtons</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>ch_ServiceRestore</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Screen_Validation_WaterOff_ServiceNotRestored_RadioButtons</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>ch_WaterOnOrServiceRestore</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Subflow_ServiceRestored</targetReference>
+            </connector>
+            <label>Open &quot;Service Restore&quot; Subflow</label>
+        </rules>
+        <rules>
+            <name>outcome_Open_Water_on_off_subflow</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Screen_Validation_WaterOff_ServiceRestoreNotRequired_RadioButtons</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>ch_WaterOn</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Subflow_Water_On_Off</targetReference>
+            </connector>
+            <label>Open Water on/off&quot; subflow</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Decision_WaterOff_or_ServiceNotRestored</name>
+        <label>Water Off or Service Not Restored</label>
+        <locationX>4473</locationX>
+        <locationY>1430</locationY>
+        <defaultConnector>
+            <targetReference>Screen_UpdateStatus_OnSite</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>outcome_WaterOffServiceNotRestored</name>
+            <conditionLogic>((1 AND (2 OR 3)) AND 4)</conditionLogic>
+            <conditions>
+                <leftValueReference>var_WorkOrder.Water_On_Off_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Off</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>var_WorkOrder.Has_the_service_been_restored__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>No</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>var_WorkOrder.Has_the_service_been_restored__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>var_WorkOrder.MSN_Service_Restore_Required__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Screen_Validation_WaterOff_ServiceNotRestored</targetReference>
+            </connector>
+            <label>Water off and Service not restored</label>
+        </rules>
+        <rules>
+            <name>outcome_WaterOn_Null_ServiceNotRestored</name>
+            <conditionLogic>((1 or 5) AND (2 OR 3)) AND 4</conditionLogic>
+            <conditions>
+                <leftValueReference>var_WorkOrder.Water_On_Off_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>On</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>var_WorkOrder.Has_the_service_been_restored__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>No</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>var_WorkOrder.Has_the_service_been_restored__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>var_WorkOrder.MSN_Service_Restore_Required__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>var_WorkOrder.Water_On_Off_Status__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Screen_Validation_ServiceNotRestored</targetReference>
+            </connector>
+            <label>Water On or Null - but Service Not Restored</label>
+        </rules>
+        <rules>
+            <name>outcome_WaterOff_ServiceRestoreNotRequired</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>var_WorkOrder.MSN_Service_Restore_Required__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>var_WorkOrder.Water_On_Off_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Off</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Screen_Validation_WaterOff_ServiceRestoreNotRequired</targetReference>
+            </connector>
+            <label>Water off and Service Restore not required</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Check whether the Parent Record of the Service Appointment triggering this flow was a Work Order Line Item. If yes, update the WOLI Status, but do NOT update the Work Order Status in the subsequent decision. If no, then update the Work Order Status only.</description>
+        <name>Decision_WorkOrderLineItem_FromDispatched</name>
+        <label>Is Parent a Work Order Line Item?</label>
+        <locationX>351</locationX>
+        <locationY>2522</locationY>
+        <defaultConnector>
+            <targetReference>Decision_Check_WO_Status_From_Dispatched</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Work Order</defaultConnectorLabel>
+        <rules>
+            <name>outcome_ParentIsWorkOrderLineItem_FromDispatched</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>var_ParentIsWorkOrderLineItem</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_UpdateWOLIStatus_FromTravel</targetReference>
+            </connector>
+            <label>Is Work Order Line</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Check whether the Parent Record of the Service Appointment triggering this flow was a Work Order Line Item. If yes, update the WOLI Status, but do NOT update the Work Order Status in the subsequent decision. If no, then update the Work Order Status only.</description>
+        <name>Decision_WorkOrderLineItem_FromOnSite</name>
+        <label>Is Parent a Work Order Line Item?</label>
+        <locationX>3819</locationX>
+        <locationY>4838</locationY>
+        <defaultConnector>
+            <targetReference>Assign_UpdateWO_EndDate</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Work Order</defaultConnectorLabel>
+        <rules>
+            <name>outcome_ParentIsWorkOrderLineItem_FromOnSite</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>var_ParentIsWorkOrderLineItem</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_UpdateWOLIStatus_FromTravel_0</targetReference>
+            </connector>
+            <label>Is Work Order Line</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Check whether the Parent Record of the Service Appointment triggering this flow was a Work Order Line Item. If yes, update the WOLI Status, but do NOT update the Work Order Status in the subsequent decision. If no, then update the Work Order Status only.</description>
+        <name>Decision_WorkOrderLineItem_FromTravel</name>
+        <label>Is Parent a Work Order Line Item?</label>
+        <locationX>1894</locationX>
+        <locationY>2366</locationY>
+        <defaultConnector>
+            <targetReference>Decision_Check_WO_Status_From_Travel</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Work Order</defaultConnectorLabel>
+        <rules>
+            <name>outcome_ParentIsWorkOrderLineItem_FromTravel</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>var_ParentIsWorkOrderLineItem</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Decision_WorkOrderLineItem_UpdateRecord_Validation</targetReference>
+            </connector>
+            <label>Is Work Order Line</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Check whether the Parent Record of the Service Appointment triggering this flow was a Work Order Line Item. If yes, execute the Update Work Order Line Item element.</description>
+        <name>Decision_WorkOrderLineItem_UpdateRecord_Validation</name>
+        <label>Is Parent a Work Order Line Item?</label>
+        <locationX>1630</locationX>
+        <locationY>2486</locationY>
+        <defaultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Update_Service_Appointment_Values</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Work Order</defaultConnectorLabel>
+        <rules>
+            <name>outcome_ParentIsWorkOrderLineItem_UpdateRecord_Validation</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>var_ParentIsWorkOrderLineItem</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_WorkOrderLineItem_Values</targetReference>
+            </connector>
+            <label>Is Work Order Line</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Check wheter the previous &quot;Get all Work Order Line Items&quot; element found WOLIs. If yes, continue into looping over the WOLI collection variable, if not then continue with checking for Work Steps against the parent Work Order only.</description>
+        <name>Decision_WorkOrderLineItems_Exist</name>
+        <label>Work Order Line Items exist?</label>
+        <locationX>4247</locationX>
+        <locationY>2582</locationY>
+        <defaultConnector>
+            <targetReference>Subflow_CompleteOpenWorkSteps_WO_Only</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No Work Order Line Items</defaultConnectorLabel>
+        <rules>
+            <name>outcome_WOLI_exist</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>var_WorkOrderLineItem_Collection</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Loop_over_WorkOrderLineItems</targetReference>
+            </connector>
+            <label>Work Order Line Items exist</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Check whether the previous &quot;Get all Work Order Line Items&quot; element found WOLIs. If yes, continue into looping over the WOLI collection variable, if not then continue without any action.</description>
+        <name>Decision_WorkOrderLineItems_Exist_Travel</name>
+        <label>Work Order Line Items exist?</label>
+        <locationX>510</locationX>
+        <locationY>2882</locationY>
+        <defaultConnector>
+            <targetReference>Assign_UpdateWOFields_Travel</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No Work Order Line Items</defaultConnectorLabel>
+        <rules>
+            <name>outcome_WOLI_exist_travel</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>var_WorkOrderLineItem_Collection</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Loop_over_WorkOrderLineItems_Travel</targetReference>
+            </connector>
+            <label>Work Order Line Items exist</label>
+        </rules>
+    </decisions>
+    <description>https://watercarestp.atlassian.net/browse/MSRS-84. Used in the Field Service Mobile App as an &quot;Action&quot; item for field staff to quickly update Service Appointment details such as indicating their travel or on-site status,  confirm the pre-start check and canceling a job when they cannot complete it.
+
+Version 19: this flow includes additional checks prior to completion, whether any &quot;Work Steps&quot; have not been completed, and throws an error message if so. 
+
+Version 40: the Incomplete path now includes the creation of an additional revisit Service Appointment after the field crew set an appointment to &quot;cannot complete&quot;.
+
+Version 46:  &quot;Set new completion time&quot; on the screen &quot;Complete Prestart Activities&quot; is now mandatory; Changed label of the formula &quot;Add_Duration&quot; to &quot;fx_Estimated_JobCompletionTime&quot;
+
+05/01/22 - Version 47: Add functionality to set Work Order to “Incomplete” on Screens &quot;Confirm Travel&quot; and &quot;Confirm On-Site&quot; as of User Feedback/Requirement in Ticket MSRS-183; Remove checkbox &quot;Can&apos;t complete job&quot; on Screen &quot;Complete Prestart Actions&quot; and Remove Decision Outcome &quot;Incomplete&quot; in Decision &quot;Check for extended time&quot; (to make incompletion path consistent with Radiobuttons only on status update)
+
+06/01/22 - Version 48: Added a new Get Record Element &quot;Get Original Work Type Details&quot; in order to retrieve the original &quot;Duration&quot; and &quot;Duration Type&quot; prior to cloning the Service Appointment when the user sets the status of the triggering SA to &quot;Cannot Complete&quot;.
+07/01/22 - Version 48: Added three assignment resources to assign the status, start date and completed date on the WO. SA status is the custom field on WO that will be updated based on the SA status. Start date will be updated when the status is in travel. Completed date will be updated when the status is completed which is the actual end date on SA.
+
+14/01/22 - Version 49: Added requirements from https://watercarestp.atlassian.net/browse/MSRS-230: When user enteres any &quot;Job Notes&quot; fields on the screens, this will now create a new record of the &quot;Job Notes&quot; object instead of just overwriting the text field &quot;MSN_Job_Notes__c&quot; on Work Order; Removed update records element &quot;Update SA Status and Start Dates&quot; as this led to issues with the &quot;Pre Start Activities&quot; screen where users were able NOT to enter required data if they opened up the &quot;Powerapps&quot; app via the external link and then couldn&apos;t get back to the pre-start activities screen. Cleaned up all API Labels for Decisions and Assignments to make them consistent.
+
+14/01/22 - V50: Cleaned up the flow, renamed all inconsistent variables/elements, deleted unused components and variables
+
+14/01/22 - V51: Added a new decision logic and error path into the decision &quot;Decision_CheckForExtendedTime&quot; in order to prevent users from updating the &quot;Estimated Job Completion Time&quot; to a value in the past.
+
+19/01/22 - V53: Updating the Work Order Status to In progress when SA is in Travel
+
+20/01/22 - V61: Ashwini to detail out what exactly was added (decision elements etc.)
+
+20/01/22 - V62/63: Added launch sub-flow &quot;MSN - Field Service Mobile App - Answer Open Work Steps&quot; under branch &quot;On-Site &gt; Completed&quot;, after decision element &quot;Check for open Work Steps&quot; and outcome &quot;Open Work Steps Exist&quot;. This enables the user to directly answer any open Work Steps from the sub-flow without having to close the current flow, navigate to the tab &quot;Work Plan&quot; and enter every single open Work Step separately;  Added hint text into screen &quot;Update Job Status&quot; (on branch On-site) to make it consistent with the other status update screens.
+
+31/01/2022- V65-69: New Validation decision that water needs to be turned on and/or service restored before completion
+
+18/02/2022- V70: Adding new decision split for &quot;Reinstatement&quot; as a part of job completion. If reinstatement is required then call another subflow; Attempt to connect the &quot;Complete Open Worksteps&quot; subflow back to the &quot;Get Open Worksteps&quot; get element so that users don&apos;t have to reopen the job completion flow manually if they finished answering all open work steps; Renamed the choices Yes/No to make  them universally available and added description into all choice values; Added an &quot;Or&quot; condition into the Decision Element &quot;Check WO is new&quot; on the update status &quot;onsite&quot; branch and check for either WO Status &quot;New&quot; or &quot;In Progress&quot;.
+
+18/02/2022 - V71: Changed Reconnection of Subflow &quot;Complete Open Worksteps&quot; to the &quot;Reinstatement Required?&quot; Screen; Changed Helptext within &quot;Reinstatement Required?&quot; screen to choice element, as copy text was showing with HTML code artefacts on mobile app.
+
+
+18/02/2022 - V72: Built validation functionality to check whether the flow was opened from Mobile App or Desktop salesforce using the Decision Element &quot;Opened from FSL Mobile App or Desktop&quot; and the following assignment element; Added a &quot;ParentId&quot; variable in order to prepare for an extension of the flow to be able to cater for WOLIs as Parent records as well (instead only Work Orders).
+
+22/02/2022 - V73:  Built extension of the flow to be able to cater for WOLIs as Parent records as well (instead only Work Orders). Implemented additional Decision logic to determine Object Type of Parent Record at beginning of flow; Update all references where &quot;var_ServiceAppointment&gt;ParentRecordId&quot; was used and replaced it with a new Variable &quot;WorkOrderId&quot;.
+
+22/02/2022 - V74/75: Amend all assignment elements that reference Job Notes with and assign var_JobNote_Record variable&gt;WorkOrderLineItem__c with the ID of the Work Order Line Item (if existent) in order to additionally relate Job Note record to the WOLI and make it visible for the Mobile App user on the related tab of a WOLI record.
+
+23/02/2022 - V76: Changed &quot;Add Photo&quot; components within Prestart Activities, Job Completion screen to use &quot;ParentId&quot; variable. This will make sure that photos get attached to the correct Parent Record of the Service Appointment for WO or WOLIs as well.
+
+23/02/2022 - V77/78: Changed Assignment of WOLI Parent Record Id directly to variable &quot;WorkOrderId&quot;  and WOLI Record Id to &quot;WorkOrderLineItemsID&quot; in &quot;Get WOLI Details and Assign Parent Id&quot; element, as on mobile app the creation of Job Notes did not work.
+
+23/02/2022 - V79: Reverted &quot;Add Photo&quot; components within Prestart Activities, Job Completion screen to use &quot;WorkOrderId&quot; variable. This will make sure that photos always get attached to the correct Parent Work Order (even if the SA is linked to a WOLI).
+
+23/02/2022 - V79/80: Integrated the functionality to update the WOLI Status and Start/End Date; Included multiple Decision Elements to check whether the Parent Work Order is a &quot;WOLI&quot; and only if yes, update the Work Order Line Item Status and not the Work Order, otherwise only the Work Order 
+
+23/02/2022 - V81: Integrated the &quot;Markout&quot; Process that opens the sub flow &quot;MSN - FSMA - Reinstatement Scope&quot; when the Work Type of the current WOLI is &quot;Markout&quot;. Introduced new Variable &quot;var_WorkOrderLineItem_WorkTypeId&quot;, Additonal Decision Elements  before &quot;Reinstatement Required&quot; decision to differentiate between WO and WOLI parent records and whether to launch the Markout sub flow.
+
+08/3/2022 - V82/83: Completely changed the Validation for &quot;Open Work Steps&quot; in order to cater for Multiple Work Plans/Work Steps created against Work Order Line Items that are child to a work order (e.g. when added in a reactive job). Instead of checking the Open Work Steps directly in this flow, it uses the subflow &quot;Complete All Open WorkSteps&quot; instead; Introduced &quot;Get Work Order Line Items&quot; element and Loop &quot;Loop over Work Order Line Items&quot; in order to retrieve the Record Ids of the WOLIs that need to be checked for open work steps.
+
+18/03/2022 - V84:   Update element &quot;Update SA Status and Job Completion Values&quot; to update the &quot;scheduled end time&quot; on job completion to the current end time/date as well (as of https://watercarestp.atlassian.net/browse/MSRS-651); Remove assignment of &quot;SA Status&quot; field on work order in all &quot;Update WO Status and End Date&quot; elements
+
+18/03/2022 - V85/86:  Rework and Enhance &quot;Water on/off and Service REstore&quot; Validation to check for new Water on/off and Service 
+Restore picklist fields; Include new &quot;SErvice Type&quot; (water, wastewater etc.) into Validation as well to make sure certain scenarios only trigger when its a &quot;water&quot; job.
+
+18/03/2022 - V87: Added the &quot;Get Water On/Off &amp; Service Restore Status&quot; Get element after the decision &quot;Turn Water On/Restore Service&quot; after experiencing problems in the mobile app not being able to validate whether the subflow updated the Water On/Off or Service Restore Status
+
+18/03/2022 - V88/89:  Reworked the decision logic for the &quot;Water on/off and Service Restore&quot; validation; replace the &quot;Other Onsite Activities&quot; subflow with the direct links to &quot;Water On/Off&quot; and &quot;Service Restore&quot; after experiencing problems with the mobile app not getting the updated Water on/off status or service restore status from the subflow.
+
+18/03/2022 - V90:  Remove any changes from V85-88 in order to be able to deploy changes from V84 separately. Update element &quot;Update SA Status and Job Completion Values&quot; to update the &quot;scheduled end time&quot; on job completion to the current end time/date as well (as of https://watercarestp.atlassian.net/browse/MSRS-651); Remove assignment of &quot;SA Status&quot; field on work order in all &quot;Update WO Status and End Date&quot; elements
+
+22/03/2022 - V91: Continue with Changes for &quot;Water On/Off&quot; and &quot;Service Restore&quot; Validation made in V88/98 in a separate version.
+
+22/03/2022 - V92: Reworked the Validation for &quot;Reinstatement Required&quot; and &quot;Reinstatement Markout&quot; ( https://watercarestp.atlassian.net/browse/MSRS-595). Integrated a new field &quot;Reinstatement Markout Complete&quot; into the Get Work Order Details element which is then used in the validation for Reinstatement Markout later.
+
+23/03/2022 - V93: Removed mandatory option for &quot;Job Notes&quot; on last &quot;Job Completion&quot; screen
+
+23/03/2022 - V94:  Changed copy text on both screens &quot;Reinstatement Required?&quot; and &quot;Enter Reinstatement Details&quot;
+
+23/03/2022 - V95: Implement changes for &quot;Set job on hold&quot; as specified in https://watercarestp.atlassian.net/browse/MSRS-323; Extend &quot;Cannot Complete&quot; flow to offer another status reason choice &quot;Job on hold&quot; ; In this case, create a new Service Appointment in the status &quot;On Hold&quot; for Job Coordinators to manually review;  New Decision Element &quot;Check if Incompletion Reason is &quot;On Hold&quot;&quot; and subsequent assignment element &quot;Assign &quot;On Hold&quot; SA Status prior creation&quot;;  Update the subflow to &quot;Water On/Off&quot; to a new version of the flow after renaming the subflow.
+
+23/03/2022 - V96:  Update &quot;Get Work Order Record Details&quot; element after getting an error on the Field Service Mobile app that the field &quot;Has the service been restored&quot; could not be found.
+
+23/03/2022 - V97:  Updated the subflow element &quot;Water On/Off&quot; again to reflect the originally used flow version.
+
+01/04/2022 - V98:  Amended the Validation/Decision Element &quot;Water on/off or Service not Restored&quot; according to requirements in https://watercarestp.atlassian.net/browse/MSRS-671
+
+04/04/2022 - V99:  Added field &quot;MSN_WorkType_ServiceRestore_Required&quot; to Get Element &quot;Get Work Order Details&quot; 
+
+04/04/2022 - V100:  Simplified decision element &quot;Water on/off or Service not restored&quot;; Removed differentiation of &quot;water&quot; and &quot;wastewater&quot; service area and only check for &quot;service restore required&quot; and different combinations of &quot;water on/off&quot; and &quot;service restored&quot; flag status.
+
+06/04/2022 - V101: Enhanced the Decision Element &quot;Check for open Work Steps&quot; by adding another sub-decision that checks whether Work Order Line Items exist after the &quot;Get all Work Order Line Items&quot; element. If so, the decision continues into the subsequent loop element and loops over the WOLI collection, if no WOLIs exist, then the path directly continues and opens the subflow &quot;Complete all open Work Steps&quot; by handing over the Service Appointment / Parent Work Order id instead only. This is required, as a potential scenario was identified, where a Work Order might not be related to an Asset (such as a Reinstatement Job, Traffic Management) and hence the Work Steps (especially Schedule Items) would only be related to the Work Order, but not to a WOLI which usually is the case when working with Assets.
+
+08/04/2022 - V102: Apply bugfix as outlined in https://watercarestp.atlassian.net/browse/MSRS-760 . Extended the &quot;Cannot Complete&quot; path to check for an expired &quot;DueDate&quot; of the Service Appointment triggering this flow, to prevent that an error message is thrown when the flow attempts to clone/create a new revisit Service Appointment
+
+11/04/22 - V103  Addressing an issue when part of the &quot;Work Step&quot; records are only related to the Work Order, when others are related to the Work Order Line Items; Additionally connected the &quot;Loop over Work Order Line Items&quot; loop to the &quot;Open &quot;Complete Open Work Steps&quot; Subflow - WO Only&quot; subflow after the last step, in order to check, whether there are any remaining open work steps against the Work Order as well.
+
+02/05/2022 - V104: Remove the radio button option &quot;Cannot Complete&quot; when updating the job status from &quot;Dispatched&quot; to &quot;Travel&quot; as requested in https://watercarestp.atlassian.net/browse/MSRS-883
+
+05/05/2022 - V105: Added Logic in the job completion path to Update a Work Order Line Item Status to &quot;Complete&quot; if all related Work Steps have been completed by adding the Update Element &quot;Update WOLI Status to Complete&quot; in the Loop &quot;Loop over Work Order Line Items&quot;. See details also under https://watercarestp.atlassian.net/browse/MSRS-998.
+
+11/05/2022 - V106:  Added a new decision logic before &quot;Confirm job information before closing&quot;  to check for blank &quot;Start Date&quot; on the parent Work Order prior to attempting to update the SA Status to &quot;Completed&quot;. This is required when a Job Coordinator attempts to use this flow from the desktop on behalf of a crew and didn&apos;t set the status &quot;Travel&quot; using this flow, but directly using the path on the SA in desktop Salesforce (which then does not populate the field &quot;Start Date&quot; on the parent WO).
+
+16/05/2022 - V113/114: Added new Validation Logic in the &quot;Dispatched&quot; Path to determine whether another still open Service Appointment  is still assigned to the same ressource and needs completion before starting a new service appointment; Removed the field &quot;SA_Status__c&quot; from the Get Work Order Details element as field has been removed from environments.
+V21- Adding the output values from the subflow- has service been restored
+
+17/08/2022 - V122: Added the new Work Order Status Value &quot;Planning&quot; into the Workorder Status Check Decision Elements (Branches &quot;Dispatched&quot; and &quot;Travel&quot;) as requested in https://watercarestp.atlassian.net/browse/MSRS-1929
+
+23/08/2022 - V123: Removing the letter drop fields; Removed the &quot;Service Restore Time&quot; field from the Get Work Order Details field
+
+19/12/2022 - V124:  Amend the Element &quot;Update WOLI Field &quot;Status&quot; and &quot;End Date&quot;&quot;; Status will now be updated to &quot;Ready for review&quot; and additionally the &quot;End Date&quot; on the WOLI will be populated as well, as of Integration requirements in order to complete a Child Work Order Successfully; Added logic in the &quot;Travel&quot; branch to also update the Status and Start Date of any related &quot;WOLIs&quot; to a Parent Work Order with a Get and Loop element;</description>
+    <dynamicChoiceSets>
+        <description>Lists choices from the Service Appointment picklist field &quot;Incompletion Reason&quot;</description>
+        <name>pickCh_IncompletionReasons</name>
+        <dataType>Picklist</dataType>
+        <displayField xsi:nil="true"/>
+        <object xsi:nil="true"/>
+        <picklistField>MSN_Incompletion_Reason__c</picklistField>
+        <picklistObject>ServiceAppointment</picklistObject>
+    </dynamicChoiceSets>
+    <environments>Default</environments>
+    <formulas>
+        <description>Calculates the time from &quot;Actual Start Date&quot; to the current date/time in order to show this to the mobile user on the &quot;Complete Service Appointment&quot; screen.</description>
+        <name>fx_ActualDuration</name>
+        <dataType>Number</dataType>
+        <expression>(NOW()-{!var_ServiceAppointment.ActualStartTime})*24*60</expression>
+        <scale>0</scale>
+    </formulas>
+    <formulas>
+        <description>This formula is used in the &quot;Cannot Complete&quot; path, in case the &quot;Due Date&quot; of the Service Appointment triggering this flow is already in the past. If so, the flow will update the DueDate to a new date/time in the future, as otherwise, this would lead to an error message when the flow tries to create/clone a new followup Service Appointment on incompletion.</description>
+        <name>fx_Calculate_New_Revisit_SA_DueDate</name>
+        <dataType>DateTime</dataType>
+        <expression>{!$Flow.CurrentDateTime}+3</expression>
+    </formulas>
+    <formulas>
+        <description>Calculates the estimated new &quot;End Time&quot; from the current Date/Time + the original Duration of the Service Appointment. This is shown on the &quot;Pre Start Activities&quot; screen prior asking the user if they want to extend the End Time for the current job.</description>
+        <name>fx_Estimated_JobCompletionTime</name>
+        <dataType>DateTime</dataType>
+        <expression>{!$Flow.CurrentDateTime}+({!var_ServiceAppointment.Duration}/1440)</expression>
+    </formulas>
+    <interviewLabel>MSN Update Status {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>MSN - Field Service Mobile App - Update Status</label>
+    <loops>
+        <description>Loop over the queried Work Order line Items in order to hand their Record Ids over to the &quot;Complete all open work Steps&quot; subflow to check for any open work steps.</description>
+        <name>Loop_over_WorkOrderLineItems</name>
+        <label>Loop over Work Order Line Items</label>
+        <locationX>4139</locationX>
+        <locationY>2702</locationY>
+        <assignNextValueToReference>var_WorkOrderLineItem_LoopVariable</assignNextValueToReference>
+        <collectionReference>var_WorkOrderLineItem_Collection</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Subflow_CompleteOpenWorkSteps_WO</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Subflow_CompleteOpenWorkSteps_WO_Only</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <description>Loop over the queried Work Order line Items in order to update their &quot;status&quot; and &quot;start date&quot; accordingly.</description>
+        <name>Loop_over_WorkOrderLineItems_Travel</name>
+        <label>Loop over Work Order Line Items</label>
+        <locationX>402</locationX>
+        <locationY>3002</locationY>
+        <assignNextValueToReference>var_WorkOrderLineItem_LoopVariable</assignNextValueToReference>
+        <collectionReference>var_WorkOrderLineItem_Collection</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Update_WOLI_Status_StartDate_Travel</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Assign_UpdateWOFields_Travel</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>FieldServiceMobile</processType>
+    <recordCreates>
+        <description>After a Service Appointment has been set to &quot;Incomplete&quot;, the flow creates a follow-up &quot;revisit&quot; Service Appointment for Job Coordinators to schedule/dispatch.  Please note: currently the &quot;Auto-Schedule&quot; flag is not set, but could be utilized in the future.</description>
+        <name>Create_Additional_Revisit_Service_Appointment</name>
+        <label>Create Additional Revisit Service Appointment</label>
+        <locationX>2686</locationX>
+        <locationY>2942</locationY>
+        <connector>
+            <targetReference>Decision_CreateJobNotes</targetReference>
+        </connector>
+        <inputReference>var_ServiceAppointment</inputReference>
+    </recordCreates>
+    <recordCreates>
+        <description>Creates a new record of the object &quot;Job Note&quot; using the variable &quot;var_JobNote&quot; which is filled from assignment elements after each Flow Screen that prompts the user to enter notes.</description>
+        <name>Create_new_Job_Note</name>
+        <label>Create new Job Note</label>
+        <locationX>2554</locationX>
+        <locationY>3182</locationY>
+        <inputReference>var_JobNoteRecord</inputReference>
+    </recordCreates>
+    <recordLookups>
+        <description>Get the Ids of all child Work Order Line Items to this Work Order - in order to set a required &quot;Start Date&quot; on the WOLI as soon as the Field Crew updates the SA status to &quot;Travel&quot;.</description>
+        <name>Get_all_Child_Work_Order_Line_Items_Travel</name>
+        <label>Get all Child Work Order Line Items - Travel</label>
+        <locationX>510</locationX>
+        <locationY>2762</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Decision_WorkOrderLineItems_Exist_Travel</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>WorkOrderId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>var_WorkOrderId</elementReference>
+            </value>
+        </filters>
+        <object>WorkOrderLineItem</object>
+        <outputReference>var_WorkOrderLineItem_Collection</outputReference>
+        <queriedFields>Id</queriedFields>
+        <sortField>CreatedDate</sortField>
+        <sortOrder>Asc</sortOrder>
+    </recordLookups>
+    <recordLookups>
+        <description>Get the Ids of all child Work Order Line Items to this Work Order - prior to checking for open Work Steps on each of them.</description>
+        <name>Get_All_Work_Order_Line_Items_Completed</name>
+        <label>Get all Child Work Order Line Items</label>
+        <locationX>4247</locationX>
+        <locationY>2462</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Decision_WorkOrderLineItems_Exist</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>WorkOrderId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>var_WorkOrderId</elementReference>
+            </value>
+        </filters>
+        <object>WorkOrderLineItem</object>
+        <outputReference>var_WorkOrderLineItem_Collection</outputReference>
+        <queriedFields>Id</queriedFields>
+        <sortField>CreatedDate</sortField>
+        <sortOrder>Asc</sortOrder>
+    </recordLookups>
+    <recordLookups>
+        <description>Get all Service Appointment that are still in the status &quot;On Site&quot; and are assigned to the same Service Ressource as the Service Appointment that triggered this flow (which still is in the status &quot;Dispatched&quot;)</description>
+        <name>Get_Open_ServiceAppointments_OnSite</name>
+        <label>Get Open Service Appointments - On Site</label>
+        <locationX>792</locationX>
+        <locationY>1430</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Decision_Check_for_open_SAs_OnSite</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>FSSK__FSK_Assigned_Service_Resource__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>var_ServiceAppointment.FSSK__FSK_Assigned_Service_Resource__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>On Site</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Scheduled_Date__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Flow.CurrentDate</elementReference>
+            </value>
+        </filters>
+        <object>ServiceAppointment</object>
+        <outputReference>var_Open_ServiceAppointments</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Status</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <description>Get all Service Appointment that are still in the status &quot;Travel&quot; and are assigned to the same Service Ressource as the Service Appointment that triggered this flow (which still is in the status &quot;Dispatched&quot;)</description>
+        <name>Get_Open_ServiceAppointments_Travel</name>
+        <label>Get Open Service Appointments - Travel</label>
+        <locationX>990</locationX>
+        <locationY>1670</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Decision_Check_for_open_SAs_Travel</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>FSSK__FSK_Assigned_Service_Resource__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>var_ServiceAppointment.FSSK__FSK_Assigned_Service_Resource__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Travel</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Scheduled_Date__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Flow.CurrentDate</elementReference>
+            </value>
+        </filters>
+        <object>ServiceAppointment</object>
+        <outputReference>var_Open_ServiceAppointments</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Status</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <description>If this flow is triggered from Desktop Salesforce, then lookup the Parent Record Id (usually either a Work Order or Work Order Line Item) and assign the result into the &quot;ParentId&quot; variable in order to make the following mobile flow compatible with Desktop Salesforce as well.</description>
+        <name>Get_Parent_RecordId</name>
+        <label>Get Parent Record Id</label>
+        <locationX>2985</locationX>
+        <locationY>398</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Decision_DetermineObjectType_ParentRecord</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Id</elementReference>
+            </value>
+        </filters>
+        <object>ServiceAppointment</object>
+        <outputAssignments>
+            <assignToReference>ParentId</assignToReference>
+            <field>ParentRecordId</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <description>Get Details from the Parent Work Order Record (either related to the Service Appointment Directly or via the Work Order Line Item). Used to update fields of the Work Order Later in the Flow.</description>
+        <name>Get_Parent_WO_Details</name>
+        <label>Get Work Order Details</label>
+        <locationX>3029</locationX>
+        <locationY>1070</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Service_Appointment_Details</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>var_WorkOrderId</elementReference>
+            </value>
+        </filters>
+        <object>WorkOrder</object>
+        <outputReference>var_WorkOrder</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Travel_Start__c</queriedFields>
+        <queriedFields>EndDate</queriedFields>
+        <queriedFields>StartDate</queriedFields>
+        <queriedFields>Status</queriedFields>
+        <queriedFields>Water_On_Off_Status__c</queriedFields>
+        <queriedFields>MSN_WorkType_ServiceArea__c</queriedFields>
+        <queriedFields>MSN_Reinstatement_Markout_Complete__c</queriedFields>
+        <queriedFields>Has_the_service_been_restored__c</queriedFields>
+        <queriedFields>MSN_Service_Restore_Required__c</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <description>Get Details from the Parent Work Order Line Items Record. Used to update fields of the Parent Work Order Later in the Flow later and also to retrieve the Parent Work Order Id of the WOLI.</description>
+        <name>Get_Parent_WOLI_Details</name>
+        <label>Get WOLI Details and assign IDs</label>
+        <locationX>3029</locationX>
+        <locationY>734</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Assign_IsWorkOrderLineItem_Variable_true</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>ParentId</elementReference>
+            </value>
+        </filters>
+        <object>WorkOrderLineItem</object>
+        <outputAssignments>
+            <assignToReference>var_WorkOrderLineItemId</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_WorkOrderId</assignToReference>
+            <field>WorkOrderId</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <description>Lookup records details from the Service Appointment triggering this flow. The Record Id is handed over by the Field Service Lightning App into the Variable &quot;Id&quot; and for desktop is populated in the step before from &quot;recordId&quot;</description>
+        <name>Get_Service_Appointment_Details</name>
+        <label>Get Service Appointment Details</label>
+        <locationX>3029</locationX>
+        <locationY>1190</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Decision_DetermineSAStatus</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Id</elementReference>
+            </value>
+        </filters>
+        <object>ServiceAppointment</object>
+        <outputReference>var_ServiceAppointment</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Status</queriedFields>
+        <queriedFields>StatusCategory</queriedFields>
+        <queriedFields>ParentRecordId</queriedFields>
+        <queriedFields>ActualDuration</queriedFields>
+        <queriedFields>Priority__c</queriedFields>
+        <queriedFields>WorkTypeId</queriedFields>
+        <queriedFields>Key_Customer__c</queriedFields>
+        <queriedFields>Dialysis_Patient__c</queriedFields>
+        <queriedFields>MSN_Revisit__c</queriedFields>
+        <queriedFields>Description</queriedFields>
+        <queriedFields>Job_Notes__c</queriedFields>
+        <queriedFields>Flat__c</queriedFields>
+        <queriedFields>Address</queriedFields>
+        <queriedFields>ServiceTerritoryId</queriedFields>
+        <queriedFields>SideOfStreet__c</queriedFields>
+        <queriedFields>Street</queriedFields>
+        <queriedFields>City</queriedFields>
+        <queriedFields>State</queriedFields>
+        <queriedFields>PostalCode</queriedFields>
+        <queriedFields>EarliestStartTime</queriedFields>
+        <queriedFields>DueDate</queriedFields>
+        <queriedFields>ArrivalWindowStartTime</queriedFields>
+        <queriedFields>ArrivalWindowEndTime</queriedFields>
+        <queriedFields>SchedStartTime</queriedFields>
+        <queriedFields>SchedEndTime</queriedFields>
+        <queriedFields>Duration</queriedFields>
+        <queriedFields>DurationType</queriedFields>
+        <queriedFields>Inline_Due_Date__c</queriedFields>
+        <queriedFields>Powerapps__c</queriedFields>
+        <queriedFields>FSSK__FSK_Work_Order__c</queriedFields>
+        <queriedFields>MSN_Previous_Service_Appointment__c</queriedFields>
+        <queriedFields>ActualStartTime</queriedFields>
+        <queriedFields>MSN_TravelStart__c</queriedFields>
+        <queriedFields>FSSK__FSK_Assigned_Service_Resource__c</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <description>Retrieve original &quot;Duration&quot; and &quot;Duration type&quot; from the Work Type the current Service Appointment is related to</description>
+        <name>Get_Work_Type_Details</name>
+        <label>Get Original Work Type Details</label>
+        <locationX>2686</locationX>
+        <locationY>2366</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Assign_Values_for_Revisit_Service_Appointment</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>var_ServiceAppointment.WorkTypeId</elementReference>
+            </value>
+        </filters>
+        <object>WorkType</object>
+        <outputReference>var_WorkType</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>DurationType</queriedFields>
+        <queriedFields>EstimatedDuration</queriedFields>
+        <queriedFields>DurationInMinutes</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <description>Retrieve &quot;Is Reinstatement&quot; and &quot;Is Markout Work Type&quot; Flag from the Work Type the current Service Appointment is related to.</description>
+        <name>Get_WorkType_Details_ReinstatementValidation</name>
+        <label>Get Work Type Details for Reinstatement Validation</label>
+        <locationX>4017</locationX>
+        <locationY>3470</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Decision_IsReinstatementJob</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>var_ServiceAppointment.WorkTypeId</elementReference>
+            </value>
+        </filters>
+        <object>WorkType</object>
+        <outputReference>var_WorkType</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>MSN_Is_Reinstatement_Markout__c</queriedFields>
+        <queriedFields>MSN_Reinstatement__c</queriedFields>
+    </recordLookups>
+    <recordUpdates>
+        <description>After the Assignment of any changes on the Service Appointment record collection variable, update the Service Appointment record.</description>
+        <name>Update_Service_Appointment_Values</name>
+        <label>Update Service Appointment Values</label>
+        <locationX>3029</locationX>
+        <locationY>5522</locationY>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Decision_CreateJobNotes</targetReference>
+        </connector>
+        <inputReference>var_ServiceAppointment</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Update the Service Appointment record when the user sets it to &quot;Incomplete&quot;</description>
+        <name>Update_Values_OnIncomplete</name>
+        <label>Update Current Service Appointment Values</label>
+        <locationX>2686</locationX>
+        <locationY>1910</locationY>
+        <connector>
+            <targetReference>Decision_SA_DueDate_Expired</targetReference>
+        </connector>
+        <inputReference>var_ServiceAppointment</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <description>After all &quot;Work Steps&quot; related to the WOLI in the LOOP element have been completed, update the field &quot;Status&quot; on the WOLI to the value &quot;Ready for Review&quot; and set the &quot;End Date&quot; to the current date/time.  Please Note: it has been deliberately decided to place the update element into the Loop (not best practice), as a) in the vast majority of all cases, there only will be one WOLI record in the loop, b) the process to answer the work steps takes a long time and c) the field service mobile app caches the results locally before attempting to synchronise it back to Salesforce.</description>
+        <name>Update_WOLI_Status_EndDate</name>
+        <label>Update WOLI Field &quot;Status&quot; and &quot;End Date&quot;</label>
+        <locationX>4227</locationX>
+        <locationY>2942</locationY>
+        <connector>
+            <targetReference>Loop_over_WorkOrderLineItems</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>var_WorkOrderLineItem_LoopVariable.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>EndDate</field>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Ready for Review</stringValue>
+            </value>
+        </inputAssignments>
+        <object>WorkOrderLineItem</object>
+    </recordUpdates>
+    <recordUpdates>
+        <description>After the Field Crew sets the status of the Service appointment to &quot;Travel&quot;, update the field &quot;Status&quot; and &quot;Start Date&quot; on the WOLI to the value &quot;In Progress&quot; and set the &quot;Start Date&quot; to the current date/time.  Please Note: it has been deliberately decided to place the update element into the Loop (not best practice), as a) in the vast majority of all cases, there only will be one WOLI record in the loop, b) the process to answer the work steps takes a long time and c) the field service mobile app caches the results locally before attempting to synchronise it back to Salesforce.</description>
+        <name>Update_WOLI_Status_StartDate_Travel</name>
+        <label>Update WOLI Field &quot;Status&quot; and &quot;Start Date&quot;</label>
+        <locationX>490</locationX>
+        <locationY>3122</locationY>
+        <connector>
+            <targetReference>Loop_over_WorkOrderLineItems_Travel</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>var_WorkOrderLineItem_LoopVariable.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>StartDate</field>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>In Progress</stringValue>
+            </value>
+        </inputAssignments>
+        <object>WorkOrderLineItem</object>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Update Status, Start Date, Completed Date on the Workorder</description>
+        <name>Update_Work_Order_Values_0_0</name>
+        <label>Update Work Order Values</label>
+        <locationX>2026</locationX>
+        <locationY>2726</locationY>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Decision_WorkOrderLineItem_UpdateRecord_Validation</targetReference>
+        </connector>
+        <inputReference>var_WorkOrder</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Update Status, Start Date, Completed Date on the Work Order Line Item (only if Parent Record of the SA was a WOLI)</description>
+        <name>Update_WorkOrderLineItem_Values</name>
+        <label>Update Work Order Line Item Values</label>
+        <locationX>1498</locationX>
+        <locationY>2606</locationY>
+        <connector>
+            <targetReference>Update_Service_Appointment_Values</targetReference>
+        </connector>
+        <inputReference>var_WorkOrderLineItem</inputReference>
+    </recordUpdates>
+    <runInMode>DefaultMode</runInMode>
+    <screens>
+        <description>This screen is shown to a user, when other previous jobs have not been set to &quot;completed&quot; or &quot;cannot complete&quot; but are still &quot;in travel&quot; or &quot;on site&quot;.</description>
+        <name>Screen_CompletePreviousJob</name>
+        <label>Complete previous jobs</label>
+        <locationX>594</locationX>
+        <locationY>1670</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Screen_StatusUpdate_ConfirmTravel</targetReference>
+        </connector>
+        <fields>
+            <name>Screen_CompletePreviousJob_Error_Text</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;Error - Please complete previous jobs first. &lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;It looks like you haven&apos;t completed your previous job.&lt;/p&gt;&lt;p&gt;Close this screen and go back to the schedule tab to close out any jobs that are still in travel or onsite status.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <description>Shows an Error Message to the user in case the status of the current Service Appointment is not in the correct status (e.g. None, Scheduled, Completed) and hence, the user is not allowed to make changes to the status.</description>
+        <name>Screen_Default_Error</name>
+        <label>Invalid Job Status</label>
+        <locationX>5265</locationX>
+        <locationY>1430</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Screen_Default_Error_Message</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Error - Invalid Job Status. &lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;It looks like your Job is not in the right status in order to update the job status. It might not be dispatched yet or is already completed.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>This screen is shown when the flow determined that the current Service Appointment is a &quot;Reinstatement - Markout Job&quot; and data entry for the Reinstatment details is required. The user is prompted whether they want to launch the markout subflow or not.</description>
+        <name>Screen_EnterReinstatementDetails</name>
+        <label>Enter Reinstatement Details?</label>
+        <locationX>3478</locationX>
+        <locationY>3830</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Decision_EnterMarkoutDetails</targetReference>
+        </connector>
+        <fields>
+            <name>Screen_EnterReinstatementDetails_HintText</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;You haven&apos;t captured any reinstatement details yet.&lt;/b&gt;&lt;/p&gt;&lt;p&gt;This markout job needs data entry for the reinstatement details before you can close the job.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_EnterReinstatementDetails_EnterReinstatementNowPrompt</name>
+            <choiceReferences>ch_Yes</choiceReferences>
+            <choiceReferences>ch_No</choiceReferences>
+            <dataType>Boolean</dataType>
+            <defaultSelectedChoiceReference>ch_Yes</defaultSelectedChoiceReference>
+            <fieldText>Would you like to enter the reinstatement details now?</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <helpText>&lt;p&gt;If you choose &quot;Yes&quot; and hit next it will launch the Markout data entry flow. If you choose &quot;No&quot; this process will end and you will have to launch the &quot;Update Status Flow&quot; later again. &lt;/p&gt;</helpText>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <description>This screen is shown to the user when they select &quot;Cannot complete&quot; either on the &quot;Conirm on site&quot; screen or &quot;Status update&quot; scree.</description>
+        <name>Screen_Job_Incomplete</name>
+        <label>Job Incomplete</label>
+        <locationX>2686</locationX>
+        <locationY>1670</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Assign_UpdateSAStatus_Incomplete</targetReference>
+        </connector>
+        <fields>
+            <name>Screen_JobIncomplete_Reason_Picklist</name>
+            <choiceReferences>pickCh_IncompletionReasons</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Please select why you cannot complete the job</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Screen_JobIncomplete_Reason_Freetext</name>
+            <fieldText>Please add some additional details as job notes</fieldText>
+            <fieldType>LargeTextArea</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Screen_JobCompletion</name>
+        <label>Confirm job information before closing</label>
+        <locationX>3819</locationX>
+        <locationY>4598</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Assign_UpdateSAStatus_FromOnSite</targetReference>
+        </connector>
+        <fields>
+            <name>Screen_JobCompletion_Work_Status</name>
+            <fieldText>&lt;p&gt;Work Status: Completed&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Job start time: &lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;{!var_ServiceAppointment.ActualStartTime}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Job Completion time: {!$Flow.CurrentDateTime}&lt;/p&gt;&lt;p&gt;Duration of work (minutes): {!fx_ActualDuration}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_JobCompletion_Job_Notes</name>
+            <fieldText>Job Notes</fieldText>
+            <fieldType>LargeTextArea</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Screen_JobCompletion_AddPhotos</name>
+            <extensionName>forceContent:fileUpload</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>Add Photos</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>multiple</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>recordId</name>
+                <value>
+                    <elementReference>var_WorkOrderId</elementReference>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>Shows an Error Message to the user in case the &quot;New estimated completion time&quot; was set to a value in the past (EndTime cannot be smaller StartTime on Service Appointment).</description>
+        <name>Screen_NewCompletionTimeInvalid</name>
+        <label>Estimated job completion time invalid</label>
+        <locationX>1894</locationX>
+        <locationY>2030</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Screen_Default_Error_Message_0</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Error - New job completion time is in the past. &lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Your new estimated job completion time seems to be in the past. Please go back and update it to a valid time in the future.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>Shows an Error Message to the user in case no Record ID is populated in either the &quot;ID&quot; variable or &quot;recordID&quot; variable.</description>
+        <name>Screen_NoRecordId</name>
+        <label>No Record Id</label>
+        <locationX>3249</locationX>
+        <locationY>278</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Screen_NoRecordId_Error_Message</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Error - No Service Appointment Record Id&lt;/b&gt;&lt;/p&gt;&lt;p&gt;It looks like there was no Record ID for the Service Appointment prepopulated when opening this feature.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Please get in touch with your friendly Salesforce Support team and make them aware of this error.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>Shows an Error Message to the user in case the status of the current Service Appointment is not in the correct status (e.g. None, Scheduled, Completed) and hence, the user is not allowed to make changes to the status.</description>
+        <name>Screen_ParentWO_StartDate_Blank</name>
+        <label>Work Order Start Date not set</label>
+        <locationX>4215</locationX>
+        <locationY>4598</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Screen_ParentWO_StartDate_Blank_Error_Message</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;Error - The &quot;Start Date&quot; on the parent Work Order has not been set. &lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;It looks like the field &quot;Start Date&quot; on the parent Work Order of this Service Appointment is not populated. This might have happened if the status &quot;Travel&quot; was not set using the Mobile App action &quot;Update Job Status&quot;, but directly by a Job Coordinator in Salesforce on behalf.&lt;/p&gt;&lt;p&gt;Please get in touch with your Job Coordinator and ask them to populate the &quot;Start Date&quot; on your Work Order, prior to attempting to complete the job again.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Screen_PreStartActions</name>
+        <label>Complete Pre Start Actions</label>
+        <locationX>1894</locationX>
+        <locationY>1790</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Decision_CheckForExtendedTime</targetReference>
+        </connector>
+        <fields>
+            <name>Screen_PreStartActions_Step1_Heading</name>
+            <fieldText>&lt;p&gt;&lt;b&gt;1. Complete the Health &amp;amp; Safety check in Powerapps&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_PreStartActions_PowerappsLink</name>
+            <fieldText>&lt;p&gt;&lt;a href=&quot;https://apps.powerapps.com/play/1908d62f-5b1e-48c7-b190-2452c6a74af6?tenantId=c743833b-ae18-44a0-9e7c-675bffb00f19&quot; rel=&quot;noopener noreferrer&quot; target=&quot;_blank&quot;&gt;&lt;b&gt;Open Health &amp;amp; Safety check&lt;/b&gt;&lt;/a&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_PreStartActions_Step2_Heading</name>
+            <fieldText>&lt;p&gt;&lt;b&gt;2. Take or upload pictures of the site and add job notes prior starting work&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_PreStartActions_TakePicture</name>
+            <extensionName>forceContent:fileUpload</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>multiple</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>Take or Upload a Picture</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>recordId</name>
+                <value>
+                    <elementReference>var_WorkOrderId</elementReference>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Screen_PreStartActions_Job_Notes</name>
+            <fieldText>Job Notes</fieldText>
+            <fieldType>LargeTextArea</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Screen_PreStartActions_Step3_Heading</name>
+            <fieldText>&lt;p&gt;&lt;b&gt;3. Set the new estimated completion time &lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_PreStartActions_EstimatedFinishTime</name>
+            <fieldText>&lt;p&gt;Current estimated job completion time:&lt;/p&gt;&lt;p&gt;{!fx_Estimated_JobCompletionTime}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_PreStartActions_NewEstimatedCompletionTime</name>
+            <dataType>DateTime</dataType>
+            <fieldText>Set the new estimated completion time</fieldText>
+            <fieldType>InputField</fieldType>
+            <helpText>&lt;p&gt;&lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt;Optionally, choose the new expected end time for this job. &lt;/span&gt;&lt;/p&gt;</helpText>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>Used as part of the job completion paths, in order to get confirmation from the Field Crew, whether a &quot;Reinstatement&quot; for the job they were working on is required or not. If reinstatement is required it will trigger the &quot;Request Reinstatment&quot; subflow in the following decision element, if not, then it continues to the final job completion flow.</description>
+        <name>Screen_ReinstatementRequired</name>
+        <label>Reinstatement Required?</label>
+        <locationX>4358</locationX>
+        <locationY>3710</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Decision_ReinstatementRequired</targetReference>
+        </connector>
+        <fields>
+            <name>Screen_ReinstatementRequired_HintText</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Reinstatement Required?&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Please select whether you want to request reinstatement before you close your job.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_ReinstatementRequired_Choice</name>
+            <choiceReferences>ch_Yes</choiceReferences>
+            <choiceReferences>ch_No</choiceReferences>
+            <dataType>Boolean</dataType>
+            <defaultSelectedChoiceReference>ch_No</defaultSelectedChoiceReference>
+            <fieldText>Is reinstatement required for this job?</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <helpText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;Please specify whether you require reinstatement for this job. If you choose yes, then you will be able to specify the details of the reinstatement job in the next step.&lt;/span&gt;&lt;/p&gt;</helpText>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <description>Used to get confirmation from the Field Crew, that they are on site. This will then update the Service Appointment status to &quot;On Site&quot; and set the actual start time values accordingly.</description>
+        <name>Screen_StatusUpdate_ArrivedOnSite</name>
+        <label>Update Job Status</label>
+        <locationX>2488</locationX>
+        <locationY>1430</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Decision_StatusInTravel_CheckUpdatedJobStatus</targetReference>
+        </connector>
+        <fields>
+            <name>Screen_StatusUpdate_ArrivedOnSite_Heading</name>
+            <fieldText>&lt;p&gt;Confirm you have arrived on site &lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt;or select &quot;Cannot Complete&quot; should you not be able to continue.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_StatusUpdate_ArrivedOnSite_Radiobuttons</name>
+            <choiceReferences>ch_OnSite</choiceReferences>
+            <choiceReferences>ch_Incomplete</choiceReferences>
+            <dataType>String</dataType>
+            <defaultSelectedChoiceReference>ch_OnSite</defaultSelectedChoiceReference>
+            <fieldText>Please select the appropriate job status</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <nextOrFinishButtonLabel>Next</nextOrFinishButtonLabel>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>The confirmation screen to start travelling</description>
+        <name>Screen_StatusUpdate_ConfirmTravel</name>
+        <label>Update Job Status</label>
+        <locationX>792</locationX>
+        <locationY>2162</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Decision_StatusDispatched_CheckUpdatedJobStatus</targetReference>
+        </connector>
+        <fields>
+            <name>Screen_StatusUpdate_ConfirmTravel_Heading</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;Please confirm that you are on your way to the job by selecting &quot;Travel to site&quot;.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_ConfirmTravel_StatusUpdate_Radiobuttons</name>
+            <choiceReferences>ch_Travel</choiceReferences>
+            <dataType>String</dataType>
+            <defaultSelectedChoiceReference>ch_Travel</defaultSelectedChoiceReference>
+            <fieldText>Please select the appropriate job status</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>Shows an Error Message to the user in case the decision cannot determine what Object type the Parent Record ID in the &quot;ParentId&quot; variable is of. (Has to be either Work Order or Work Order Line Item)</description>
+        <name>Screen_UnknownObjectType</name>
+        <label>Unknown Object Type</label>
+        <locationX>3293</locationX>
+        <locationY>734</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Screen_UnknownObjectType_ErrorMessage</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Error - Unknown Parent Record Type&lt;/b&gt;&lt;/p&gt;&lt;p&gt;It looks like we cannot determine from which parent record (must be Work Order or Work Order Line Item) you attempted to open this feature from.&lt;/p&gt;&lt;p&gt;Please get in touch with your friendly Salesforce Support team and make them aware of this error.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Screen_UpdateStatus_OnSite</name>
+        <label>Update Job Status</label>
+        <locationX>4473</locationX>
+        <locationY>2102</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Decision_StatusOnSite_CheckUpdatedJobStatus</targetReference>
+        </connector>
+        <fields>
+            <name>Screen_UpdateJobStatus_HintText</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;Select &quot;Completed&quot; if you finished your job &lt;/span&gt;&lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt;or select &quot;Cannot Complete&quot; should you not be able to continue.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_UpdateJobStatus_Radiobuttons</name>
+            <choiceReferences>ch_Complete</choiceReferences>
+            <choiceReferences>ch_Incomplete</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Please select the appropriate job status</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <nextOrFinishButtonLabel>Next</nextOrFinishButtonLabel>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>This screen is used as a validation prior to job completion in case the  &quot;service has not been restored&quot; yet.</description>
+        <name>Screen_Validation_ServiceNotRestored</name>
+        <label>Service not restored</label>
+        <locationX>4385</locationX>
+        <locationY>1550</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Decision_TurnWaterOn_RestoreService</targetReference>
+        </connector>
+        <fields>
+            <name>Screen_Validation_ServiceNotRestored_HintText</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Warning - Service not restored. &lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;It looks like you haven&apos;t restored the service. Are you sure you want to proceed?&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_Validation_ServiceNotRestored_RadioButtons</name>
+            <choiceReferences>ch_ServiceRestore</choiceReferences>
+            <choiceReferences>ch_NoServiceRestore</choiceReferences>
+            <dataType>String</dataType>
+            <defaultSelectedChoiceReference>ch_ServiceRestore</defaultSelectedChoiceReference>
+            <fieldText>What do you want to do?</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <description>This screen is used as a validation prior to job completion in case the &quot;water is off&quot; or &quot;service has not been restored&quot; yet.</description>
+        <name>Screen_Validation_WaterOff_ServiceNotRestored</name>
+        <label>Water off and service not restored</label>
+        <locationX>3857</locationX>
+        <locationY>1550</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Decision_TurnWaterOn_RestoreService</targetReference>
+        </connector>
+        <fields>
+            <name>Screen_Validation_WaterOff_ServiceNotRestored_HintText</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Warning - Water off and service not restored. &lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;It looks like water is still turned off and you haven&apos;t restored the service. Are you sure you want to proceed?&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_Validation_WaterOff_ServiceNotRestored_RadioButtons</name>
+            <choiceReferences>ch_WaterOnOrServiceRestore</choiceReferences>
+            <choiceReferences>ch_NoWaterOrServiceRestore</choiceReferences>
+            <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>ch_WaterOn</elementReference>
+            </defaultValue>
+            <fieldText>What do you want to do?</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <description>This screen is used as a validation prior to job completion in case the &quot;water is off&quot; but &quot;Service Restore&quot; is not required for the job type.</description>
+        <name>Screen_Validation_WaterOff_ServiceRestoreNotRequired</name>
+        <label>Water status off</label>
+        <locationX>4825</locationX>
+        <locationY>1550</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Decision_TurnWaterOn_RestoreService</targetReference>
+        </connector>
+        <fields>
+            <name>Screen_Validation_WaterOff_ServiceRestoreNotRequired_HintText</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Warning - Water has been turned off. &lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;It looks like the water has been turned off. Are you sure you want to proceed?&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_Validation_WaterOff_ServiceRestoreNotRequired_RadioButtons</name>
+            <choiceReferences>ch_WaterOn</choiceReferences>
+            <choiceReferences>ch_NoWaterOn</choiceReferences>
+            <dataType>String</dataType>
+            <defaultSelectedChoiceReference>ch_WaterOn</defaultSelectedChoiceReference>
+            <fieldText>What do you want to do?</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <sourceTemplate>FSSK__Field_Service_Mobile_Status_Transition</sourceTemplate>
+    <start>
+        <locationX>2903</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Decision_OpenedFromMobileOrDesktop</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <subflows>
+        <description>Opens the Field Service Mobile Flow &quot;MSN - Field Service Mobile App - Complete All Open Work Steps&quot; in order to enable the user to enter any open Work Steps (= Status &quot;Open&quot;) prior to completing the job.</description>
+        <name>Subflow_CompleteOpenWorkSteps_WO</name>
+        <label>Open &quot;Complete Open Work Steps&quot; Subflow - Work Order</label>
+        <locationX>4227</locationX>
+        <locationY>2822</locationY>
+        <connector>
+            <targetReference>Update_WOLI_Status_EndDate</targetReference>
+        </connector>
+        <flowName>MSN_FSMA_Complete_All_Open_WorkSteps</flowName>
+        <inputAssignments>
+            <name>Id</name>
+            <value>
+                <elementReference>Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>ParentId</name>
+            <value>
+                <elementReference>var_WorkOrderLineItem_LoopVariable.Id</elementReference>
+            </value>
+        </inputAssignments>
+    </subflows>
+    <subflows>
+        <description>Opens the Field Service Mobile Flow &quot;MSN - Field Service Mobile App - Complete All Open Work Steps&quot; in order to enable the user to enter any open Work Steps (= Status &quot;Open&quot;) that only are stored on a Work Plan related to the parent Work Order (but not on WOLIs) prior to completing the job.</description>
+        <name>Subflow_CompleteOpenWorkSteps_WO_Only</name>
+        <label>Open &quot;Complete Open Work Steps&quot; Subflow - WO Only</label>
+        <locationX>4247</locationX>
+        <locationY>3254</locationY>
+        <connector>
+            <targetReference>Get_WorkType_Details_ReinstatementValidation</targetReference>
+        </connector>
+        <flowName>MSN_FSMA_Complete_All_Open_WorkSteps</flowName>
+        <inputAssignments>
+            <name>Id</name>
+            <value>
+                <elementReference>Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>ParentId</name>
+            <value>
+                <elementReference>var_WorkOrderId</elementReference>
+            </value>
+        </inputAssignments>
+    </subflows>
+    <subflows>
+        <description>Opens the Field Service Mobile Flow &quot;MSN - Field Service Mobile App - Complete All Open Work Steps&quot; in order to enable the user to enter any open Work Steps (= Status &quot;Open&quot;) prior to completing the job.</description>
+        <name>Subflow_CompleteOpenWorkSteps_WOLI</name>
+        <label>Open &quot;Complete Open Work Steps&quot; Subflow - WOLI</label>
+        <locationX>3787</locationX>
+        <locationY>2462</locationY>
+        <connector>
+            <targetReference>Get_WorkType_Details_ReinstatementValidation</targetReference>
+        </connector>
+        <flowName>MSN_FSMA_Complete_All_Open_WorkSteps</flowName>
+        <inputAssignments>
+            <name>Id</name>
+            <value>
+                <elementReference>Id</elementReference>
+            </value>
+        </inputAssignments>
+    </subflows>
+    <subflows>
+        <description>Launch the Flow &quot;MSN - Field Service Mobile App - Define Reinstatement Scope&quot; if the Work Type of the current Service Appointment is &quot;Reinstatement - Markout&quot; only.</description>
+        <name>Subflow_Reinstatement_Markout</name>
+        <label>Launch Reinstatement Markout SubFlow</label>
+        <locationX>3346</locationX>
+        <locationY>4070</locationY>
+        <connector>
+            <targetReference>Decision_Parent_WO_StartDate_Populated</targetReference>
+        </connector>
+        <flowName>MSN_FSMA_Define_Reinstatement_Scope</flowName>
+        <inputAssignments>
+            <name>Id</name>
+            <value>
+                <elementReference>Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>ParentId</name>
+            <value>
+                <elementReference>var_WorkOrderId</elementReference>
+            </value>
+        </inputAssignments>
+    </subflows>
+    <subflows>
+        <description>Open the &quot;MSN - Field Service Mobile App - Request Reinstatement&quot; flow in order to request reinstatement should the user have selected &quot;Yes&quot; in the previous flow screen &quot;Reinstatement Required&quot;</description>
+        <name>Subflow_RequestReinstatement_0</name>
+        <label>Open &quot;Request Reinstatement&quot; Subflow</label>
+        <locationX>4226</locationX>
+        <locationY>3950</locationY>
+        <connector>
+            <targetReference>Decision_Parent_WO_StartDate_Populated</targetReference>
+        </connector>
+        <flowName>MSN_FSMA_Request_Reinstatement</flowName>
+        <inputAssignments>
+            <name>Id</name>
+            <value>
+                <elementReference>Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>ParentId</name>
+            <value>
+                <elementReference>var_WorkOrderId</elementReference>
+            </value>
+        </inputAssignments>
+        <outputAssignments>
+            <assignToReference>Id</assignToReference>
+            <name>Id</name>
+        </outputAssignments>
+    </subflows>
+    <subflows>
+        <description>Open the flow &quot;MSN - Field Service Mobile App - Service Restored&quot; in order to update the service restored or water on/off status</description>
+        <name>Subflow_ServiceRestored</name>
+        <label>Open &quot;Service Restored&quot; Subflow</label>
+        <locationX>4121</locationX>
+        <locationY>1790</locationY>
+        <connector>
+            <targetReference>Screen_UpdateStatus_OnSite</targetReference>
+        </connector>
+        <flowName>MSN_Field_Service_Mobile_App_Service_Restored</flowName>
+        <inputAssignments>
+            <name>Id</name>
+            <value>
+                <elementReference>Id</elementReference>
+            </value>
+        </inputAssignments>
+        <outputAssignments>
+            <assignToReference>var_WorkOrder.Has_the_service_been_restored__c</assignToReference>
+            <name>ServiceRestoreValue</name>
+        </outputAssignments>
+    </subflows>
+    <subflows>
+        <description>Open the flow &quot;MSN - Field Service Mobile App - Water On/Off&quot; in order to update the water on/off status</description>
+        <name>Subflow_Water_On_Off</name>
+        <label>Open &quot;Water On/Off&quot; Subflow</label>
+        <locationX>4385</locationX>
+        <locationY>1790</locationY>
+        <connector>
+            <targetReference>Screen_UpdateStatus_OnSite</targetReference>
+        </connector>
+        <flowName>MSN_Field_Service_Mobile_App_Water_Status_On_Off</flowName>
+        <inputAssignments>
+            <name>Id</name>
+            <value>
+                <elementReference>Id</elementReference>
+            </value>
+        </inputAssignments>
+    </subflows>
+    <variables>
+        <description>Populated from the Field Service Mobile App with the Record Id that triggered the flow (normally a Service Appointment). Please Note: contrary to the Salesforce Desktop behavior (that always requires the variable &quot;recordId&quot;) the mobile app naming convention for this variable is just &quot;Id&quot;.</description>
+        <name>Id</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <description>Populated from the Field Service Mobile App with the Parent Record Id that triggered the flow (normally a Work Order or Work Order Line Item).</description>
+        <name>ParentId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Only used, when this flow is opened from Salesforce desktop and is populated with the Id of the record that triggered this flow (normally a Service Appointment).</description>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Used to store the values for the Job Note record prior creating it with the &quot;Create Records&quot; element</description>
+        <name>var_JobNoteRecord</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>MSN_JobNotes__c</objectType>
+    </variables>
+    <variables>
+        <description>This variable is used for the &quot;Get open Service Appointments&quot; validation, when the user attempts to change the status to &quot;travel&quot; for the first time, but other incompleted jobs might still be open.</description>
+        <name>var_Open_ServiceAppointments</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ServiceAppointment</objectType>
+    </variables>
+    <variables>
+        <description>Record Collection Variable that holds all still open Work Steps when looked up as a validation check when the user enteres the &quot;Update Job Status&quot; &gt; &quot;Complete&quot;  path of this flow.</description>
+        <name>var_OpenWorkSteps</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>WorkStep</objectType>
+    </variables>
+    <variables>
+        <description>Counts the number of Work Steps that are still open. Used in the Lookup &quot;Get open work steps&quot; in the &quot;Update Job&quot; path of this flow.</description>
+        <name>var_OpenWorkStepsCount</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+        <value>
+            <numberValue>0.0</numberValue>
+        </value>
+    </variables>
+    <variables>
+        <description>Used to store the original &quot;Duration&quot; and &quot;Duration Type&quot; of the work type the triggering Service Appointment is related to.</description>
+        <name>var_Original_SA_WorkType</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>WorkType</objectType>
+    </variables>
+    <variables>
+        <description>Used for Validation checks in several Decision Elements &quot;Is Parent Work Order Line Item?&quot; to prevent execution of an WOLI Update attempt when the Parent Work Order is a Work Order</description>
+        <name>var_ParentIsWorkOrderLineItem</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </variables>
+    <variables>
+        <description>Resets Date&amp;Time fields to &quot;null&quot;</description>
+        <name>var_ResetDateTimeValues</name>
+        <dataType>DateTime</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Scheduled end time to be used in the calculation add duration</description>
+        <name>var_ScheduledEndTime</name>
+        <dataType>DateTime</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <description>Record Collection Variable to store the record details from the Service Appointment triggering this flow.</description>
+        <name>var_ServiceAppointment</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ServiceAppointment</objectType>
+    </variables>
+    <variables>
+        <name>var_ServiceResourceId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>var_WorkOrder</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+        <objectType>WorkOrder</objectType>
+    </variables>
+    <variables>
+        <description>Used throughout the flow to store the Record ID of the Work Order that is Parent to the Service Appointment OR the Work Order Line Items (related to the Service Appointment)</description>
+        <name>var_WorkOrderId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Used to store details from the Parent Work Order Line Items of the Service Appointment that triggered this flow.</description>
+        <name>var_WorkOrderLineItem</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>WorkOrderLineItem</objectType>
+    </variables>
+    <variables>
+        <description>Stores the Work Order Line Item Ids queried by the element &quot;Get Work Order Line Item&quot; records. This is used later in the Loop &quot;Check All Open Work Steps on WOLIs&quot; in order to checking for any open Work Steps on Work Order Line items related to the parent Work Order. This is especially important for reactive jobs, when Crew Members add additional Assets and Activities (WOLIs) to the job.</description>
+        <name>var_WorkOrderLineItem_Collection</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>WorkOrderLineItem</objectType>
+    </variables>
+    <variables>
+        <description>Used in the Loop Element &quot;Loop over Work Order Line Items&quot; as Loop variable  / to loop over the Work Order Line Item record collection queried in the Get Work Order Line Item Element.</description>
+        <name>var_WorkOrderLineItem_LoopVariable</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>WorkOrderLineItem</objectType>
+    </variables>
+    <variables>
+        <description>Used throughout the flow to store the Record ID of the Work Order Line Item if it is Parent to the Service Appointment</description>
+        <name>var_WorkOrderLineItemId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Used to store the original &quot;Duration&quot; and &quot;Duration Type&quot; of the work type related to the Service Appointment triggering this flow. This is required to reset the duration to its original values when a Service Appointment is set to &quot;Cannot Complete&quot; and the flow clones the Service Appointment.</description>
+        <name>var_WorkType</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>WorkType</objectType>
+    </variables>
+</Flow>

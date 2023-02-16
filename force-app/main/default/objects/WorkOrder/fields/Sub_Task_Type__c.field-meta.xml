@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sub_Task_Type__c</fullName>
+    <externalId>false</externalId>
+    <label>Sub Task Type</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Fulton Hogan</fullName>
+                <default>false</default>
+                <label>Fulton Hogan</label>
+            </value>
+            <value>
+                <fullName>Compliance</fullName>
+                <default>false</default>
+                <label>Compliance</label>
+            </value>
+            <value>
+                <fullName>Valve Audits</fullName>
+                <default>false</default>
+                <label>Valve Audits</label>
+            </value>
+            <value>
+                <fullName>Asset Replacement</fullName>
+                <default>false</default>
+                <label>Asset Replacement</label>
+            </value>
+            <value>
+                <fullName>Shutdown Request</fullName>
+                <default>false</default>
+                <label>Shutdown Request</label>
+            </value>
+            <value>
+                <fullName>Logger Install</fullName>
+                <default>false</default>
+                <label>Logger Install</label>
+            </value>
+            <value>
+                <fullName>Engineer Investigation</fullName>
+                <default>false</default>
+                <label>Engineer Investigation</label>
+            </value>
+            <value>
+                <fullName>Project Work</fullName>
+                <default>false</default>
+                <label>Project Work</label>
+            </value>
+            <value>
+                <fullName>CCTV Lateral</fullName>
+                <default>false</default>
+                <label>CCTV Lateral</label>
+            </value>
+            <value>
+                <fullName>CCTV Sewer Main</fullName>
+                <default>false</default>
+                <label>CCTV Sewer Main</label>
+            </value>
+            <value>
+                <fullName>Desilt</fullName>
+                <default>false</default>
+                <label>Desilt</label>
+            </value>
+            <value>
+                <fullName>Sewer Lateral Repair</fullName>
+                <default>false</default>
+                <label>Sewer Lateral Repair</label>
+            </value>
+            <value>
+                <fullName>Sewer Main Repair</fullName>
+                <default>false</default>
+                <label>Sewer Main Repair</label>
+            </value>
+            <value>
+                <fullName>Sewer Lining</fullName>
+                <default>false</default>
+                <label>Sewer Lining</label>
+            </value>
+            <value>
+                <fullName>Pumpstation Miscellaneous</fullName>
+                <default>false</default>
+                <label>Pumpstation Miscellaneous</label>
+            </value>
+            <value>
+                <fullName>3 Man Entry</fullName>
+                <default>false</default>
+                <label>3 Man Entry</label>
+            </value>
+            <value>
+                <fullName>MH REHAB</fullName>
+                <default>false</default>
+                <label>MH REHAB</label>
+            </value>
+            <value>
+                <fullName>Rootcut</fullName>
+                <default>false</default>
+                <label>Rootcut</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Building__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Check if the pumpstation is a building or a non-building. If it&apos;s a building check this box to true. Based on this the jobs will be assigned to two people or one person</description>
+    <externalId>false</externalId>
+    <label>Building</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

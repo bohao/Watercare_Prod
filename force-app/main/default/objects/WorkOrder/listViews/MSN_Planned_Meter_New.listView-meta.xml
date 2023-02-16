@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_Planned_Meter_New</fullName>
+    <columns>Name</columns>
+    <columns>Work_Order_No__c</columns>
+    <columns>CreatedDate</columns>
+    <columns>MSN_WorkOrder_Age__c</columns>
+    <columns>Subject</columns>
+    <columns>STREET</columns>
+    <columns>CITY</columns>
+    <columns>ZIP</columns>
+    <columns>Serial_Number__c</columns>
+    <columns>MSN_Two_Person_Job__c</columns>
+    <columns>MSN_Truck_Required__c</columns>
+    <columns>MSN_Weekend_Work__c</columns>
+    <columns>MSN_Reinstatement_BoxingRequired__c</columns>
+    <columns>MSN_Reinstatement_ServiceHazards__c</columns>
+    <columns>Dialysis_Patient__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>WorkType</field>
+        <operation>contains</operation>
+        <value>Watermeter - Planned Replacement,Planned Meter Replacement</value>
+    </filters>
+    <filters>
+        <field>Status</field>
+        <operation>equals</operation>
+        <value>New</value>
+    </filters>
+    <filters>
+        <field>RecordType</field>
+        <operation>equals</operation>
+        <value>WorkOrder.MSN</value>
+    </filters>
+    <label>Planned Meter - New/Unassigned</label>
+</ListView>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_Previous_Service_Appointment__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Used to link the Service Appointment to a previous, incomplete one when a Field Crew sets an appointment to &quot;cannot complete&quot; and a new &quot;revisit&quot; appointment is created.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Links to a previous Service Appointment for the same Work Order, that could not be completed by the field crew</inlineHelpText>
+    <label>Previous Service Appointment</label>
+    <referenceTo>ServiceAppointment</referenceTo>
+    <relationshipLabel>Previous Service Appointment</relationshipLabel>
+    <relationshipName>Previous_Service_Appointments</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_Work_Step</fullName>
+    <active>true</active>
+    <description>Used to show Work Step Questions (aka Spot Questions) to Field Crew User on the FSL Mobile App and and collect their answers.</description>
+    <label>Work Step</label>
+    <picklistValues>
+        <picklist>MSN_Answer_Type__c</picklist>
+        <values>
+            <fullName>Boolean</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Date</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Picklist</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Schedule Item Code</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>String</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Time</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>URL</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Status</picklist>
+        <values>
+            <fullName>Completed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>In Progress</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>New</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Not Applicable</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Paused</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

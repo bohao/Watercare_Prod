@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_ScheduleItem_Code__c</fullName>
+    <description>Schedule Item Codes (aka &quot;RFP Codes&quot;) are used by MSN/Watercare in subsequent systems (e.g.EAM) in diverse finance processes and are used e.g. to define allowed costs for certain activities on a contractor &quot;Contract Schedule&quot; agreed with Watercare.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Stores the &quot;Schedule Item Code&quot; (aka RFP Code) for the activity carried out by the field crew.</inlineHelpText>
+    <label>Schedule Item Code</label>
+    <length>30</length>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

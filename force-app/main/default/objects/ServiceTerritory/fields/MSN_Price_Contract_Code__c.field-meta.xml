@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_Price_Contract_Code__c</fullName>
+    <description>Field &quot;Price Contract Code&quot; that has been set up on each &quot;Purchasing Contract&quot; in EAM. The Value is unique per Subcontractor (e.g. MSN-HAKL/21 for Hydrotech) and is used to identify the contract where specific rate cards/schedules have been set up that define the agreed price for specific services (such as e.g. Planned Meter Replacements).</description>
+    <externalId>true</externalId>
+    <inlineHelpText>Field &quot;Price Contract Code&quot; on each &quot;Purchasing Contract&quot; in EAM. The Value is unique per Subcontractor (e.g. MSN-HAKL/21 for Hydrotech).</inlineHelpText>
+    <label>Price Contract Code</label>
+    <length>50</length>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

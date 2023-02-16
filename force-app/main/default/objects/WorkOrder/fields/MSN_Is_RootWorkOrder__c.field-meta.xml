@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_Is_RootWorkOrder__c</fullName>
+    <description>This field is used to dynamically display or hide e.g. related list components on the Lightning Record Page - esp. the &quot;Child Work Order&quot; vs. &quot;Child Work Orders of Parent Work Order&quot; list in order to prevent the creation of &quot;Grand Children&quot; Work Orders on a Work Order that already has a parent Record. The lighting component can only be filtered with boolean values, hence the requirement for the field.</description>
+    <externalId>false</externalId>
+    <formula>RootWorkOrderId = Id</formula>
+    <label>Is Root Work Order</label>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

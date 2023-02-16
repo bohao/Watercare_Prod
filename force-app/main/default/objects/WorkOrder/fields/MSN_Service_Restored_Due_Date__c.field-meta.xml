@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_Service_Restored_Due_Date__c</fullName>
+    <description>This is used to store the &quot;Service Restore Due Date&quot; from EAM, when a reactive work order is being created from EAM via the intergration. This is used as a KPI to determine by when the service has to be restored by and is used in reports etc.</description>
+    <externalId>false</externalId>
+    <label>Service Restored Due Date</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>DateTime</type>
+</CustomField>

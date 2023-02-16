@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_Is_Reinstatement_Markout__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Please ONLY tick this on the Work Type &quot;Reinstatement - Markout&quot;. This determines the start of the Hard Surface reinstatement process and is required to give field crew the correct options to choose from in the Mobile App.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Please ONLY tick this on the Work Type &quot;Reinstatement - Markout&quot;. This determines the start of the Hard Surface reinstatement process and is required to give field crew the correct options to choose from in the Mobile App.</inlineHelpText>
+    <label>Is Markout Work Type</label>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

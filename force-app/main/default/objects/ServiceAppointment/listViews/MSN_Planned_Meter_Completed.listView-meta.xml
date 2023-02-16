@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_Planned_Meter_Completed</fullName>
+    <columns>FSSK__FSK_Work_Order__c</columns>
+    <columns>Name</columns>
+    <columns>Subject</columns>
+    <columns>CreatedDate</columns>
+    <columns>ActualStartTime</columns>
+    <columns>ActualEndTime</columns>
+    <columns>ActualDuration</columns>
+    <columns>Status</columns>
+    <columns>MSN_Revisit__c</columns>
+    <columns>FSSK__FSK_Assigned_Service_Resource__c</columns>
+    <columns>STREET</columns>
+    <columns>CITY</columns>
+    <columns>ZIP</columns>
+    <columns>Serial_Number__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>WorkType</field>
+        <operation>contains</operation>
+        <value>Watermeter - Planned Replacement,Planned Meter Replacement</value>
+    </filters>
+    <filters>
+        <field>Status</field>
+        <operation>equals</operation>
+        <value>Completed</value>
+    </filters>
+    <label>Planned Meter - Completed</label>
+</ListView>

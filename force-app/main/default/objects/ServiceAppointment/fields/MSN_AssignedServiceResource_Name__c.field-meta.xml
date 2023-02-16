@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_AssignedServiceResource_Name__c</fullName>
+    <description>Used to show the Name of the assigned Service Resource in the Field Service Mobile App on the Work Step (aka Spot Question) &quot;Crew Id&quot; as a prepopulated value. Please Note: this is required as the mobile app cannot retrieve the field &quot;Name&quot; from the Assigned Service Resource lookup field and would only show the Record Id instead.</description>
+    <externalId>false</externalId>
+    <formula>FSSK__FSK_Assigned_Service_Resource__r.Name</formula>
+    <label>Assigned Service Resource - Name</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

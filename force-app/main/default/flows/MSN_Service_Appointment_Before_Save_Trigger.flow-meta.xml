@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>56.0</apiVersion>
+    <decisions>
+        <description>Determine whether the field &quot;Priority&quot; on the newly created Service Appointment is blank, and if so, retrieve it from the Parent Work order and update the triggering record accordingly with the same value. Please note: as the field &quot;Parent Record&quot; is a poly-morphic field that can be related to e.g. Work Orders, Work Order Line Items, Accounts etc. the contition also checks for &quot;Parent Record Id starts with 0WO&quot; to make sure it is a work order (Standard object work order always starts with 0WO).</description>
+        <name>Decision_Field_Priority_blank</name>
+        <label>Field &quot;Priority&quot; is blank?</label>
+        <locationX>182</locationX>
+        <locationY>647</locationY>
+        <defaultConnectorLabel>False</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_Field_Priority_IsBlank</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Priority__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>fx_ServiceAppointment_IsNew</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ParentRecordId</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>0WO</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Priority_of_Parent_Work_Order</targetReference>
+            </connector>
+            <label>True</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>If the Service Appointments parent record is a Work Order, then populate the custom &quot;Work Order&quot; lookup field (&quot;FSSK__FSK_Work_Order__c&quot; from Field Service Starter Kit). Please note: this has been moved into the &quot;before save&quot; triggered flow, as the FSSK process builder (after save) was causing issues when new Service Appointments were created in bulk from the Integration.</description>
+        <name>Decision_Parent_Record_IsWorkOrder</name>
+        <label>SA Parent Record is a Work Order?</label>
+        <locationX>182</locationX>
+        <locationY>311</locationY>
+        <defaultConnector>
+            <targetReference>Decision_Field_Priority_blank</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_Parent_Record_IsWorkOrder</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>fx_ServiceAppointment_IsNew</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ParentRecordId</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>0WO</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ParentRecordId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_FSSKWorkOrder_Lookupfield</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <description>17/10/2022 - V1: Created an additional &quot;Before Save&quot; record triggered flow on Service Appointment, as some functionality did not work as expected in UAT - such as the automatic scheduling of newly created Service Appointments, that had been created through the functionality &quot;Auto-Create Service Appointment&quot; on the Work Type and were missing the custom field &quot;Priority&quot;.
+
+09/01/2023 - V2: Added logic to populate the custom &quot;Field Service Starter Kit&quot; (FSSK) Work Order lookup field &quot;FSSK__FSK_Work_Order__c&quot; in the before save record triggered flow, as this was previously handled by an old &quot;after save&quot; process builder that was then causing issues when the integration is creating Work Orders and Service Appointments in bulk.</description>
+    <environments>Default</environments>
+    <formulas>
+        <description>Determine if the Service Appointment is newly created using the &quot;ISNEW()&quot; formula</description>
+        <name>fx_ServiceAppointment_IsNew</name>
+        <dataType>Boolean</dataType>
+        <expression>ISNEW()</expression>
+    </formulas>
+    <interviewLabel>MSN - Service Appointment - Before Save Trigger {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>MSN - Service Appointment - Before Save Trigger</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <description>Retrieve the value for the field &quot;Priority&quot; of the parent work order</description>
+        <name>Get_Priority_of_Parent_Work_Order</name>
+        <label>Get Priority of Parent Work Order</label>
+        <locationX>50</locationX>
+        <locationY>767</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Update_Priority_on_Service_Appointment</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.ParentRecordId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>WorkOrder</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Priority</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <description>Populate the custom &quot;Field Service Starter Kit&quot; (FSSK) Work Order lookup field &quot;FSSK__FSK_Work_Order__c&quot;.</description>
+        <name>Update_FSSKWorkOrder_Lookupfield</name>
+        <label>Populate custom Work Order lookup field</label>
+        <locationX>50</locationX>
+        <locationY>431</locationY>
+        <connector>
+            <targetReference>Decision_Field_Priority_blank</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>FSSK__FSK_Work_Order__c</field>
+            <value>
+                <elementReference>$Record.ParentRecordId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Update the field &quot;Priority&quot; on the triggering Service Appointment from the Work Order Variable retrieved in the previous step.</description>
+        <name>Update_Priority_on_Service_Appointment</name>
+        <label>Update Priority on Service Appointment</label>
+        <locationX>50</locationX>
+        <locationY>887</locationY>
+        <inputAssignments>
+            <field>Priority__c</field>
+            <value>
+                <elementReference>Get_Priority_of_Parent_Work_Order.Priority</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>56</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Decision_Parent_Record_IsWorkOrder</targetReference>
+        </connector>
+        <object>ServiceAppointment</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

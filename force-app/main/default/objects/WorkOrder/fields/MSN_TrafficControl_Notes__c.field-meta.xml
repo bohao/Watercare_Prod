@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_TrafficControl_Notes__c</fullName>
+    <description>Used by Markout Crew during the &quot;Define Reinstatement Scope&quot; flow on the Field Service Mobile App to add more notes/details about a requested Traffic Control. This is also shown on the Work Order Layout for the Job Coordinator to pickup.</description>
+    <externalId>false</externalId>
+    <label>Notes for Traffic Control</label>
+    <length>32768</length>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>LongTextArea</type>
+    <visibleLines>5</visibleLines>
+</CustomField>

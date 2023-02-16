@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_Reinstatement_Markouts</fullName>
+    <columns>Name</columns>
+    <columns>FSSK__FSK_Work_Order__c</columns>
+    <columns>WorkType</columns>
+    <columns>MSN_Activity_Problem_Code__c</columns>
+    <columns>Description</columns>
+    <columns>Status</columns>
+    <columns>ServiceTerritory</columns>
+    <columns>FSSK__FSK_Assigned_Service_Resource__c</columns>
+    <columns>Inline_Due_Date__c</columns>
+    <columns>SchedStartTime</columns>
+    <columns>SchedEndTime</columns>
+    <columns>STREET</columns>
+    <columns>CITY</columns>
+    <columns>FSL__Auto_Schedule__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Status</field>
+        <operation>equals</operation>
+        <value>None,On Hold,Scheduled,Dispatched,Travel,On Site</value>
+    </filters>
+    <filters>
+        <field>Service_Area__c</field>
+        <operation>equals</operation>
+        <value>Reinstatement</value>
+    </filters>
+    <filters>
+        <field>WorkType</field>
+        <operation>contains</operation>
+        <value>Markout</value>
+    </filters>
+    <label>Reinstatement - Markouts</label>
+</ListView>

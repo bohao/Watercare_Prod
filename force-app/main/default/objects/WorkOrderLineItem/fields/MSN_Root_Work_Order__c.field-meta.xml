@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_Root_Work_Order__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>This field is used to retrieve the &quot;Root Work Order&quot; from the Parent Work Order related to this WOLI. This is populated in in the Flow &quot;Work Order Line Item - Record Triggered Updates&quot; when a new WOLI is created.</description>
+    <externalId>false</externalId>
+    <label>Root Work Order</label>
+    <referenceTo>WorkOrder</referenceTo>
+    <relationshipLabel>Child Work Order Line Items</relationshipLabel>
+    <relationshipName>Child_Work_Order_Line_Items</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

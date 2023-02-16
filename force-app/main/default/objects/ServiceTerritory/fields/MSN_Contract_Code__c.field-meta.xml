@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_Contract_Code__c</fullName>
+    <description>Field &quot;Contract Code&quot; that has been set up on each &quot;Purchasing Contract&quot; in EAM. The Value is unique per Subcontractor (e.g. 310001807 for Hydrotech) . This is used e.g. in the Subcontractors Claim process and is required as a column in the report/upload template in EAM.</description>
+    <externalId>true</externalId>
+    <inlineHelpText>Field &quot;Contract Code&quot; on the &quot;Purchasing Contract&quot; in EAM. The Value is unique per Subcontractor (e.g. 310001807 for Hydrotech).</inlineHelpText>
+    <label>Contract Code</label>
+    <length>20</length>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

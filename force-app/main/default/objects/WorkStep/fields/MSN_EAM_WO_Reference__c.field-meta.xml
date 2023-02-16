@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_EAM_WO_Reference__c</fullName>
+    <description>This formula field is used to retrieve the correct EAM Work Order Number for the Subcontractor claim. If the Work Step is related to a WOLI, then use the EAM Work Order Number from WOLI, else use the EAM Work Order Number from the Work Order related to the Work Step.</description>
+    <externalId>false</externalId>
+    <formula>IF(ISBLANK(WorkOrderLineItemId),WorkOrder.Work_Order_No__c, WorkOrderLineItem.MSN_EAM_Work_Order_No__c )</formula>
+    <inlineHelpText>Use this EAM reference number for your subcontractor claim</inlineHelpText>
+    <label>EAM Work Order Referenc</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

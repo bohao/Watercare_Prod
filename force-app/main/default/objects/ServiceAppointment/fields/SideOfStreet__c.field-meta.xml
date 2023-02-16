@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SideOfStreet__c</fullName>
+    <description>Which side of the street the house is on, by Street Number</description>
+    <externalId>false</externalId>
+    <label>Side Of Street</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>N/A</fullName>
+                <default>true</default>
+                <label>N/A</label>
+            </value>
+            <value>
+                <fullName>Odd</fullName>
+                <default>false</default>
+                <label>Odd</label>
+            </value>
+            <value>
+                <fullName>Even</fullName>
+                <default>false</default>
+                <label>Even</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

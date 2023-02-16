@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_Sort_Order__c</fullName>
+    <description>Used to define the order the &quot;Work Step Answer&quot; should show up on the picklist presented to the Field Service Mobile User when answering a Work Step (with the flow &quot;MSN - Field Service Mobile App - Work Step Answers&quot;). Please note that this only reliably works with alphabetical sort values in the mobile app  (a, b, c, d ...) when more than 10 picklist values are present. When using numerical values (1, 2, ...10) then it sorts incorrectly like 1, 10, 2, 3 in the app.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Please assign an alphabetical letter (a, b, c, ...) to define the sort order of this answer as it is supposed to show up in the picklist for the Field Crew on their Mobile App.</inlineHelpText>
+    <label>Alphabetic Sort Order</label>
+    <length>3</length>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

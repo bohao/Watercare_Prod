@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sharingCriteriaRules>
+        <fullName>Access_to_MSN_Field_Crew</fullName>
+        <accessLevel>Read</accessLevel>
+        <description>https://watercarestp.atlassian.net/browse/MSRS-126
+To give criteria based access to the field crew. This will trigger when the job status is &quot;Scheduled&quot;</description>
+        <label>Access to MSN Field Crew</label>
+        <sharedTo>
+            <role>MSN_Field_Crew</role>
+        </sharedTo>
+        <criteriaItems>
+            <field>Status</field>
+            <operation>equals</operation>
+            <value>Scheduled</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+</SharingRules>

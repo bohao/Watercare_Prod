@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Water_Planned_All_Work</fullName>
+    <columns>Name</columns>
+    <columns>WorkType</columns>
+    <columns>FSL__Auto_Schedule__c</columns>
+    <columns>Status</columns>
+    <columns>Inline_Due_Date__c</columns>
+    <columns>CreatedDate</columns>
+    <columns>EstDuration</columns>
+    <columns>SchedStartTime</columns>
+    <columns>SchedEndTime</columns>
+    <columns>STREET</columns>
+    <columns>CITY</columns>
+    <columns>FSSK__FSK_Assigned_Service_Resource__c</columns>
+    <columns>LatestEndTime</columns>
+    <columns>Service_Area__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Status</field>
+        <operation>notEqual</operation>
+        <value>Completed,Cannot Complete,Canceled</value>
+    </filters>
+    <filters>
+        <field>Service_Area__c</field>
+        <operation>equals</operation>
+        <value>Water</value>
+    </filters>
+    <filters>
+        <field>Type_of_Work__c</field>
+        <operation>equals</operation>
+        <value>Planned</value>
+    </filters>
+    <label>Water Planned - All Work</label>
+</ListView>

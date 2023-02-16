@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_Reinstatement_WorkOrder</fullName>
+    <active>true</active>
+    <compactLayoutAssignment>MSN_Work_Order_Compact_View</compactLayoutAssignment>
+    <description>Used for Reinstatement Work Orders</description>
+    <label>Reinstatement</label>
+    <picklistValues>
+        <picklist>EAM_Work_Order_Complete__c</picklist>
+        <values>
+            <fullName>Failure</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Success</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Has_the_customer_been_notified__c</picklist>
+        <values>
+            <fullName>false</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>true</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Has_the_service_been_restored__c</picklist>
+        <values>
+            <fullName>No</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Yes</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>JSA_Status__c</picklist>
+        <values>
+            <fullName>Approved</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Submitted</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>MSN_Access_Issues__c</picklist>
+        <values>
+            <fullName>Dog</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Locked Gate</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No Parking</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sensitive Customer</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>MSN_Reinstatement_ServiceHazards__c</picklist>
+        <values>
+            <fullName>Other</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Shallow Electrical</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Shallow Gas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Shallow Telco</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>MSN_Reinstatement_WorkSiteDetails__c</picklist>
+        <values>
+            <fullName>Carriageway%2FRoad</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Driveway</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Footpath</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Other</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>MSN_TrafficControl_Level__c</picklist>
+        <values>
+            <fullName>Level 1</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Level 2</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Priority</picklist>
+        <values>
+            <fullName>P1</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>P2</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>P3</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>P4</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>P5</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>P6</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>P7</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>P8</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Reject_Reason__c</picklist>
+        <values>
+            <fullName>Incorrect Code</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Incorrect Contractor</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Other</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Out of Scope</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Private</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Stormwater</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Status</picklist>
+        <values>
+            <fullName>Canceled</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Completed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>In Progress</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>New</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>On Hold</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Planning</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ready for Review</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rejected</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reviewed</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Sub_Task_Type__c</picklist>
+        <values>
+            <fullName>3 Man Entry</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Asset Replacement</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CCTV Lateral</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CCTV Sewer Main</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Compliance</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Desilt</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Engineer Investigation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Fulton Hogan</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Logger Install</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>MH REHAB</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Project Work</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pumpstation Miscellaneous</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rootcut</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sewer Lateral Repair</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sewer Lining</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sewer Main Repair</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Shutdown Request</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Valve Audits</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>TMP_Application_Status__c</picklist>
+        <values>
+            <fullName>Approved</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Extend WIP</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Submitted</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Water_On_Off_Status__c</picklist>
+        <values>
+            <fullName>Off</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>On</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Water_Shutdown_Application_Status__c</picklist>
+        <values>
+            <fullName>Cancelled</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Completed without Approval</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Covid-19 On Hold</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Incomplete</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>On Hold</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Postponed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Shutdown Approved</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Submitted</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Trial Approved</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Waiting Information</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Waiting Key Account Approval</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>With Key Account</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

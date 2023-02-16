@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>EditedDueDate_greater_EarliestStartTime</fullName>
+    <active>false</active>
+    <description>The custom field &quot;Edited Due Date&quot; must be greater than the &quot;Earliest Start Time Permitted&quot;,</description>
+    <errorConditionFormula>DATETIMEVALUE(Inline_Due_Date__c) &lt; EarliestStartTime</errorConditionFormula>
+    <errorMessage>&quot;Edited Due Date&quot; cannot be earlier than &quot;Earliest Start Permitted&quot;</errorMessage>
+</ValidationRule>

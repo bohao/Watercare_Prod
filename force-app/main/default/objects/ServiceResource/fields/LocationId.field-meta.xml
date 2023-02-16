@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LocationId</fullName>
+    <inlineHelpText>Please select the van location that should be assigned to the &quot;Technician&quot; in order for them to view and consume parts from this van on the Mobile App. Do not use this for Service Resources of the type &quot;Crew&quot;.</inlineHelpText>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

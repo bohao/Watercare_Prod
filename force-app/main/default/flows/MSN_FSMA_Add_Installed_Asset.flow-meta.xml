@@ -1,0 +1,1075 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <choices>
+        <description>Used on the screen &quot;Add Additional Activities or Assets&quot; to give the user an option to specify that they want to add more Activity Codes to the same Asset they searched for previously.</description>
+        <name>ch_AdditionalActivityCode</name>
+        <choiceText>Add another activity code (same asset)</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>AddActivityCode</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used on the screen &quot;Add Additional Activities or Assets&quot; to give the user an option to specify that they want to search for another new Asset.</description>
+        <name>ch_AdditionalAsset</name>
+        <choiceText>Search for another asset</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>AdditionalAsset</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used in radiobutton elements on flow screens to offer a &quot;No&quot; Option to the user to choose from.</description>
+        <name>ch_AnswerWorkSteps_No</name>
+        <choiceText>No</choiceText>
+        <dataType>Boolean</dataType>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used in radiobutton elements on flow screens to offer a &quot;Yes&quot; Option to the user to choose from.</description>
+        <name>ch_AnswerWorkSteps_Yes</name>
+        <choiceText>Yes</choiceText>
+        <dataType>Boolean</dataType>
+        <value>
+            <booleanValue>true</booleanValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used on the Screen &quot;Enter Search Criteria&quot; in order to give the user the choice to search for the &quot;Compkey&quot; of an asset.</description>
+        <name>ch_Search_by_Compkey</name>
+        <choiceText>Compkey</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Compkey</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used on the Screen &quot;Enter Search Criteria&quot; in order to give the user the choice to search for the &quot;Serial Number&quot; of an asset.</description>
+        <name>ch_Search_by_SerialNumber</name>
+        <choiceText>Serial Number</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Serialnumber</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used on the screen &quot;Add Additional Activities or Assets&quot; to give the user an option to specify that they finished the &quot;Work Done&quot; Process and do not want to add another Activity Code or Asset.</description>
+        <name>ch_WorkDoneCompleted</name>
+        <choiceText>I&apos;m all done here</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>WorkDoneCompleted</stringValue>
+        </value>
+    </choices>
+    <decisions>
+        <description>Depending on whether the user chooses on the previous screen, the decision will follow different paths. If &quot;Additional Asset&quot; was selected, then the user is taken back to the &quot;Enter Search Criteria&quot; screen. If the user select  &quot;Add additional activity&quot; then directly go to the screen &quot;Select Activity Code&quot;. If the user chooses &quot;I&apos;m done here&quot;, then end the flow.</description>
+        <name>Decision_AddAdditionalActivityCodeOrAsset</name>
+        <label>Add additional Activity Code or Asset?</label>
+        <locationX>534</locationX>
+        <locationY>2066</locationY>
+        <defaultConnectorLabel>Default Error Path</defaultConnectorLabel>
+        <rules>
+            <name>outcome_AddAdditionalActivity_SameAsset</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Screen_AddMoreActivityCodes_Choiceset</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>ch_AdditionalActivityCode</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <isGoTo>true</isGoTo>
+                <targetReference>Screen_Select_ActivityCode</targetReference>
+            </connector>
+            <label>Add additional activity (same asset)</label>
+        </rules>
+        <rules>
+            <name>outcome_AddAnotherAsset</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Screen_AddMoreActivityCodes_Choiceset</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>ch_AdditionalAsset</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <isGoTo>true</isGoTo>
+                <targetReference>Screen_EnterSearchCriteria_Asset</targetReference>
+            </connector>
+            <label>Add another Asset</label>
+        </rules>
+        <rules>
+            <name>outcome_NoAdditionalActivityOrAsset</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Screen_AddMoreActivityCodes_Choiceset</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>ch_WorkDoneCompleted</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Screen_PrepareNewWorkSteps</targetReference>
+            </connector>
+            <label>No Additional Activity or Asset</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Determine the Object Type of the Parent Record Id triggering this flow. This is required to avoid having two flows to cater for the following scenarios:
+1) The &quot;Add Installed Asset&quot; flow was launched from a Service Appointment that is related to a &quot;Work Order&quot;
+2) OR The &quot;Add Installed Asset&quot; flow was launched from a Service Appointment that is related to a &quot;Work Order Line Item&quot;
+
+In order to determine what object type the record Id is from, we find the Object type from the static &quot;Record ID prefix&quot; (first 3 digits of the ID) which is always the same on Standard objects:
+- For &quot;Work Order&quot; objects the prefix is: 0WO
+- For &quot;Work Order Line Items&quot; objects the prefix is: 1WL 
+
+It was deliberately chosen to use those static/hardcoded prefixes for the decision outcomes as it only needs to cater to the above 2 cases and respect especially the Field Service Mobile App limitations in regards FSL Mobile Flow capabilities - even though it might not be best practice in general to use hardcoded elements.</description>
+        <name>Decision_DetermineObjectType_ParentRecord</name>
+        <label>Determine Object Type of Parent Record</label>
+        <locationX>534</locationX>
+        <locationY>614</locationY>
+        <defaultConnector>
+            <targetReference>Screen_UnknownObjectType</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Parent Work Order not Identified</defaultConnectorLabel>
+        <rules>
+            <name>outcome_Parent_Record_Is_WO</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>ParentId</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>0WO</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Parent_WorkOrder_Details</targetReference>
+            </connector>
+            <label>Work Order</label>
+        </rules>
+        <rules>
+            <name>outcome_Parent_Record_Is_WOLI</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>ParentId</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>1WL</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_ParentRecordId_WOLI</targetReference>
+            </connector>
+            <label>Work Order Line Item</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Depending on the user choice &quot;Search by Serial Number&quot; or &quot;Search by Compkey&quot; follow a different path of the flow</description>
+        <name>Decision_DetermineSearchType</name>
+        <label>Determine search type</label>
+        <locationX>534</locationX>
+        <locationY>1310</locationY>
+        <defaultConnector>
+            <targetReference>Screen_NoSearchParameters</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No Search Criteria</defaultConnectorLabel>
+        <rules>
+            <name>outcome_SearchBySerialNumber</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Screen_EnterSearchCriteria_SearchType</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>ch_Search_by_SerialNumber</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>fx_SearchCriteriaValidation_SearchString</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>fx_SearchCriteriaValidation_DummyAsset</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Screen_SearchResults_SerialNumber</targetReference>
+            </connector>
+            <label>Serial Number</label>
+        </rules>
+        <rules>
+            <name>outcome_SearchByCompkey</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Screen_EnterSearchCriteria_SearchType</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>ch_Search_by_Compkey</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>fx_SearchCriteriaValidation_SearchString</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>fx_SearchCriteriaValidation_DummyAsset</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Screen_SearchResults_Compkey</targetReference>
+            </connector>
+            <label>Compkey</label>
+        </rules>
+        <rules>
+            <name>outcome_SearchByDummyAsset</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>fx_SearchCriteriaValidation_DummyAsset</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>fx_SearchCriteriaValidation_SearchString</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Screen_Select_ActivityCode</targetReference>
+            </connector>
+            <label>Dummy Asset</label>
+        </rules>
+        <rules>
+            <name>outcome_Search_String_and_DummyCompkey</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>fx_SearchCriteriaValidation_DummyAsset</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>fx_SearchCriteriaValidation_SearchString</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Screen_WrongSearchParameters</targetReference>
+            </connector>
+            <label>Search String and Dummy Compkey</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>This decision caters for the usecase, that a &quot;Add Installed Asset&quot; could also be requested from Salesforce Desktop (e.g. by a Job Coordinator) and not only from the Field Service Mobile App. It checks, whether the flow was opened from the Field Service Mobile App or from Desktop in order to request a Reinstatement. If the variable &quot;Id&quot; is filled it is opened from the Mobile App, if the variable &quot;recordId&quot; is filled, then it was opened from Desktop and then populates the &quot;Id&quot; variable to lookup the correct Service Appointment in the next step.</description>
+        <name>Decision_OpenedFromMobileOrDesktop</name>
+        <label>Opened from FSL Mobile App or Desktop?</label>
+        <locationX>534</locationX>
+        <locationY>158</locationY>
+        <defaultConnector>
+            <targetReference>Screen_NoRecordId</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>outcome_OpenedFromMobileApp</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Decision_DetermineObjectType_ParentRecord</targetReference>
+            </connector>
+            <label>Field Service Mobile App</label>
+        </rules>
+        <rules>
+            <name>outcome_OpenedFromDesktop</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>recordId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_ServiceAppointment_IDs_DesktopFlow</targetReference>
+            </connector>
+            <label>Desktop</label>
+        </rules>
+    </decisions>
+    <description>07/01/22 - V1:  Initial Version created according to requirements in https://watercarestp.atlassian.net/browse/MSRS-200
+
+07/01/22 - V3: Change RecordChoiceSet Lookup to only use one lookup filter criteria instead of &quot;OR&quot;
+
+10/01/22 - V4: Add toggle &quot;Select Search Type&quot; on-screen &quot;Enter Search Criteria&quot;; Add new ChoiceSet in order to search for compkey; This is used in order to enable user to search for either Serial Number or Compkey whereas in previous version they only could search for Serial Numbers.
+
+10/01/22 - V5: Uses a new label (field &quot;MSN_Asset_Name_FSMA_SearchResults__c&quot;) for the shown search results in order to make it clearer for the user what Asset to choose from the search results screen.
+
+26/01/22 - V6: Add functionality to look up and select eligible Work Types (aka &quot;Activity Codes&quot;) that are allowed for the type of asset selected by the user in previous screens (Reference: https://watercarestp.atlassian.net/browse/MSRS-234); Added Screen &quot;Select Activity Type&quot;; Added new RecordChoiceSet &quot;choiceSet_SearchAllowedWorkTypes&quot;; Added Assignment Elements &quot;Assign Values to WOLI Record&quot; and &quot;Add WOLI Record To Collection&quot;; Added Screen &quot;Add Additional Activities?&quot;; Added new choice Elements &quot;Yes&quot; and &quot;No&quot;; Added Decision &quot;Add Additional Activity Code&quot; with outcomes &quot;Add additional activity&quot; and &quot;No Additional Activity&quot;; Changed Create Records Element &quot;Create Work Order Line Item&quot; to consume the input from the WOLI record collection variable in order to be able to create (multiple) WOLI record(s).
+
+03/03/2022 - V7:  Flow integrated into the &quot;Work Done&quot; parent flow; Built enhancements/extension as specified in https://watercarestp.atlassian.net/browse/MSRS-491; Added Decision and Outcomes under &quot;Opened from FSL Mobile App or Desktop&quot; in order to determine if the flow was opened from Desktop or Mobile App; Added Decision/Outcome elements &quot;Determine Object Type of Parent Record&quot; and subsequent get record element to cater for usecase if Service Appointments parent is a WOLI; Deleted Screen &quot;Confirm Asset Details&quot;; Changed headlines/labels on flow screens according to briefing in https://miro.com/app/board/uXjVOckmAH0=/.
+Added Decision Elementss and functionality for &quot;Check for Open WorkSteps&quot;; Added new record Choice Set &quot;choiceSet_SearchInstalledAsset_DummyAsset&quot;
+
+04/03/2022 - V8 - Added a Decision outcome &quot;No Additional Asset or Activity&quot; in the last decision element as the Field Service Mobile App was not able to identify the &quot;standard outcome&quot; without explicitly checking for the user-selected radio button &quot;I&apos;m all done here&quot;;  Removed the &quot;back&quot; button on the screen &quot;Work Steps&quot; in order to prevent users from creating multiple WOLIs for the same work type by inadvertently clicking on &quot;back&quot;.
+
+04/03/2022 - V10 - Removed &quot;Get Open Work Steps&quot; element and subsequent decision to check for open work steps, as it did not reliably work on Mobile App.; Updated Copytext on the &quot;Work Steps Screen&quot;.
+
+04/03/2022 - V11/12/13/14 - Copy Text changes on-screen &quot;Hold on for a bit...&quot;
+
+06/03/2022 - V15 - Added &quot;Id&quot; into Work Order Line Item Record variable in an attempt to retrieve Created Line Item Id after creation through Salesforce
+
+06/03/2022 - V16/17 - Changed &quot;Create Work Order Line Items&quot; element to user separate Variables instead of record variable, as the mobile app couldn&apos;t retrieve Record Id after creation in Salesforce back into the flow; Deleted the Assignment Element that was used in previous versions to prefill the WOLI record variable accordingly; Changed the Handed over ID to the Subflow &quot;Answer all open Work Steps&quot; to use the new WOLI Record Id as the &quot;Parent ID&quot;
+
+07/03/2022 - V18 - Reverted the Handed over ID to the Subflow &quot;Answer all open Work Steps&quot; to use the Work Order Id as its &quot;Parent ID&quot;
+
+08/03/2022 - V19 - Only hand &quot;Id&quot; into the sub-flow &quot;Answer all open work steps&quot; as a test if flow works if it does not get the &quot;ParentId&quot; field 
+
+
+08/03/2022 - V20 - Remove Subflow &quot;Answer all open work steps&quot; and screen &quot;Hold on for a bit&quot;
+
+08/03/2022 - V21 - Added Screen &quot;Preparing Work Steps&quot; as an idle screen when the user selected &quot;I&apos;m all done&quot; before going back to the parent flow that then will then check for open works steps.
+
+17/03/2022 - V29 - Applied Bugfixes for bugs described in MSRS-491: Text “Serialnumber” should be fixed to say “Serial Number” and MSRS-491 : Random search results gets displayed when user perform a &quot;blank&quot; search for CompKey or Serial Number. Introduced new formula &quot;fx_SearchCriteriaValidation_SearchString&quot; and &quot;fx_SearchCriteriaValidation_Dummyasset&quot; to use in the decision element &quot;Determine Search Criteria&quot; as validation elements after experiencing problems in the Mobile App to reliably reference the screen element &quot;Search Parameter&quot; and check for a &quot;blank&quot; or &quot;null&quot; value directly; Implemented an additional error screen when users enter a search parameter and select a dummy asset at the same time.
+
+30/03/2022 - V30 - Removed the &quot;Back&quot; Button from the screen &quot;Add Additional Activities or Assets&quot; in order to prevent users from going back which would duplicate the Work Order Line Items that have been created in the previous create element. Reason for this is , that we still want to deliberately keep the &quot;create&quot; element at this point in order to avoid any timing issues with the Mobile App not syncing quickly enough back to Salesforce and then causing issues later when the overarching &quot;work done&quot; flow tries to get the open &quot;work steps&quot; for the newly created WOLIs.
+
+05/04/2022 - V31 - Added field &quot;Subject&quot; to Create Work Order Line Items element in order to populate it upon creation. The subject previously has been looked up in the Record Choice set &quot;choiceSet_SearchAllowedWorkTypes&quot; and stored in the variable &quot;var_WorkOrderLineItems_Single_Record&quot;
+
+07/06/2022 - V32 - Added a &quot;back&quot; button to the screen &quot;Enter Search Criteria&quot; in order to enable users to go back to the parent &quot;Work Done&quot; flow initiating this subflow. This was requested in the UX review by the users, see https://watercarestp.atlassian.net/browse/MSRS-647 for details.
+
+09/12/2022 - V33: Amend create element &quot;Create new WOLI for chosen Activity&quot; and populate &quot;Start Date&quot; on WOLI. This became required because of Integration Payload requirements, when creating a new &quot;Child Work Order&quot; in EAM with Data from Salesforce.</description>
+    <dynamicChoiceSets>
+        <description>Used to Search for any Work Types that are allowed/match the &quot;Asset Type&quot; of the looked-up Asset the user selected on the previous screens. The allowed Asset Types are configured in a related list &quot;Allowed Asset Types&quot; to the &quot;Work Type&quot;. Please note that due to limitations in the Field Service Mobile App, a RecordChoice set has to be used for the lookup instead of a Get Records element in order to show the user a list of search results.</description>
+        <name>choiceSet_SearchAllowedWorkType</name>
+        <dataType>String</dataType>
+        <displayField>MSN_WorkTypeName__c</displayField>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>MSN_AllowedAssetType__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>var_Installed_Asset.Asset_Type__c</elementReference>
+            </value>
+        </filters>
+        <object>MSN_AllowedAssetTypes__c</object>
+        <outputAssignments>
+            <assignToReference>var_WorkOrderLineItem_SingleRecord.Subject</assignToReference>
+            <field>MSN_WorkTypeName__c</field>
+        </outputAssignments>
+        <sortField>MSN_WorkTypeName__c</sortField>
+        <sortOrder>Asc</sortOrder>
+        <valueField>MSN_Work_Type__c</valueField>
+    </dynamicChoiceSets>
+    <dynamicChoiceSets>
+        <description>Used to Search for any Installed Assets that match the &quot;Compkey&quot; search string entered by the user on the screen &quot;Add Installed Asset&quot;. Please note that due to limitations in the Field Service Mobile App, a RecordChoice set has to be used for the lookup instead of a Get Records element in order to show the user a list of search results.</description>
+        <name>choiceSet_SearchInstalledAsset_Compkey</name>
+        <dataType>String</dataType>
+        <displayField>Name</displayField>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Comp_Key__c</field>
+            <operator>Contains</operator>
+            <value>
+                <elementReference>Screen_EnterSearchCriteria_Searchbar</elementReference>
+            </value>
+        </filters>
+        <limit>10</limit>
+        <object>Asset</object>
+        <outputAssignments>
+            <assignToReference>var_Installed_Asset.Asset_Type__c</assignToReference>
+            <field>Asset_Type__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_Installed_Asset.Comp_Key__c</assignToReference>
+            <field>Comp_Key__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_Installed_Asset.Component_Type_Code__c</assignToReference>
+            <field>Component_Type_Code__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_Installed_Asset.House_Number__c</assignToReference>
+            <field>House_Number__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_Installed_Asset.Id</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_Installed_Asset.Location_Description__c</assignToReference>
+            <field>Location_Description__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_Installed_Asset.Name</assignToReference>
+            <field>Name</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_Installed_Asset.SerialNumber</assignToReference>
+            <field>SerialNumber</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_Installed_Asset.Street_Name__c</assignToReference>
+            <field>Street_Name__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_Installed_Asset.Suburb__c</assignToReference>
+            <field>Suburb__c</field>
+        </outputAssignments>
+        <valueField>Comp_Key__c</valueField>
+    </dynamicChoiceSets>
+    <dynamicChoiceSets>
+        <description>Used to Search for a &quot;Dummy Asset&quot; in case the field crew cannot find a specific Compkey for an installed asset in the ground in their GIS application. They select a dummy asset instead in order to be able to finish their work in the &quot;work done&quot; process. Please note that due to limitations in the Field Service Mobile App, a RecordChoice set has to be used for the lookup instead of a Get Records element in order to show the user a list of search results.</description>
+        <name>choiceSet_SearchInstalledAsset_DummyAsset</name>
+        <dataType>String</dataType>
+        <displayField>Name</displayField>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>MSN_IsDummyAsset__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <object>Asset</object>
+        <outputAssignments>
+            <assignToReference>var_Installed_Asset.Asset_Type__c</assignToReference>
+            <field>Asset_Type__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_Installed_Asset.Comp_Key__c</assignToReference>
+            <field>Comp_Key__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_Installed_Asset.Component_Type_Code__c</assignToReference>
+            <field>Component_Type_Code__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_Installed_Asset.Id</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_Installed_Asset.Name</assignToReference>
+            <field>Name</field>
+        </outputAssignments>
+        <sortField>Name</sortField>
+        <sortOrder>Asc</sortOrder>
+        <valueField>Comp_Key__c</valueField>
+    </dynamicChoiceSets>
+    <dynamicChoiceSets>
+        <description>Used to Search for any Installed Assets that match the &quot;Serial Number&quot; search string entered by the user on the screen &quot;Add Installed Asset&quot;. Please note that due to limitations in the Field Service Mobile App, a RecordChoice set has to be used for the lookup instead of a Get Records element in order to show the user a list of search results.</description>
+        <name>choiceSet_SearchInstalledAsset_SerialNumber</name>
+        <dataType>String</dataType>
+        <displayField>Name</displayField>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>SerialNumber</field>
+            <operator>Contains</operator>
+            <value>
+                <elementReference>Screen_EnterSearchCriteria_Searchbar</elementReference>
+            </value>
+        </filters>
+        <limit>10</limit>
+        <object>Asset</object>
+        <outputAssignments>
+            <assignToReference>var_Installed_Asset.Asset_Type__c</assignToReference>
+            <field>Asset_Type__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_Installed_Asset.Comp_Key__c</assignToReference>
+            <field>Comp_Key__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_Installed_Asset.Component_Type_Code__c</assignToReference>
+            <field>Component_Type_Code__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_Installed_Asset.House_Number__c</assignToReference>
+            <field>House_Number__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_Installed_Asset.Id</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_Installed_Asset.Location_Description__c</assignToReference>
+            <field>Location_Description__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_Installed_Asset.Name</assignToReference>
+            <field>Name</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_Installed_Asset.SerialNumber</assignToReference>
+            <field>SerialNumber</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_Installed_Asset.Street_Name__c</assignToReference>
+            <field>Street_Name__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_Installed_Asset.Suburb__c</assignToReference>
+            <field>Suburb__c</field>
+        </outputAssignments>
+        <valueField>SerialNumber</valueField>
+    </dynamicChoiceSets>
+    <environments>Default</environments>
+    <formulas>
+        <description>Determine if the user has not selected a choice in the picklist &quot;Dummy Asset&quot;.</description>
+        <name>fx_SearchCriteriaValidation_DummyAsset</name>
+        <dataType>Boolean</dataType>
+        <expression>ISBLANK({!Screen_EnterSearchCriteria_DummyAsset})</expression>
+    </formulas>
+    <formulas>
+        <description>Determine the Length of the entered Search String - used to validate the entry not being &quot;null&quot;.</description>
+        <name>fx_SearchCriteriaValidation_SearchString</name>
+        <dataType>Number</dataType>
+        <expression>LEN({!Screen_EnterSearchCriteria_Searchbar})</expression>
+        <scale>0</scale>
+    </formulas>
+    <interviewLabel>MSN - Field Service Mobile App - {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>MSN - Field Service Mobile App - Add Installed Asset to Work Order</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>FieldServiceMobile</processType>
+    <recordCreates>
+        <description>Create a new Work Order Line Item under the parent Work Order record, related to the Asset selected by the user from the search results and of the Work Type selected in the &quot;Activity Code&quot; screen.</description>
+        <name>Create_new_WOLI</name>
+        <label>Create new WOLI for chosen Activity</label>
+        <locationX>534</locationX>
+        <locationY>1826</locationY>
+        <assignRecordIdToReference>var_WorkOrderLineItem_Id</assignRecordIdToReference>
+        <connector>
+            <targetReference>Screen_AddMoreActivities_or_Assets</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>AssetId</field>
+            <value>
+                <elementReference>var_Installed_Asset.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ServiceTerritoryId</field>
+            <value>
+                <elementReference>var_Parent_Work_Order.ServiceTerritoryId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>StartDate</field>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>New</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Subject</field>
+            <value>
+                <elementReference>var_WorkOrderLineItem_SingleRecord.Subject</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WorkOrderId</field>
+            <value>
+                <elementReference>var_Parent_Work_Order.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WorkTypeId</field>
+            <value>
+                <elementReference>Screen_Select_ActivityCode_Choiceset</elementReference>
+            </value>
+        </inputAssignments>
+        <object>WorkOrderLineItem</object>
+    </recordCreates>
+    <recordLookups>
+        <description>Lookup details from the Parent Work Order related to the Service Appointment triggering this flow. This will be used to prefill fields on the new Work Order Line Item created at the end of this flow.</description>
+        <name>Get_Parent_WorkOrder_Details</name>
+        <label>Get Parent Work Order Details</label>
+        <locationX>534</locationX>
+        <locationY>1070</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Screen_EnterSearchCriteria_Asset</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>ParentId</elementReference>
+            </value>
+        </filters>
+        <object>WorkOrder</object>
+        <outputReference>var_Parent_Work_Order</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Address</queriedFields>
+        <queriedFields>WorkTypeId</queriedFields>
+        <queriedFields>ServiceTerritoryId</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <description>If the Service Appointment is child to a Work Order Line Item, then we need to get the record Id of the Parent Work Order of this WOLI first in order to make the following steps of the flow compatible.</description>
+        <name>Get_ParentRecordId_WOLI</name>
+        <label>Get Parent Work Order of WOLI</label>
+        <locationX>490</locationX>
+        <locationY>734</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Parent_WorkOrder_Details</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>ParentId</elementReference>
+            </value>
+        </filters>
+        <object>WorkOrderLineItem</object>
+        <outputAssignments>
+            <assignToReference>ParentId</assignToReference>
+            <field>WorkOrderId</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <description>Lookup records details from the Service Appointment triggering this flow/subflow when opened from Desktop Salesforce only. The Record Id is handed over by the Desktop Salesforce flow into the Variable &quot;recordId&quot; and has to be copied over into the variable &quot;Id&quot; to make it compatible. Also we assign the &quot;ParentId&quot; variable.</description>
+        <name>Get_ServiceAppointment_IDs_DesktopFlow</name>
+        <label>Get Service Appointment Record IDs</label>
+        <locationX>490</locationX>
+        <locationY>278</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Decision_DetermineObjectType_ParentRecord</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <object>ServiceAppointment</object>
+        <outputAssignments>
+            <assignToReference>Id</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>ParentId</assignToReference>
+            <field>ParentRecordId</field>
+        </outputAssignments>
+    </recordLookups>
+    <screens>
+        <description>This screen is used to prompt the user whether they want to add additional &quot;Activity Codes&quot; to the selected asset.  If &quot;Yes&quot; is chosens, then they are taken back to the &quot;Select Activity Code&quot; screen and select an additional Activity which results in the creation of multiple &quot;Work Order Line Items&quot; then</description>
+        <name>Screen_AddMoreActivities_or_Assets</name>
+        <label>Add Additional Activities or Assets</label>
+        <locationX>534</locationX>
+        <locationY>1946</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Decision_AddAdditionalActivityCodeOrAsset</targetReference>
+        </connector>
+        <fields>
+            <name>Screen_AddMoreActivityCodes_HintText</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;background-color: rgb(255, 255, 255); font-size: 16px;&quot;&gt;You have successfully added an asset and activity.﻿&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Asset: &lt;/b&gt;{!var_Installed_Asset.Name}&lt;/p&gt;&lt;p&gt;&lt;b&gt;Activity:&lt;/b&gt;{!var_WorkOrderLineItem_SingleRecord.Subject}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_AddMoreActivityCodes_Choiceset</name>
+            <choiceReferences>ch_AdditionalAsset</choiceReferences>
+            <choiceReferences>ch_AdditionalActivityCode</choiceReferences>
+            <choiceReferences>ch_WorkDoneCompleted</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>What do you need to do next?</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>The user will enter the Serial Number or Compkey of an existing, installed Asset they want to add to their current Work Order - e.g. in case they need to replace or repair this asset too. The user entry is then used in the next Get Records element to lookup existing Assets.</description>
+        <name>Screen_EnterSearchCriteria_Asset</name>
+        <label>Enter Search Criteria</label>
+        <locationX>534</locationX>
+        <locationY>1190</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Decision_DetermineSearchType</targetReference>
+        </connector>
+        <fields>
+            <name>Screen_EnterSearchCriteria_HintText</name>
+            <fieldText>&lt;p&gt;Please select how you would like to search for the asset that you worked on.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_EnterSearchCriteria_SearchType</name>
+            <choiceReferences>ch_Search_by_Compkey</choiceReferences>
+            <choiceReferences>ch_Search_by_SerialNumber</choiceReferences>
+            <dataType>String</dataType>
+            <defaultSelectedChoiceReference>ch_Search_by_Compkey</defaultSelectedChoiceReference>
+            <fieldText>Search by</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Screen_EnterSearchCriteria_Searchbar</name>
+            <dataType>String</dataType>
+            <defaultValue>
+                <stringValue></stringValue>
+            </defaultValue>
+            <fieldText>Search Parameter</fieldText>
+            <fieldType>InputField</fieldType>
+            <helpText>&lt;p&gt;Depending on your coice above, please either enter the Serial number or Compkey of the asset.&lt;/p&gt;</helpText>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Screen_EnterSearchCriteria_DummyAsset_HintText</name>
+            <fieldText>&lt;p&gt;If the asset is not on GIS, please select a dummy Compkey to progress&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_EnterSearchCriteria_DummyAsset</name>
+            <choiceReferences>choiceSet_SearchInstalledAsset_DummyAsset</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Dummy Compkey</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <nextOrFinishButtonLabel>Search</nextOrFinishButtonLabel>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>Shows an Error Message to the user in case no &quot;Record ID&quot; is populated into either the &quot;ID&quot; variable or &quot;recordID&quot; variable when the flow is opened.</description>
+        <name>Screen_NoRecordId</name>
+        <label>No Record Id</label>
+        <locationX>754</locationX>
+        <locationY>278</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>Screen_NoRecordId_ErrorText</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Error - No Service Appointment Record Id&lt;/b&gt;&lt;/p&gt;&lt;p&gt;It looks like we couldn&apos;t determine the unique record ID for your Service Appointment when opening this feature.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Please get in touch with your friendly Salesforce Support team and make them aware of this error.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>Shows an Error Message to the user in case the user did NOT enter a Search String and did NOT select a Dummy Asset from the picklist</description>
+        <name>Screen_NoSearchParameters</name>
+        <label>No Search Parameters Entered</label>
+        <locationX>1018</locationX>
+        <locationY>1430</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Screen_EnterSearchCriteria_Asset</targetReference>
+        </connector>
+        <fields>
+            <name>Screen_NoSearchParameters_ErrorText</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Error - No Search Criteria Entered or no Dummy Asset selected&lt;/b&gt;&lt;/p&gt;&lt;p&gt;It looks like you did not either enter search criteria or select a Dummy Asset on the previous screen. Please press next and try to refine your search criteria.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>Used as an &quot;Idle screen&quot; to inform the user that in the next step he is taken through any new Work Plans/Work Steps that have been generated in the background after the new Work Order Line Item has been created.</description>
+        <name>Screen_PrepareNewWorkSteps</name>
+        <label>Preparing New Work Steps</label>
+        <locationX>666</locationX>
+        <locationY>2186</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Screen_PrepareNewWorkSteps_IdleMessage</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Please hold on for a bit while we get your new work steps ready... &lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;On the next screen, we will guide you through the new work steps &lt;span style=&quot;background-color: rgb(255, 255, 255);&quot;&gt;that require an answer (if any)&lt;/span&gt;.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>This screen is used to show the search results looked up using the Asset Record Choice Set and prompts the user to select the correct asset from the returned choices.</description>
+        <name>Screen_SearchResults_Compkey</name>
+        <label>Search Results</label>
+        <locationX>314</locationX>
+        <locationY>1430</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <backButtonLabel>Back to search</backButtonLabel>
+        <connector>
+            <targetReference>Screen_Select_ActivityCode</targetReference>
+        </connector>
+        <fields>
+            <name>Screen_SearchResults_Compkey_HintText</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;Please select the correct Asset you&apos;ve worked on. If you cannot find the asset in the list, please refine your search criteria.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_SearchResults_Compkey_Choiceset</name>
+            <choiceReferences>choiceSet_SearchInstalledAsset_Compkey</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Select Asset</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>This screen is used to show the search results looked up using the Asset Record Choice Set &quot;By Serial Number&quot; and prompts the user to select the correct asset from the returned choices.</description>
+        <name>Screen_SearchResults_SerialNumber</name>
+        <label>Search Results</label>
+        <locationX>50</locationX>
+        <locationY>1430</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <backButtonLabel>Back to search</backButtonLabel>
+        <connector>
+            <targetReference>Screen_Select_ActivityCode</targetReference>
+        </connector>
+        <fields>
+            <name>Screen_SearchResults_SerialNumber_HintText</name>
+            <fieldText>&lt;p&gt;Please select the correct Asset you&apos;ve worked on. If you cannot find the asset in the list, please refine your search criteria.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_SearchResults_SerialNumber_Choiceset</name>
+            <choiceReferences>choiceSet_SearchInstalledAsset_SerialNumber</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Select Asset</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>This screen is used to show all available Work Types (aka &quot;Activity Codes&quot;) that are allowed for this asset type. This is looked up using the Record Choice Set &quot;choiceSet_SearchAvailableWorkType&quot; and prompts the user to select the correct Work Type from the returned choices.</description>
+        <name>Screen_Select_ActivityCode</name>
+        <label>Select Activity Code</label>
+        <locationX>534</locationX>
+        <locationY>1706</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <backButtonLabel>Back to search</backButtonLabel>
+        <connector>
+            <targetReference>Create_new_WOLI</targetReference>
+        </connector>
+        <fields>
+            <name>Screen_Select_ActivityCode_HintText</name>
+            <fieldText>&lt;p&gt;Please select an activity code for the asset {!var_Installed_Asset.Name}.﻿&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_Select_ActivityCode_Choiceset</name>
+            <choiceReferences>choiceSet_SearchAllowedWorkType</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Select Activity</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>Shows an Error Message to the user in case the decision cannot determine what Object type the Parent Record ID in the &quot;ParentId&quot; variable is of. (Has to be either Work Order or Work Order Line Item)</description>
+        <name>Screen_UnknownObjectType</name>
+        <label>Unknown Object Type</label>
+        <locationX>754</locationX>
+        <locationY>734</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>Screen_UnknownObjectType_ErrorMessage</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Error - Unknown Parent Record Type&lt;/b&gt;&lt;/p&gt;&lt;p&gt;It looks like we cannot determine from which parent record (must be Work Order or Work Order Line Item) you attempted to open this feature from.&lt;/p&gt;&lt;p&gt;Please get in touch with your friendly Salesforce Support team and make them aware of this error.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>Shows an Error Message to the user in case the user entered a Search String and selected a Dummy Asset from the picklist</description>
+        <name>Screen_WrongSearchParameters</name>
+        <label>Wrong Search Parameters</label>
+        <locationX>754</locationX>
+        <locationY>1430</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Screen_EnterSearchCriteria_Asset</targetReference>
+        </connector>
+        <fields>
+            <name>Screen_WrongSearchParameters_ErrorText</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Error - Search parameter and dummy asset selected&lt;/b&gt;&lt;/p&gt;&lt;p&gt;It looks like you entered search parameters &lt;u&gt;and&lt;/u&gt; selected a dummy asset on the previous screen. Please either enter search parameters or select a dummy asset instead only.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <start>
+        <locationX>408</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Decision_OpenedFromMobileOrDesktop</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <variables>
+        <description>Stores the Record ID of the record that triggered this flow. In this case the Service Appointment ID. This is handed over from the FSL Mobile App into the flow.</description>
+        <name>Id</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <description>Stores the ParentRecord ID of the record that triggered this flow (usually the Work Order Id of the Service Appointment). This is handed over from the FSL Mobile App into the flow.</description>
+        <name>ParentId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <description>Used to store the Record ID of the &quot;Service Appointment&quot;, when the flow is opened from a Desktop Device.</description>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Used to store record details from the Asset record looked up in the &quot;Get Record&quot; element &quot;Get Installed Asset&quot;</description>
+        <name>var_Installed_Asset</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Asset</objectType>
+    </variables>
+    <variables>
+        <name>var_OpenWorkSteps</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>WorkStep</objectType>
+    </variables>
+    <variables>
+        <description>Counts the number of Work Steps that are still open. Used in the Lookup &quot;Get open work steps&quot; in the &quot;Update Job&quot; path of this flow.</description>
+        <name>var_OpenWorkStepsCount</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+        <value>
+            <numberValue>0.0</numberValue>
+        </value>
+    </variables>
+    <variables>
+        <description>Used to store details from the Parent Work Order related to the Service Appointment triggering this flow.</description>
+        <name>var_Parent_Work_Order</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>WorkOrder</objectType>
+    </variables>
+    <variables>
+        <description>Record Collection Variable to store the record details from the Service Appointment triggering this flow.</description>
+        <name>var_Service_Appointment</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ServiceAppointment</objectType>
+    </variables>
+    <variables>
+        <description>If multiple Activity Codes were selected, then the variable &quot;var_WorkOrderLineItem_SingleRecord&quot; is added to this record collection.</description>
+        <name>var_WorkOrderLineItem_Collection</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>WorkOrderLineItem</objectType>
+    </variables>
+    <variables>
+        <description>Stores the Record Id of the newly created Work Order Line Item after it has been created in Salesforce and synced back to the Field Service Mobile App.</description>
+        <name>var_WorkOrderLineItem_Id</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <description>Record Variable for the &quot;Work Order Line Item&quot; that is created at the end of this flow.</description>
+        <name>var_WorkOrderLineItem_SingleRecord</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>WorkOrderLineItem</objectType>
+    </variables>
+</Flow>

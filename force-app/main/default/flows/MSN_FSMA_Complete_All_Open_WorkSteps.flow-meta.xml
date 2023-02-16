@@ -1,0 +1,1591 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <assignments>
+        <description>Write the Boolean answer given by the user back into the &quot;Work Step&quot; Variable prior to updating the record in the last step of this flow.</description>
+        <name>Assign_Boolean_Answers_to_Work_Step</name>
+        <label>Assign Boolean Answer to Work Step</label>
+        <locationX>3922</locationX>
+        <locationY>2126</locationY>
+        <assignmentItems>
+            <assignToReference>var_WorkStepRecord_Single.MSN_WorkStep_Answer__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_WS_EntryType_Boolean_Answer</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_WorkStepRecord_Single.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Decision_IsMandatoryWorkStepBlank</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Write the Date answer back into the &quot;Work Step&quot; Variable prior to updating the record in the last step of this flow.</description>
+        <name>Assign_Date_Answers_to_Work_Step</name>
+        <label>Assign Date Answer to Work Step</label>
+        <locationX>3394</locationX>
+        <locationY>2126</locationY>
+        <assignmentItems>
+            <assignToReference>var_WorkStepRecord_Single.MSN_WorkStep_Answer__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_WS_EntryType_Date_Answer</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_WorkStepRecord_Single.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_WorkStepRecord_Single.MSN_WS_Date_Answer__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_WS_EntryType_Date_Answer</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Decision_IsMandatoryWorkStepBlank</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Write the Date/Time answer back into the &quot;Work Step&quot; Variable prior to updating the record in the last step of this flow. Please note: the Field Service Mobile App unfortunately cannot save only the &quot;Time&quot; information, as the Time field is not available in Field Service Mobile Flows. Hence we use a &quot;date/time&quot; field and will then convert the value in a separate record triggered flow on the work step.</description>
+        <name>Assign_DateTime_Answers_to_Work_Step</name>
+        <label>Assign Date/Time Answer to Work Step</label>
+        <locationX>3658</locationX>
+        <locationY>2126</locationY>
+        <assignmentItems>
+            <assignToReference>var_WorkStepRecord_Single.MSN_WorkStep_Answer__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_WS_EntryType_DateTime_Answer</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_WorkStepRecord_Single.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_WorkStepRecord_Single.MSN_WS_DateTime_Answer__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_WS_EntryType_DateTime_Answer</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Decision_IsMandatoryWorkStepBlank</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Assign the &quot;ParentId&quot; (handed over automatically by the Field Service Mobile App) into a separate variable &quot;var_WorkStep_Parent&quot; before querying for any new work steps.</description>
+        <name>Assign_ParentId</name>
+        <label>Assign ParentId</label>
+        <locationX>1942</locationX>
+        <locationY>854</locationY>
+        <assignmentItems>
+            <assignToReference>var_WorkStep_ParentID</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>ParentId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Decision_DetermineObjectType_ParentRecord</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Write the Picklist choice selected by the user back into the &quot;Work Step&quot; Variable prior to updating the record in the last step of this flow.</description>
+        <name>Assign_Picklist_Answer_to_Work_Step</name>
+        <label>Assign Picklist Answer to Work Step</label>
+        <locationX>4450</locationX>
+        <locationY>2126</locationY>
+        <assignmentItems>
+            <assignToReference>var_WorkStepRecord_Single.MSN_WorkStep_Answer__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_WS_EntryType_Picklist_Answer</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_WorkStepRecord_Single.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Decision_IsMandatoryWorkStepBlank</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Assign Desktop &quot;recordId&quot; into Mobile &quot;Id&quot; variable</description>
+        <name>Assign_recordId_into_Id</name>
+        <label>Assign &quot;recordId&quot; into &quot;Id&quot; variable</label>
+        <locationX>1766</locationX>
+        <locationY>278</locationY>
+        <assignmentItems>
+            <assignToReference>Id</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Decision_DetermineObjectType</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Write the Schedule Item Code Picklist choice selected by the user back into the &quot;Work Step&quot; Variable prior to updating the record in the last step of this flow.</description>
+        <name>Assign_ScheduleItemCode_Answer_to_Work_Step</name>
+        <label>Assign Schedule Item Code Answer to Work Step</label>
+        <locationX>4978</locationX>
+        <locationY>2702</locationY>
+        <assignmentItems>
+            <assignToReference>var_WorkStepRecord_Single.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Decision_IsMandatoryWorkStepBlank</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Write the &quot;Schedule Item Code&quot;, the chosen &quot;Answer&quot; from the Picklist choice selected by the user and the Service Appointment Idtriggering this flow back into the &quot;Work Step&quot; Variable prior to updating the record in the last step of this flow.</description>
+        <name>Assign_SIC_SA_Answer_to_Work_Step</name>
+        <label>Assign Schedule Item Code, SA and Answer to Work Step</label>
+        <locationX>4714</locationX>
+        <locationY>2702</locationY>
+        <assignmentItems>
+            <assignToReference>var_WorkStepRecord_Single.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_WorkStepRecord_Single.MSN_Service_Appointment__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Decision_IsMandatoryWorkStepBlank</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Write the Answer Text String back into the &quot;Work Step&quot; Variable prior to updating the record in the last step of this flow.</description>
+        <name>Assign_Text_Answers_to_Work_Step</name>
+        <label>Assign Text Answer to Work Step</label>
+        <locationX>3130</locationX>
+        <locationY>2126</locationY>
+        <assignmentItems>
+            <assignToReference>var_WorkStepRecord_Single.MSN_WorkStep_Answer__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_WS_EntryType_String_Answer</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_WorkStepRecord_Single.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Decision_IsMandatoryWorkStepBlank</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Write the Boolean answer to a question that included an external URL (e.g. work step in powerapps) given by the user back into the &quot;Work Step&quot; Variable prior to updating the record in the last step of this flow.</description>
+        <name>Assign_URL_Confirmation_Answers_to_Work_Step</name>
+        <label>Assign Answer given to URL Question to Work Step</label>
+        <locationX>4186</locationX>
+        <locationY>2126</locationY>
+        <assignmentItems>
+            <assignToReference>var_WorkStepRecord_Single.MSN_WorkStep_Answer__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_WS_EntryType_URL_Answer</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_WorkStepRecord_Single.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Decision_IsMandatoryWorkStepBlank</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Count the number of Work Steps still in the status &quot;Open&quot; as a validation prior to going into the loop element in the next step.</description>
+        <name>Assignment_CountOpenWorkSteps</name>
+        <label>Count open Work Steps</label>
+        <locationX>1810</locationX>
+        <locationY>1526</locationY>
+        <assignmentItems>
+            <assignToReference>var_OpenWorkSteps_TotalCount</assignToReference>
+            <operator>AssignCount</operator>
+            <value>
+                <elementReference>var_WorkStepRecords_Collection</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Decision_CheckOpenWorkSteps</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Increment the variable &quot;var_OpenWorkSteps_Increment&quot; by 1. Used to show the current position of each work step in the loop variable against the total number of open work steps.</description>
+        <name>Assignment_OpenWorkSteps_Increment</name>
+        <label>Increment Work Step Counter</label>
+        <locationX>4450</locationX>
+        <locationY>3254</locationY>
+        <assignmentItems>
+            <assignToReference>var_OpenWorkSteps_Increment</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <numberValue>1.0</numberValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_OverOpenWorkStepRecords</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>When this flow is opened from a single &quot;Work Step&quot; (normally that would happen when users select single Work Steps from their work plan) instead of using the &quot;Answer all open work steps&quot; feature on mobile app, the total count of Work Steps is in this case manually set to &quot;1&quot; as the actual counting is skipped and otherwise the screen elements would not show the number of total answers correctly.</description>
+        <name>Assignment_Set_CountOpenWorkSteps_Variable</name>
+        <label>Set Count of open Work Steps Variable</label>
+        <locationX>50</locationX>
+        <locationY>854</locationY>
+        <assignmentItems>
+            <assignToReference>var_OpenWorkSteps_TotalCount</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <numberValue>1.0</numberValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Decision_Determine_Work_Step_Entry_Type</targetReference>
+        </connector>
+    </assignments>
+    <choices>
+        <name>ch_Boolean_Answer_No</name>
+        <choiceText>No</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>No</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Choice used in the Work Step Entry Type &quot;Boolean&quot; as the &quot;No&quot; Option. Please Note:  EAM requires the value to be sent as &quot;N&quot;, hence this choice is of the type &quot;Text&quot; instead of being a true &quot;boolean&quot;.</description>
+        <name>ch_WS_Boolean_Answer_No</name>
+        <choiceText>No</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>N</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Choice used in the Work Step Entry Type &quot;Boolean&quot; as the &quot;Yes&quot; Option. Please Note: EAM requires the value to be sent as &quot;Y&quot;, hence this choice is of the type &quot;Text&quot; instead of being a true &quot;boolean&quot;.</description>
+        <name>ch_WS_Boolean_Answer_Yes</name>
+        <choiceText>Yes</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Y</stringValue>
+        </value>
+    </choices>
+    <decisions>
+        <description>Determine whether any &quot;Work Steps&quot; (from Work Plans related to the Work Order or Child Work Order Line items) are still in an &quot;Open&quot; status prior to going into the loop element. If no Work Steps are still open, throw an error screen prompting the user to complete the work steps first.</description>
+        <name>Decision_CheckOpenWorkSteps</name>
+        <label>Check for Open Work Steps</label>
+        <locationX>1810</locationX>
+        <locationY>1646</locationY>
+        <defaultConnector>
+            <targetReference>Screen_CannotDetermineOpenWorkStepCount</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Other Error</defaultConnectorLabel>
+        <rules>
+            <name>outcome_NoOpenWorkSteps</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>var_OpenWorkSteps_TotalCount</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <label>No open Work Steps</label>
+        </rules>
+        <rules>
+            <name>outcome_OpenWorkSteps</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>var_OpenWorkSteps_TotalCount</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Loop_OverOpenWorkStepRecords</targetReference>
+            </connector>
+            <label>Open Work Steps</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Determine the &quot;Entry Type&quot; (e.g. string, boolean, date, URL etc.) of the Work Step that started this flow.</description>
+        <name>Decision_Determine_Work_Step_Entry_Type</name>
+        <label>Determine Work Step Entry Type</label>
+        <locationX>4318</locationX>
+        <locationY>1886</locationY>
+        <defaultConnector>
+            <targetReference>Screen_WS_Unknown_Entry_Type</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Unknown Entry Type</defaultConnectorLabel>
+        <rules>
+            <name>outcome_WS_EntryType_String</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>var_WorkStepRecord_Single.MSN_Answer_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>String</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Screen_WS_EntryType_String_Screen</targetReference>
+            </connector>
+            <label>String (Text)</label>
+        </rules>
+        <rules>
+            <name>outcome_WS_EntryType_Date</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>var_WorkStepRecord_Single.MSN_Answer_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Date</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Screen_WS_EntryType_Date_Screen</targetReference>
+            </connector>
+            <label>Date</label>
+        </rules>
+        <rules>
+            <name>outcome_WS_EntryType_Time</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>var_WorkStepRecord_Single.MSN_Answer_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Time</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Screen_WS_EntryType_DateTime</targetReference>
+            </connector>
+            <label>Time</label>
+        </rules>
+        <rules>
+            <name>outcome_WS_EntryType_Boolean</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>var_WorkStepRecord_Single.MSN_Answer_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Boolean</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Screen_WS_EntryType_Boolean_Screen_0</targetReference>
+            </connector>
+            <label>Boolean (Yes/No)</label>
+        </rules>
+        <rules>
+            <name>outcome_WS_EntryType_URL</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>var_WorkStepRecord_Single.MSN_Answer_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>URL</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Screen_WS_EntryType_URL_Screen</targetReference>
+            </connector>
+            <label>External Workstep with URL</label>
+        </rules>
+        <rules>
+            <name>outcome_WS_EntryType_Picklist</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>var_WorkStepRecord_Single.MSN_Answer_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Picklist</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Screen_WS_EntryType_Picklist_Screen</targetReference>
+            </connector>
+            <label>Picklist (from Work Step Answers)</label>
+        </rules>
+        <rules>
+            <name>outcome_WS_EntryType_ScheduleItemCode</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>var_WorkStepRecord_Single.MSN_Answer_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Schedule Item Code</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Decision_Is_WorkStep_Parent_WorkOrder_or_WOLI</targetReference>
+            </connector>
+            <label>Schedule Item Code (RFP)</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Determine the Object Type of the Record Id triggering this flow. This is required to avoid having two flows to cater for the following scenarios:
+- The user only wants to answer one specific Work Step at this time and starts this flow from the &quot;Work Plan&quot; tab on the FSL Mobile App or Work Order Record on Desktop when selecting &quot;Complete&quot; on a single Work Step.
+- The user wants to answer all open Work Steps and enters this flow eg. through the &quot;Update Status&quot; flow on the FSL Mobile App and attempts to set a Service Appointment to &quot;Complete&quot; when Work Steps are still open.
+
+In order to determine what object type the record Id is from, we find the Object type from the static &quot;Record ID prefix&quot; (first 3 digits of the ID) which is always the same on Standard objects:
+- For Service Appointment, the prefix is:  08p  (this is handed over when a user enters this flow via e.g. the &quot;Update Status&quot; flow)
+- For &quot;Work Step&quot; objects the prefix is: 0hF  (this is handed over when a user enters this flow via a single Work Step from their Work Plan
+
+It was deliberately chosen to use those static/hardcoded prefixes for the decision outcomes as it only needs to cater to the above 2 cases and respect especially the Field Service Mobile App limitations in regards FSL Mobile Flow capabilities - even though it might not be best practice in general to use hardcoded elements.</description>
+        <name>Decision_DetermineObjectType</name>
+        <label>Determine object type of Record Id</label>
+        <locationX>1810</locationX>
+        <locationY>614</locationY>
+        <defaultConnector>
+            <targetReference>Screen_UnknownObjectType</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Unidentified Object Type</defaultConnectorLabel>
+        <rules>
+            <name>outcome_FlowTriggeredFromSingleWorkStep</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Id</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>0hF</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Single_WorkStep</targetReference>
+            </connector>
+            <label>Triggered from Single Work Step</label>
+        </rules>
+        <rules>
+            <name>outcome_FlowTriggeredFromServiceAppointment</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Id</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>08p</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Decision_ParentId_empty</targetReference>
+            </connector>
+            <label>Triggered from Service Appointment</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Determine the Object Type of the Parent Record Id triggering this flow. This is required to avoid having two flows to cater for the following scenarios:
+1) The &quot;Complete All Open Work Steps&quot; flow was launched from a Service Appointment that is related to a &quot;Work Order&quot;
+2) OR The &quot;Complete All Open Work Steps&quot; flow was launched from a Service Appointment that is related to a &quot;Work Order Line Item&quot;
+
+In order to determine what object type the record Id is from, we find the Object type from the static &quot;Record ID prefix&quot; (first 3 digits of the ID) which is always the same on Standard objects:
+- For &quot;Work Order&quot; objects the prefix is: 0WO
+- For &quot;Work Order Line Items&quot; objects the prefix is: 1WL 
+
+It was deliberately chosen to use those static/hardcoded prefixes for the decision outcomes as it only needs to cater to the above 2 cases and respect especially the Field Service Mobile App limitations in regards FSL Mobile Flow capabilities - even though it might not be best practice in general to use hardcoded elements.</description>
+        <name>Decision_DetermineObjectType_ParentRecord</name>
+        <label>Determine Object Type of Parent Record</label>
+        <locationX>1810</locationX>
+        <locationY>1070</locationY>
+        <defaultConnector>
+            <targetReference>Screen_WS_NoRecordId_0</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Unknown Object Type</defaultConnectorLabel>
+        <rules>
+            <name>outcome_Parent_Record_Is_WO</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>var_WorkStep_ParentID</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>0WO</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Work_Step_Details_WO</targetReference>
+            </connector>
+            <label>Work Order</label>
+        </rules>
+        <rules>
+            <name>outcome_Parent_Record_Is_WOLI</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>var_WorkStep_ParentID</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>1WL</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Work_Step_Details_WOLI</targetReference>
+            </connector>
+            <label>Work Order Line Item</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Determine whether the Work Step Record has the field &quot;WorkOrderLineItemID&quot; populated. If yes, continue</description>
+        <name>Decision_Is_WorkStep_Parent_WorkOrder_or_WOLI</name>
+        <label>Is Work Step Parent Work Order or WOLI?</label>
+        <locationX>4978</locationX>
+        <locationY>2006</locationY>
+        <defaultConnector>
+            <targetReference>Screen_WS_NoParentRecord</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Error - Work Step not linked to WO or WOLI</defaultConnectorLabel>
+        <rules>
+            <name>outcome_WS_Parent_Is_WOLI</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>var_WorkStepRecord_Single.WorkOrderLineItemId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Work_Type_Details_from_parent_WOLI</targetReference>
+            </connector>
+            <label>Work Order Line Item</label>
+        </rules>
+        <rules>
+            <name>outcome_WS_Parent_Is_WO</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>var_WorkStepRecord_Single.WorkOrderLineItemId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>var_WorkStepRecord_Single.WorkOrderId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Work_Type_Details_from_parent_Work_Order</targetReference>
+            </connector>
+            <label>Work Order</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>If the checkbox &quot;Is Mandatory&quot; on the Work Step Record is &quot;true&quot;, AND the lenghts of the variable &quot;var_WorkStepRecord_Single&gt;MSN_WorkStep_Answer&quot; is &lt; 1, throw an error screen and prompt the user to go back to answer the question.</description>
+        <name>Decision_IsMandatoryWorkStepBlank</name>
+        <label>Is mandatory Work Step answer empty?</label>
+        <locationX>4318</locationX>
+        <locationY>3014</locationY>
+        <defaultConnector>
+            <targetReference>MSN_Update_Work_Step_Record</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Work Step has answer</defaultConnectorLabel>
+        <rules>
+            <name>outcome_WorkStepAnswer_IsEmpty</name>
+            <conditionLogic>1 AND (2 OR 3)</conditionLogic>
+            <conditions>
+                <leftValueReference>var_WorkStepRecord_Single.MSN_Mandatory_WorkStep__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>var_WorkStepRecord_Single.MSN_WorkStep_Answer__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>var_WorkStepRecord_Single.MSN_WorkStep_Answer__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Screen_WS_MandatoryAnswerIsBlank</targetReference>
+            </connector>
+            <label>Work Step answer is empty</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>This decision caters for the usecase, that a &quot;Work Step&quot; could also be completed from Salesforce Desktop (e.g. by a Job Coordinator) and not only from the Field Service Mobile App. It checks, whether the flow was opened from the Field Service Mobile App or from Desktop in order to complete the Work Step Question. If the variable &quot;Id&quot; is filled it is opened from the Mobile App, if the variable &quot;recordId&quot; is filled, then it was opened from Desktop and then populates the &quot;Id&quot; variable to lookup the correct Work Step in the next step.</description>
+        <name>Decision_OpenedFromMobileOrDesktop</name>
+        <label>Opened from FSL Mobile App or Desktop?</label>
+        <locationX>1810</locationX>
+        <locationY>158</locationY>
+        <defaultConnector>
+            <targetReference>Screen_WS_NoRecordId</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>outcome_OpenedFromMobileApp</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Decision_DetermineObjectType</targetReference>
+            </connector>
+            <label>Field Service Mobile App</label>
+        </rules>
+        <rules>
+            <name>outcome_OpenedFromDesktop</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>recordId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_recordId_into_Id</targetReference>
+            </connector>
+            <label>Desktop</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Check if the &quot;ParentId&quot; variable is empty. Usually that only happens when this flow is opened from Desktop. If so, then retrieve the Parent Record of the Service Appointment with the next get element, otherwise directly jump to the next decision element.</description>
+        <name>Decision_ParentId_empty</name>
+        <label>ParentId empty?</label>
+        <locationX>1810</locationX>
+        <locationY>734</locationY>
+        <defaultConnector>
+            <targetReference>Assign_ParentId</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>ParentId not empty</defaultConnectorLabel>
+        <rules>
+            <name>outcome_ParentId_is_empty</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>ParentId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Service_Appointment_Details</targetReference>
+            </connector>
+            <label>ParentId is empty</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Determine the Object Type of the Record Id triggering this flow. This is required to avoid issues with the following scenarios:
+- The user only wants to answer one specific Schedule item Code Work Step at this time and starts this flow from the &quot;Work Plan&quot; tab on the FSL Mobile App or Work Order Record on Desktop when selecting &quot;Complete&quot; on a single Work Step.
+- The user wants to answer all open Work Steps and enters this flow eg. through the &quot;Update Status&quot; flow on the FSL Mobile App and attempts to set a Service Appointment to &quot;Complete&quot; when Work Steps are still open.
+
+In order to determine what object type the record Id is from, we find the Object type from the static &quot;Record ID prefix&quot; (first 3 digits of the ID) which is always the same on Standard objects:
+- For Service Appointment, the prefix is:  08p  (this is handed over when a user enters this flow via e.g. the &quot;Update Status&quot; flow)
+- For &quot;Work Step&quot; objects the prefix is: 0hF  (this is handed over when a user enters this flow via a single Work Step from their Work Plan
+
+It was deliberately chosen to use those static/hardcoded prefixes for the decision outcomes as it only needs to cater to the above 2 cases and respect especially the Field Service Mobile App limitations in regards FSL Mobile Flow capabilities - even though it might not be best practice in general to use hardcoded elements.</description>
+        <name>Decision_SIC_DetermineObjectType</name>
+        <label>Determine object type of Record Id</label>
+        <locationX>4978</locationX>
+        <locationY>2582</locationY>
+        <defaultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Assign_ScheduleItemCode_Answer_to_Work_Step</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Unidentified Object Type</defaultConnectorLabel>
+        <rules>
+            <name>outcome_SIC_FlowTriggeredFromServiceAppointment</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Id</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>08p</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_SIC_SA_Answer_to_Work_Step</targetReference>
+            </connector>
+            <label>Triggered from Service Appointment</label>
+        </rules>
+        <rules>
+            <name>outcome_SIC_FlowTriggeredFromSingleWorkStep</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Id</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>0hF</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_ScheduleItemCode_Answer_to_Work_Step</targetReference>
+            </connector>
+            <label>Triggered from Single Work Step</label>
+        </rules>
+    </decisions>
+    <description>19/01/2022 - Version 1:  Cloned from existing Flow &quot;MSN - Field Service Mobile App - Work Step Answers&quot; as a POC to show that it would be possible to &quot;chain&quot; all open Work Step Questions together in order to simplify user entry of answers as layed out in Ticket https://watercarestp.atlassian.net/browse/MSRS-241
+
+20/01/2022 - Version 2: Added an additional decision element &quot;Determine object type of Record Id&quot; in order to make this flow universally usable to answer only one Work Step from the &quot;Work Plan&quot; Tab in the mobile app, or answer all open Work Steps at the same time eg. during &quot;Job Completion&quot;. This avoids having two separate flows that cater to both of these scenarios.
+
+24/01/2022 - Version 3: Prepopulate String Answer from variable &quot;var_WorkStepRecord_Single &gt; MSN_WorkStep_Answer__c&quot;  in &quot;Screen_WS_EntryType_String_Screen&quot; as a default value so that potentially prepopulated answers can be shown to the user for acknowledgement only without having to type in the answer anymore. 
+
+24/01/2022 - Version 4/5: Integrate new Decision Element &quot;Mandatory Work Step Answer blank?&quot; to check for newly introduced flag &quot;Is Mandatory&quot; and formula &quot;fx_WorkStepAnswerLenghts&quot; is greater than 0 on the Work Step Record to prevent users from submitting blank answers for a particular step;
+
+24/01/2022 - Version 8: Attempt to work around the LEN Formula validation issue in Mobile app by reversing to check for &quot;Null&quot; Values or &quot;Empty String&quot; in the decision Element &quot;Is Work Step Answer Mandatory&quot; to cater for both Mobile App and Desktop users.
+
+11/02/2022 - Version 9: Fixed problem where users on mobile app could still select the &quot;next&quot; button on the &quot;No Answer Given&quot; error screen and complete a work step without entering an answer even though it is set as mandatory. Solution is to connect the error screen back to the decision element &quot;Determine Work Step Entry Type&quot; so that users get redirected back to the answer screen should the select &quot;next&quot; instead of &quot;previous&quot;.
+
+18/02/2022 - Version 10: Make input variables ID and ParentId available for output as well
+
+23/02/2022 - Version 11: Make Flow compatible for usecase when Service Appointment is linked to a Work Order Line Item as well. Introduce additional Decision to determine the Object Type of the SA&apos;s Parent Record; Use the &quot;ParentId&quot; variable instead of &quot;var_ServiceAppointment&gt;ParentRecordId&quot; to make it universally usable no matter if the PArent is a WO or WOLI
+
+04/04/2022 - Version 12: Introduce new count variable in order to show the current increment vs. the total count of open work steps that need answering on each answer screen; Show Asset the question belongs to on the answer screens; Included Fields &quot;Work Plan Name&quot; and &quot;Asset Name&quot; on Work Step within Get Record Variable &quot;Get Open Work Steps&quot;;
+
+06/03/2022 - Version 13/14/15: Added new decision element &quot;ParentId empty?&quot; in order to determine if the variable &quot;ParentId&quot; is not prepopulated and only if not get the Service Appointments Parent Record Id. This was implemented in order to make the flow compatible when checking open Work Steps that were created against a new Work Order Line Item; Added a separate &quot;Get All Open Work Steps - WOLI&quot; element, if Parent Record Is a WOLI in order to check work steps against the WOLI; Made ParentId variable available for Input and output
+
+07/03/2022 - Version 16: Amended the &quot;Get Single Work Step&quot; get records element and added the fields &quot;Work Type Name&quot; and &quot;Asset Name&quot; to it in order to mitigate a bug that occurred when opening the flow from a single Work Step Record and each Work Step Answer screen could not show the Activity Type name on screen.
+
+08/03/2022 - Version 17: Change &quot;Get All Open Work Steps&quot; Elements to check for Work Step status = new, instead of does not equal Complete to rule out an error that happens on mobile app and prevents that open work steps cannot be found. 
+
+08/03/2022 - Version 18: Introduce new variable &quot;var_WorkStep_ParentId&quot; in order to attempt to NOT use the normal &quot;ParentId&quot; variable from the Mobile App after experiencing problems with Work Steps not being queried correctly. Updated Get Work Steps elements and decision elements accordingly to use new Variable.
+
+08/03/2022 - Version 19: Copy text changes on &quot;No open work steps&quot; error screen that includes the name of the current Work Plan that is being checked.
+
+08/03/2022 - Version 20: Removed Screen &quot;No Open Work Steps&quot; after Decision Element &quot;Determine Open Work Steps&quot; in order to avoid that this screen shows up multiple times when launched from the &quot;Work Done&quot; screen and multiple Assets/Activities have been added.
+
+06/04/2022 - Version 21:  Extended flow to cater for Work Plans/Work Steps of the type &quot;Schedule Item Code&quot; (aka RFP Code) in order to enable staff to capture Schedule Item Codes for their job during the job completion process. See https://watercarestp.atlassian.net/browse/MSRS-610 for details. Added another Decision outcome in the Decision &quot;Determine Work Step Type&quot; for &quot;Schedule Item Code&quot; with Subsequent Get Work Type, Screen and Assignment Elements. Added a new Record Choice Set &quot;choiceSet_WorkStepAnswers_ScheduleItemCode&quot; in order to look up all available &quot;Allowed Schedule Items&quot; for the Work Type of the current Service Appointment.
+
+06/04/2022 - Version 22: Add new Assignment Element &quot;Set Count of open Work Steps Variable&quot; into decision branch &quot;Determine object type of record id&quot; in case the flow is triggerd from a single Work Step. This is required in order to show the correct &quot;total&quot; count of open work steps on the screen elements where the user chooses an answer.
+
+07/04/2022 - Version 23: Attempt to address sorting order issue of Work Steps queried with the &quot;Get All open work steps&quot; elements, where sorting using the &quot;ExecutionOrder&quot; numerical field on the record does not work on Mobile App correctly. Introduced a new formula field &quot;MSN_SortingRank&quot; on Work Step and use this instead for sorting any open WorkSteps.
+
+07/04/2022 - Version 24: Address issue where Work Steps of type &quot;Schedule Item Code&quot; could not find their &quot;Allowed Schedule Items&quot; from their work step. This happened for reactive work when an additional Asset was added as a &quot;Work Order Line Item&quot; of a new Work Type, and then this flow couldn&apos;t find any allowed schedule items, as the Get Work Type element always only looked up the parent Work ORder work Type, but not the new child WOLI work type.
+
+07/04/2022 - Version 25: Optimized bugfix from Version 24 by only querying the Work Type directly before showing a &quot;Schedule Item Code&quot; work step instead of calling the Get Elements in the beginning of the flow for every Workstep type, even if not required.
+
+13/04/2022 - Version 26: Added an additional Work Step Entry Type Decision Element and path to satisfy requirements to capture an answer for the work step of the type &quot;Time&quot; (See: https://watercarestp.atlassian.net/browse/MSRS-824)
+
+19/04/2022 - Version 27: Minor clean up of Variable/Decision/Outcome names under ressources
+
+05/05/2022 - Version 28/29: Added logic to update Work Order Line Item Status to &quot;Completed&quot; if the open Work Steps are related to a WOLI and all Work Steps have been answered. See https://watercarestp.atlassian.net/browse/MSRS-998 for details.
+
+25/05/2022 - Version 30: Added a new Variable &quot;var_WorkType_ActivityCode&quot; that saves the concatenated cross object formula field &quot;Work Type - Activity Code Name&quot; from the Work Order that is retrieved for the &quot;Schedule Item Code&quot; screen. This is required to show the name of the Work Type and Activity Code the Schedule Item relates to, as requested in https://watercarestp.atlassian.net/browse/MSRS-1032.
+
+21/06/2022 - Version 31: Added the field &quot;Service Product Code&quot; into the choice set &quot;WorkStepAnswer_ScheduleItemCode&quot; and store it as an additional field value into the record variable, in order to then update the &quot;work step&quot; record triggering this flow also with the &quot;Service Product Code&quot; information in addition to the &quot;Schedule Item Code&quot;;
+
+27/06/2022 - Version 32: Added the field &quot;MSN_Service_Appointment&quot; into the assignment element &quot;Assign Schedule Item Code, SA and Answer to Work Step&quot; in the branch &quot;Schedule Item Code&quot; in order to capture the Service Appointment on the Work Step Record to determine, which Service Appointment relates to the selected Schedule Item Code that the crew selected during their appointment. This was identified as a requirement for e.g. the &quot;Subcontractor Claims report&quot; so that it is possible to give subcontactors a report of all their Service Appointments and the corresponding Schedule Item Code they selected.
+
+14/09/2022 - Version 33/34/35:  Resolved an issue with Schedule Item Codes Work Steps not showing all Picklist options from the choice set &quot;choiceSet_WorkStepAnswers_ScheduleItemCode&quot; when user is on the Screen &quot;Please select your answer&quot;. See details here: https://watercarestp.atlassian.net/browse/MSRS-2176. Changed the choiceset by adding sorting by name, changing the Choice Value; and adding the field &quot;Schedule Item Code&quot; to &quot;Store More Allowed Schedule Item Fields&quot; section.</description>
+    <dynamicChoiceSets>
+        <description>Get the possible answers from the related &quot;Work Step Answers&quot; of this Work Step. This is used in Work Steps of the type &quot;Picklist&quot; only.</description>
+        <name>choiceSet_WorkStepAnswers_Picklist</name>
+        <dataType>String</dataType>
+        <displayField>MSN_AnswerLabel__c</displayField>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>MSN_WorkStepTemplate__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>var_WorkStepRecord_Single.MSN_Work_Step_Template_Id__c</elementReference>
+            </value>
+        </filters>
+        <object>MSN_WorkStepAnswer__c</object>
+        <sortField>MSN_Sort_Order__c</sortField>
+        <sortOrder>Asc</sortOrder>
+        <valueField>MSN_AnswerValue__c</valueField>
+    </dynamicChoiceSets>
+    <dynamicChoiceSets>
+        <description>Get the possible answers from the object &quot;Allowed Schedule Items&quot; related to the Work Type of the Service appointment triggering this flow. This is used in Work Steps of the type &quot;Schedule Item Code&quot; only.</description>
+        <name>choiceSet_WorkStepAnswers_ScheduleItemCode</name>
+        <dataType>String</dataType>
+        <displayField>MSN_ScheduleItem_Description__c</displayField>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>MSN_Work_Type__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>var_Current_WorkType_Id</elementReference>
+            </value>
+        </filters>
+        <object>MSN_Allowed_ScheduleItems__c</object>
+        <outputAssignments>
+            <assignToReference>var_WorkStepRecord_Single.MSN_ScheduleItem_Code__c</assignToReference>
+            <field>MSN_ScheduleItem_Code__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_WorkStepRecord_Single.MSN_WorkStep_Answer__c</assignToReference>
+            <field>MSN_ScheduleItem_Description__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_WorkStepRecord_Single.MSN_Service_Product_Code__c</assignToReference>
+            <field>MSN_Service_Product_Code__c</field>
+        </outputAssignments>
+        <sortField>Name</sortField>
+        <sortOrder>Asc</sortOrder>
+        <valueField>MSN_ScheduleItem_Description__c</valueField>
+    </dynamicChoiceSets>
+    <environments>Default</environments>
+    <interviewLabel>MSN - Field Service Mobile App - Complete All Open Work Steps {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>MSN - Field Service Mobile App - Complete All Open Work Steps</label>
+    <loops>
+        <description>Loop through all open Work Steps stored in the variable &quot;var_WorkStepRecords_Collection&quot;</description>
+        <name>Loop_OverOpenWorkStepRecords</name>
+        <label>Loop over open Work Step Records</label>
+        <locationX>3042</locationX>
+        <locationY>1766</locationY>
+        <assignNextValueToReference>var_WorkStepRecord_Single</assignNextValueToReference>
+        <collectionReference>var_WorkStepRecords_Collection</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Decision_Determine_Work_Step_Entry_Type</targetReference>
+        </nextValueConnector>
+    </loops>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>FieldServiceMobile</processType>
+    <recordLookups>
+        <description>Lookup records details from the Service Appointment triggering this flow in order to retrieve its Parent Record Id (which can be either a WO or WOLI). The SA Record Id is handed over by the Field Service Lightning App into the Variable &quot;Id&quot; or by Salesforce (Desktop) Flows into the variable &quot;recordId&quot;.</description>
+        <name>Get_Service_Appointment_Details</name>
+        <label>Get Parent Record ID from Service Appointment</label>
+        <locationX>1678</locationX>
+        <locationY>854</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Decision_DetermineObjectType_ParentRecord</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Id</elementReference>
+            </value>
+        </filters>
+        <object>ServiceAppointment</object>
+        <outputAssignments>
+            <assignToReference>var_WorkStep_ParentID</assignToReference>
+            <field>ParentRecordId</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <description>Lookup all record details for the current &quot;Work Step&quot; that launched this flow.</description>
+        <name>Get_Single_WorkStep</name>
+        <label>Get Single Work Step</label>
+        <locationX>50</locationX>
+        <locationY>734</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Assignment_Set_CountOpenWorkSteps_Variable</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Id</elementReference>
+            </value>
+        </filters>
+        <object>WorkStep</object>
+        <outputReference>var_WorkStepRecord_Single</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>MSN_Answer_Type__c</queriedFields>
+        <queriedFields>Description</queriedFields>
+        <queriedFields>StartTime</queriedFields>
+        <queriedFields>EndTime</queriedFields>
+        <queriedFields>Status</queriedFields>
+        <queriedFields>StatusCategory</queriedFields>
+        <queriedFields>WorkOrderId</queriedFields>
+        <queriedFields>WorkOrderLineItemId</queriedFields>
+        <queriedFields>Name</queriedFields>
+        <queriedFields>MSN_URL__c</queriedFields>
+        <queriedFields>MSN_WorkStep_Answer__c</queriedFields>
+        <queriedFields>MSN_Work_Step_Template_Id__c</queriedFields>
+        <queriedFields>WorkPlanId</queriedFields>
+        <queriedFields>MSN_Mandatory_WorkStep__c</queriedFields>
+        <queriedFields>MSN_RelatedAssetName__c</queriedFields>
+        <queriedFields>MSN_WorkPlan_Name__c</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <description>Lookup all open &quot;Work Steps&quot; related to the Parent Work order of the Service Appointment triggering this flow.</description>
+        <name>Get_Work_Step_Details_WO</name>
+        <label>Get All Open Work Steps - WO</label>
+        <locationX>1546</locationX>
+        <locationY>1190</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Assignment_CountOpenWorkSteps</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>WorkOrderId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>var_WorkStep_ParentID</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>New</stringValue>
+            </value>
+        </filters>
+        <object>WorkStep</object>
+        <outputReference>var_WorkStepRecords_Collection</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>MSN_Answer_Type__c</queriedFields>
+        <queriedFields>Description</queriedFields>
+        <queriedFields>StartTime</queriedFields>
+        <queriedFields>EndTime</queriedFields>
+        <queriedFields>Status</queriedFields>
+        <queriedFields>StatusCategory</queriedFields>
+        <queriedFields>WorkOrderId</queriedFields>
+        <queriedFields>WorkPlanId</queriedFields>
+        <queriedFields>WorkOrderLineItemId</queriedFields>
+        <queriedFields>Name</queriedFields>
+        <queriedFields>MSN_URL__c</queriedFields>
+        <queriedFields>MSN_WorkStep_Answer__c</queriedFields>
+        <queriedFields>MSN_Work_Step_Template_Id__c</queriedFields>
+        <queriedFields>MSN_Mandatory_WorkStep__c</queriedFields>
+        <queriedFields>MSN_WorkPlan_Name__c</queriedFields>
+        <queriedFields>MSN_RelatedAssetName__c</queriedFields>
+        <queriedFields>MSN_WorkStep_SortOrder__c</queriedFields>
+        <sortField>MSN_WorkStep_SortOrder__c</sortField>
+        <sortOrder>Asc</sortOrder>
+    </recordLookups>
+    <recordLookups>
+        <description>Lookup all open &quot;Work Steps&quot; related to the Parent Work Order Line Item of the Service Appointment triggering this flow.</description>
+        <name>Get_Work_Step_Details_WOLI</name>
+        <label>Get All Open Work Steps - WOLI</label>
+        <locationX>1810</locationX>
+        <locationY>1190</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Assignment_CountOpenWorkSteps</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>WorkOrderLineItemId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>var_WorkStep_ParentID</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>New</stringValue>
+            </value>
+        </filters>
+        <object>WorkStep</object>
+        <outputReference>var_WorkStepRecords_Collection</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>MSN_Answer_Type__c</queriedFields>
+        <queriedFields>Description</queriedFields>
+        <queriedFields>StartTime</queriedFields>
+        <queriedFields>EndTime</queriedFields>
+        <queriedFields>Status</queriedFields>
+        <queriedFields>StatusCategory</queriedFields>
+        <queriedFields>WorkOrderId</queriedFields>
+        <queriedFields>WorkPlanId</queriedFields>
+        <queriedFields>WorkOrderLineItemId</queriedFields>
+        <queriedFields>Name</queriedFields>
+        <queriedFields>MSN_URL__c</queriedFields>
+        <queriedFields>MSN_WorkStep_Answer__c</queriedFields>
+        <queriedFields>MSN_Work_Step_Template_Id__c</queriedFields>
+        <queriedFields>MSN_Mandatory_WorkStep__c</queriedFields>
+        <queriedFields>MSN_WorkPlan_Name__c</queriedFields>
+        <queriedFields>MSN_RelatedAssetName__c</queriedFields>
+        <queriedFields>MSN_WorkStep_SortOrder__c</queriedFields>
+        <sortField>MSN_WorkStep_SortOrder__c</sortField>
+        <sortOrder>Asc</sortOrder>
+    </recordLookups>
+    <recordLookups>
+        <description>Lookup records details from the parent Work Order Line Item Record of the Work Step triggering this flow in order to retrieve its Work Type. This will be used for Work Steps of the type &quot;Schedule Item Code&quot; in order to retrieve all &quot;Allowed Schedule Items&quot; from the Work Type in order to present the user a dynamic picklist of allowed choices to choose from.</description>
+        <name>Get_Work_Type_Details_from_parent_WOLI</name>
+        <label>Get Work Type Details from parent Work Order Line Item</label>
+        <locationX>4714</locationX>
+        <locationY>2126</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Screen_WS_EntryType_ScheduleItemCode_Screen</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>var_WorkStepRecord_Single.WorkOrderLineItemId</elementReference>
+            </value>
+        </filters>
+        <object>WorkOrderLineItem</object>
+        <outputAssignments>
+            <assignToReference>var_Current_WorkType_ActivityCode</assignToReference>
+            <field>MSN_WorkType_ActivityCode_Name__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_Current_WorkType_Id</assignToReference>
+            <field>WorkTypeId</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <description>Lookup records details from the parent Work Order Record of the Work Step triggering this flow in order to retrieve its Work Type. This will be used for Work Steps of the type &quot;Schedule Item Code&quot; in order to retrieve all &quot;Allowed Schedule Items&quot; from the Work Type in order to present the user a dynamic picklist of allowed choices to choose from.</description>
+        <name>Get_Work_Type_Details_from_parent_Work_Order</name>
+        <label>Get Work Type Details from parent Work Order</label>
+        <locationX>4978</locationX>
+        <locationY>2126</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Screen_WS_EntryType_ScheduleItemCode_Screen</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>var_WorkStepRecord_Single.WorkOrderId</elementReference>
+            </value>
+        </filters>
+        <object>WorkOrder</object>
+        <outputAssignments>
+            <assignToReference>var_Current_WorkType_ActivityCode</assignToReference>
+            <field>MSN_WorkType_ActivityCode_Name__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_Current_WorkType_Id</assignToReference>
+            <field>WorkTypeId</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordUpdates>
+        <description>Update the &quot;Work Step&quot; record that currently is processed in this loop with new values set by the assignment elements. Important Note: against best practice to have an &quot;Update Records&quot; element inside a loop, it was deliberately decided to place it inside in this particular case, as user entry happens rather slow after each other on each screen and the Field Service mobile app needs significantly longer to sync back the changes to Salesforce. So it was deemed safe and beneficial to immediately update each work step in Salesforce while the user is still working on the flow, as this also is then timely showing the progress with the &quot;Work Plan&quot; in Salesforce (e.g. to a Job Coordinator) without having to fear hitting governor limits while looping over each open work step.</description>
+        <name>MSN_Update_Work_Step_Record</name>
+        <label>Update Work Step Record</label>
+        <locationX>4450</locationX>
+        <locationY>3134</locationY>
+        <connector>
+            <targetReference>Assignment_OpenWorkSteps_Increment</targetReference>
+        </connector>
+        <inputReference>var_WorkStepRecord_Single</inputReference>
+    </recordUpdates>
+    <screens>
+        <description>Shows an Error Message to the user in case neither of the two outcome decisions &quot;Open Work Steps&quot; or &quot;No Open Work Steps&quot; could be executed.</description>
+        <name>Screen_CannotDetermineOpenWorkStepCount</name>
+        <label>Cannot determine open Work Steps</label>
+        <locationX>3306</locationX>
+        <locationY>1766</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Screen_WS_NoRecordId_Error_Message_0_0</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Awww, Snap! We hit a snag. &lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;It looks like we couldn&apos;t determine if there are any open Work Steps left on your Work Plan for this job.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Please get in touch with your friendly Salesforce Support team and make them aware of this error.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>Shows an Error Message to the user in case the decision cannot determine what Object type the Record ID in the &quot;Id&quot; variable is of. (Has to be either Service Appointment or Work Step)</description>
+        <name>Screen_UnknownObjectType</name>
+        <label>Unidentified Object Type</label>
+        <locationX>3570</locationX>
+        <locationY>734</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Screen_UnknownObjectType_ErrorMessage</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Awww, Snap! We hit a snag. &lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;It looks like we cannot determine from which record you attempted to open this feature from.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Please get in touch with your friendly Salesforce Support team and make them aware of this error.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>This screen is used to prompt the user to enter an answer for a &quot;Work Step&quot; of the entry type &quot;Boolean&quot; (Yes or No)</description>
+        <name>Screen_WS_EntryType_Boolean_Screen_0</name>
+        <label>Please confirm the question below</label>
+        <locationX>3922</locationX>
+        <locationY>2006</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Assign_Boolean_Answers_to_Work_Step</targetReference>
+        </connector>
+        <fields>
+            <name>Screen_WS_EntryType_Boolean_ActivityAndCounter</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;Work Step {!var_OpenWorkSteps_Increment}/{!var_OpenWorkSteps_TotalCount} - {!var_WorkStepRecord_Single.MSN_WorkPlan_Name__c}&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_WS_EntryType_Boolean_WorkStep_Question_0</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt;{!var_WorkStepRecord_Single.Description}&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_WS_EntryType_Boolean_Answer</name>
+            <choiceReferences>ch_WS_Boolean_Answer_Yes</choiceReferences>
+            <choiceReferences>ch_WS_Boolean_Answer_No</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Your Answer</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>This screen is used to prompt the user to enter an answer for a &quot;Work Step&quot; of the entry type &quot;Date&quot;</description>
+        <name>Screen_WS_EntryType_Date_Screen</name>
+        <label>Please select a date</label>
+        <locationX>3394</locationX>
+        <locationY>2006</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Assign_Date_Answers_to_Work_Step</targetReference>
+        </connector>
+        <fields>
+            <name>Screen_WS_EntryType_Date_ActivityAndCounter</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;Work Step {!var_OpenWorkSteps_Increment}/{!var_OpenWorkSteps_TotalCount} - {!var_WorkStepRecord_Single.MSN_WorkPlan_Name__c}&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_WS_EntryType_Date_WorkStep_Question</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt;{!var_WorkStepRecord_Single.Description}&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_WS_EntryType_Date_Answer</name>
+            <dataType>Date</dataType>
+            <defaultValue>
+                <elementReference>$Flow.CurrentDate</elementReference>
+            </defaultValue>
+            <fieldText>Your answer</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>This screen is used to prompt the user to enter an answer for a &quot;Work Step&quot; of the entry type &quot;Date/Time&quot;</description>
+        <name>Screen_WS_EntryType_DateTime</name>
+        <label>Please select a date and time</label>
+        <locationX>3658</locationX>
+        <locationY>2006</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Assign_DateTime_Answers_to_Work_Step</targetReference>
+        </connector>
+        <fields>
+            <name>Screen_WS_EntryType_DateTime_ActivityAndCounter</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;Work Step {!var_OpenWorkSteps_Increment}/{!var_OpenWorkSteps_TotalCount} - {!var_WorkStepRecord_Single.MSN_WorkPlan_Name__c}&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_WS_EntryType_DateTime_WorkStep_Question</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt;{!var_WorkStepRecord_Single.Description}&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_WS_EntryType_DateTime_Answer</name>
+            <dataType>DateTime</dataType>
+            <defaultValue>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </defaultValue>
+            <fieldText>Your Answer</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>This screen is used to prompt the user to enter an answer for a &quot;Work Step&quot; of the entry type &quot;String&quot;</description>
+        <name>Screen_WS_EntryType_Picklist_Screen</name>
+        <label>Please enter your answer below</label>
+        <locationX>4450</locationX>
+        <locationY>2006</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Assign_Picklist_Answer_to_Work_Step</targetReference>
+        </connector>
+        <fields>
+            <name>Screen_WS_EntryType_Picklist_ActivityAndCounter</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;Work Step {!var_OpenWorkSteps_Increment}/{!var_OpenWorkSteps_TotalCount} - {!var_WorkStepRecord_Single.MSN_WorkPlan_Name__c}&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_WS_EntryType_Picklist_WorkStep_Question</name>
+            <fieldText>&lt;p&gt;&lt;b&gt;{!var_WorkStepRecord_Single.Description}&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_WS_EntryType_Picklist_Answer</name>
+            <choiceReferences>choiceSet_WorkStepAnswers_Picklist</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Your answer</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>This screen is used to prompt the user to enter an answer for a &quot;Work Step&quot; of the entry type &quot;Schedule Item Code&quot; (aka &quot;RFP Code&quot;)</description>
+        <name>Screen_WS_EntryType_ScheduleItemCode_Screen</name>
+        <label>Please enter your answer below</label>
+        <locationX>4978</locationX>
+        <locationY>2462</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Decision_SIC_DetermineObjectType</targetReference>
+        </connector>
+        <fields>
+            <name>Screen_WS_EntryType_ScheduleItemCode_ActivityAndCounter</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;Work Step {!var_OpenWorkSteps_Increment}/{!var_OpenWorkSteps_TotalCount} - {!var_Current_WorkType_ActivityCode}&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_WS_EntryType_ScheduleItemCode_WorkStep_Question</name>
+            <fieldText>&lt;p&gt;&lt;b&gt;{!var_WorkStepRecord_Single.Description}&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_WS_EntryType_ScheduleItemCode_Answer</name>
+            <choiceReferences>choiceSet_WorkStepAnswers_ScheduleItemCode</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Your answer</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>This screen is used to prompt the user to enter an answer for a &quot;Work Step&quot; of the entry type &quot;String&quot;</description>
+        <name>Screen_WS_EntryType_String_Screen</name>
+        <label>Please enter your answer below</label>
+        <locationX>3130</locationX>
+        <locationY>2006</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Assign_Text_Answers_to_Work_Step</targetReference>
+        </connector>
+        <fields>
+            <name>Screen_WS_EntryType_String_ActivityAndCounter</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;Work Step {!var_OpenWorkSteps_Increment}/{!var_OpenWorkSteps_TotalCount} - &lt;/span&gt;{!var_WorkStepRecord_Single.MSN_WorkPlan_Name__c}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_WS_EntryType_String_WorkStep_Question</name>
+            <fieldText>&lt;p&gt;&lt;b&gt;{!var_WorkStepRecord_Single.Description}&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_WS_EntryType_String_Answer</name>
+            <defaultValue>
+                <stringValue>{!var_WorkStepRecord_Single.MSN_WorkStep_Answer__c}</stringValue>
+            </defaultValue>
+            <fieldText>Your Answer</fieldText>
+            <fieldType>LargeTextArea</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>This screen is used to prompt the user to confirm that they completed a workstep outside of the FSL app by following a URL to an external website (e.g. Powerapps)</description>
+        <name>Screen_WS_EntryType_URL_Screen</name>
+        <label>Please confirm the question below</label>
+        <locationX>4186</locationX>
+        <locationY>2006</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Assign_URL_Confirmation_Answers_to_Work_Step</targetReference>
+        </connector>
+        <fields>
+            <name>Screen_WS_EntryType_URL_ActivityAndCounter</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;Work Step {!var_OpenWorkSteps_Increment}/{!var_OpenWorkSteps_TotalCount} - {!var_WorkStepRecord_Single.MSN_WorkPlan_Name__c}&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_WS_EntryType_URL_WorkStep_Question</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;{!var_WorkStepRecord_Single.Description}&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;{!var_WorkStepRecord_Single.MSN_URL__c}&quot; rel=&quot;noopener noreferrer&quot; target=&quot;_blank&quot; style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;Open external app &lt;/a&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_WS_EntryType_URL_Answer</name>
+            <choiceReferences>ch_WS_Boolean_Answer_Yes</choiceReferences>
+            <choiceReferences>ch_WS_Boolean_Answer_No</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Your Answer</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>Shows an Error Message to the user in case no answer has been given or selected on the previous screens.</description>
+        <name>Screen_WS_MandatoryAnswerIsBlank</name>
+        <label>No answer given</label>
+        <locationX>4186</locationX>
+        <locationY>3134</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>false</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Decision_Determine_Work_Step_Entry_Type</targetReference>
+        </connector>
+        <fields>
+            <name>Screen_WS_MandatoryAnswerIsBlank_ErrorText</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Error - no answer given. &lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;This Work Step requires an answer. Please navigate back and type in or select an answer accordingly.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>Shows an Error Message to the user in case the Work Step is not related to a WO or WOLI Record.</description>
+        <name>Screen_WS_NoParentRecord</name>
+        <label>No Parent Record</label>
+        <locationX>5242</locationX>
+        <locationY>2126</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Screen_WS_NoParentRecord_Error_Message</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Awww, Snap! We hit a snag. &lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;It looks like your Work Step record is not related to a Work Order or Work Order Line Item - which is compulsory to continue.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Please get in touch with your friendly Salesforce Support team and make them aware of this error.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>Shows an Error Message to the user in case no Record ID is populated in either the &quot;ID&quot; variable or &quot;recordID&quot; variable.</description>
+        <name>Screen_WS_NoRecordId</name>
+        <label>No Record Id</label>
+        <locationX>2030</locationX>
+        <locationY>278</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Screen_WS_NoRecordId_Error_Message</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Awww, Snap! We hit a snag. &lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;It looks like there was no Record ID prepopulated for this Work Step when opening this feature.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Please get in touch with your friendly Salesforce Support team and make them aware of this error.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>Shows an Error Message to the user in case no Record ID is populated in either the &quot;ID&quot; variable or &quot;recordID&quot; variable.</description>
+        <name>Screen_WS_NoRecordId_0</name>
+        <label>No Record Id</label>
+        <locationX>2074</locationX>
+        <locationY>1190</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Screen_WS_NoRecordId_Error_Message_0_0_0</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Awww, Snap! We hit a snag. &lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;It looks like there was no Record ID prepopulated for this Work Step when opening this feature.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Please get in touch with your friendly Salesforce Support team and make them aware of this error.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>Shows an Error Message to the user in case the &quot;Entry Type&quot; of the Work Step is not one of the other scenarios (string, date, boolean). In this case, new scenarios will have to be added to this flows decision element.</description>
+        <name>Screen_WS_Unknown_Entry_Type</name>
+        <label>Unknown Answer Type</label>
+        <locationX>5506</locationX>
+        <locationY>2006</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Screen_WS_Status_Error_Message</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Error - Unknown Answer Type &lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;It looks like this Work Step requires you to enter an answer type that is not yet supported.&lt;/p&gt;&lt;p&gt;Please get in touch with your friendly Salesforce Support team and make them aware of this error.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <start>
+        <locationX>1684</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Decision_OpenedFromMobileOrDesktop</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <variables>
+        <description>Stores the Record ID of the record that triggered this flow. In this case the Service Appointment ID. This is handed over from the FSL Mobile App into the flow.</description>
+        <name>Id</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <description>Stores the ParentRecord ID of the record that triggered this flow (usually the Work Order Id of the Service Appointment). This is handed over from the FSL Mobile App into the flow.</description>
+        <name>ParentId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <description>Used to store the Record ID of the &quot;Work Step&quot; template, when the flow is opened from a Desktop Device</description>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <description>Stores the &quot;Activity Code Name&quot; of the Work Type the current Service Appointment/Parent Work Order has. This is used in the next &quot;Select Schedule Item Code&quot; screen to show the user, which Activity Code the Schedule Item relates to.</description>
+        <name>var_Current_WorkType_ActivityCode</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Stores the Record Id of the Work Type the current Service Appointment/Parent Work Order has. This is then used later in order to look up all possible &quot;Schedule Item Codes&quot; allowed for that specific work types, when users have a Work Step of the Type &quot;Schedule Item Code&quot; and are supposed to pick an option from the dynamic picklist relevant to their current job.</description>
+        <name>var_Current_WorkType_Id</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Used to assign each element in the loop an incrementing number starting from 1 and then counting up depending on how many items are in the loop. This is used on each screen within the loop to give the user an indication of how many questions already have been completed from the total number.</description>
+        <name>var_OpenWorkSteps_Increment</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+        <value>
+            <numberValue>1.0</numberValue>
+        </value>
+    </variables>
+    <variables>
+        <description>Counts the total number of Work Steps that are still open. Used in the decision &quot;determine open work steps&quot; as a precheck if any Work Steps are still open and also to show the user the total number of questions that need answering on each flow screen.</description>
+        <name>var_OpenWorkSteps_TotalCount</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+        <value>
+            <numberValue>0.0</numberValue>
+        </value>
+    </variables>
+    <variables>
+        <description>Used to separately store the Parent ID (either Work Order or Work Order Line Item) as the Field Service Mobile App experienced problems using the normal &apos;ParentId&apos; variable and tried to revert to the cache instead of querying new records from Salesforce.</description>
+        <name>var_WorkStep_ParentID</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Stores the looked-up record details from the &quot;Work Step&quot; that triggered this flow.</description>
+        <name>var_WorkStepRecord_Single</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>WorkStep</objectType>
+    </variables>
+    <variables>
+        <description>Stores all looked-up Work Step records related to the Parent Work Order of the Service Appointment that triggered this flow.</description>
+        <name>var_WorkStepRecords_Collection</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>WorkStep</objectType>
+    </variables>
+</Flow>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>55.0</apiVersion>
+    <decisions>
+        <description>When the triggering Work Plan Record is a &quot;Schedule Item Code&quot; Work Plan, then execute the paths depending on their parent - either WOLI or WO.</description>
+        <name>Decision_Determine_ScheduleItemCode_WorkPlans</name>
+        <label>For Schedule Item Code Work Plans</label>
+        <locationX>314</locationX>
+        <locationY>335</locationY>
+        <defaultConnectorLabel>Other Work Plan</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_Parent_is_WOLI</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.WorkOrderLineItemId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Schedule Item Code</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Work_Plan_Name_WOLI</targetReference>
+            </connector>
+            <label>Parent is Work Order Line Item</label>
+        </rules>
+        <rules>
+            <name>Outcome_Parent_is_WO</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.WorkOrderLineItemId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Schedule Item Code</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Work_Plan_Name_WO</targetReference>
+            </connector>
+            <label>Parent is WO</label>
+        </rules>
+    </decisions>
+    <description>19/09/2022 V1/V2:  Initial version as per requirements in https://watercarestp.atlassian.net/browse/MSRS-2177. This flow updates the Name of the &quot;Schedule Item Code&quot; work plan to include the related Work Type in the record name.
+19/09/2022 V3: Downgrading API Version to 55 as of deployment problems to not yet upgraded QA sandbox</description>
+    <environments>Default</environments>
+    <formulas>
+        <description>Concatenate a new Work Plan record name containing the Work Type of the Parent WO or WOLI and the prefix &quot;Schedule Item -&quot;</description>
+        <name>fx_New_SIC_WorkPlanName</name>
+        <dataType>String</dataType>
+        <expression>IF(NOT(ISBLANK({!$Record.WorkOrderLineItemId})), &quot;Schedule Items - &quot; &amp; {!$Record.WorkOrderLineItem.MSN_WorkType_ActivityCode_Name__c}, &quot;Schedule Items - &quot; &amp; {!$Record.WorkOrder.MSN_WorkType_ActivityCode_Name__c})</expression>
+    </formulas>
+    <interviewLabel>MSN - Work Plan - Record Triggered Updates {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>MSN - Work Plan - Record Triggered Updates</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <description>Update the &quot;Name&quot; field of the Schedule Item Work Plan record triggering this flow to reflect the Work Type it is relating to.</description>
+        <name>Update_Work_Plan_Name_WO</name>
+        <label>Update Work Plan Name - Work Order</label>
+        <locationX>314</locationX>
+        <locationY>455</locationY>
+        <inputAssignments>
+            <field>Name</field>
+            <value>
+                <elementReference>fx_New_SIC_WorkPlanName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Update the &quot;Name&quot; field of the Schedule Item Work Plan record triggering this flow to reflect the Work Type it is relating to.</description>
+        <name>Update_Work_Plan_Name_WOLI</name>
+        <label>Update Work Plan Name</label>
+        <locationX>50</locationX>
+        <locationY>455</locationY>
+        <inputAssignments>
+            <field>Name</field>
+            <value>
+                <elementReference>fx_New_SIC_WorkPlanName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>188</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Decision_Determine_ScheduleItemCode_WorkPlans</targetReference>
+        </connector>
+        <object>WorkPlan</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

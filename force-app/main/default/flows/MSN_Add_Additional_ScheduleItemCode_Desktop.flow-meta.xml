@@ -1,0 +1,582 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>56.0</apiVersion>
+    <assignments>
+        <description>Assign additional values to the Work Step record that will represent the newly selected Schedule Item Code before the record will be created in a subsequent step. Please note: some fields - SIC Code, SPC Code and Work Step Answer - were already populated by the Record Choice Set &quot;choiceSet_SearchAllowedScheduleItems&quot;.</description>
+        <name>Assign_Work_Step_Record_Values</name>
+        <label>Assign Work Step Record Values</label>
+        <locationX>248</locationX>
+        <locationY>1430</locationY>
+        <assignmentItems>
+            <assignToReference>var_SIC_WorkStep_SingleRecord.Name</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Additional Schedule Item Code</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_SIC_WorkStep_SingleRecord.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_SIC_WorkStep_SingleRecord.WorkOrderId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_SIC_WorkStep_SingleRecord.WorkOrderLineItemId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_WorkOrderLineItem_SingleRecord.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_SIC_WorkStep_SingleRecord.MSN_Mandatory_WorkStep__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_SIC_WorkStep_SingleRecord.MSN_Answer_Type__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Schedule Item Code</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_SIC_WorkStep_SingleRecord.ExecutionOrder</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <numberValue>2.0</numberValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_SIC_WorkStep_SingleRecord.Description</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Select the relevant Schedule Item Code for your job from the picklist.</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_SIC_WorkStep_SingleRecord.ActionDefinition</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>MSN_FSMA_Complete_All_Open_WorkSteps</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_SIC_WorkStep_SingleRecord.WorkPlanId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_WorkPlanId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Create_WorkStep_Record</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <description>This decision is used as a validation if any &quot;Allowed Schedule Items&quot; exist against the Work Type of the WOLI previously selected by the user in the last screen. If the variable from the last Get Records element is &quot;null&quot;, then show an error message and let the user fail gracefully.</description>
+        <name>Decision_AllowedScheduleItems_exist</name>
+        <label>Check if Allowed Schedule Items exist</label>
+        <locationX>380</locationX>
+        <locationY>1070</locationY>
+        <defaultConnector>
+            <targetReference>Screen_No_ScheduleItemCodes</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No Allowed Schedule Items for Worktype</defaultConnectorLabel>
+        <rules>
+            <name>outcome_AllowedScheduleItems_exist</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>var_AllowedScheduleItem_exists</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Screen_SelectSIC</targetReference>
+            </connector>
+            <label>Allowed Schedule Items exist for Worktype</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>This decision is used as a validation if the Parent Work Orders has related WOLIs by checking whether the previous Get Records element is &quot;null&quot;. If so prompt the user to open the &quot;Add another Asset&quot; flow from the mobile app first before attempting to use this flow again.</description>
+        <name>Decision_Check_if_WOLIS_exist</name>
+        <label>Check if Work Order Line Items exist?</label>
+        <locationX>182</locationX>
+        <locationY>518</locationY>
+        <defaultConnector>
+            <targetReference>Screen_NoWOLIFound</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Work Order Line Items does not exist</defaultConnectorLabel>
+        <rules>
+            <name>outcome_WOLI_Exists</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>var_WorkOrderLineItemId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Screen_SelectWOLI</targetReference>
+            </connector>
+            <label>Work Order Line Item Exists</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>This decision is used to determine whether the flow has been opened from a &quot;Parent Work Order&quot; (that usually would have WOLI) or a &quot;Child Work Order&quot; (ususally ancillary work), so that the flow can follow different branches of the flow accordingly in the subsequent steps.</description>
+        <name>Decision_ParentWO_or_ChildWO</name>
+        <label>Parent WO or Child WO?</label>
+        <locationX>380</locationX>
+        <locationY>278</locationY>
+        <defaultConnector>
+            <targetReference>Get_AllowedScheduleItems_Child_WO</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Child WO</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_IsParentWO</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>var_Parent_Work_Order.ParentWorkOrderId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Related_WOLIs</targetReference>
+            </connector>
+            <label>Parent WO</label>
+        </rules>
+    </decisions>
+    <description>02/02/23 - V1:  Initial Version. Cloned from existing Field Service Mobile Flow &quot;MSN - Field Service Mobile App - Add additional Schedule Item Code&quot; to enable Job Coordinators to add additional SICs during the &quot;Work Complete Review&quot; process.
+
+09/02/23 - V2/3: Make flow compatible with &quot;Child Work Orders&quot; so that it differentiates when opened from a Parent WO with WOLIs or a Child Work Order without WOLIs and does allow the user to add a schedule item code also for a Child Work Order without WOLI.</description>
+    <dynamicChoiceSets>
+        <description>Used to Search for any Work Types that are allowed/match the &quot;Asset Type&quot; of the looked-up Asset the user selected on the previous screens. The allowed Asset Types are configured in a related list &quot;Allowed Asset Types&quot; to the &quot;Work Type&quot;. Please note that due to limitations in the Field Service Mobile App, a RecordChoice set has to be used for the lookup instead of a Get Records element in order to show the user a list of search results.</description>
+        <name>choiceSet_SearchAllowedScheduleItems</name>
+        <dataType>String</dataType>
+        <displayField>MSN_ScheduleItem_Description__c</displayField>
+        <filterLogic>or</filterLogic>
+        <filters>
+            <field>MSN_Work_Type__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>var_WorkOrderLineItem_SingleRecord.WorkTypeId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>MSN_Work_Type__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>var_Parent_Work_Order.WorkTypeId</elementReference>
+            </value>
+        </filters>
+        <object>MSN_Allowed_ScheduleItems__c</object>
+        <outputAssignments>
+            <assignToReference>var_SIC_WorkStep_SingleRecord.MSN_ScheduleItem_Code__c</assignToReference>
+            <field>MSN_ScheduleItem_Code__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_SIC_WorkStep_SingleRecord.MSN_WorkStep_Answer__c</assignToReference>
+            <field>MSN_ScheduleItem_Description__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_SIC_WorkStep_SingleRecord.MSN_Service_Product_Code__c</assignToReference>
+            <field>MSN_Service_Product_Code__c</field>
+        </outputAssignments>
+        <sortField>Name</sortField>
+        <sortOrder>Asc</sortOrder>
+        <valueField>MSN_ScheduleItem_Description__c</valueField>
+    </dynamicChoiceSets>
+    <dynamicChoiceSets>
+        <description>Used to Search for any Work Order Line Items that are related to the parent Work Order of the Service Appointment triggering this flow. This will be used to present the user a list of all WOLIs and their Work Type to choose from. Please note that due to limitations in the Field Service Mobile App, a RecordChoice set has to be used for the lookup instead of a Get Records element in order to show the user a list of search results.</description>
+        <name>choiceSet_SearchWorkOrderLineItems</name>
+        <dataType>String</dataType>
+        <displayField>MSN_WorkType_Asset_Name__c</displayField>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>WorkOrderId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <object>WorkOrderLineItem</object>
+        <outputAssignments>
+            <assignToReference>var_WorkOrderLineItem_SingleRecord.AssetId</assignToReference>
+            <field>AssetId</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_WorkOrderLineItem_SingleRecord.Id</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>var_WorkOrderLineItem_SingleRecord.WorkTypeId</assignToReference>
+            <field>WorkTypeId</field>
+        </outputAssignments>
+        <sortField>LineItemNumber</sortField>
+        <sortOrder>Asc</sortOrder>
+        <valueField>Id</valueField>
+    </dynamicChoiceSets>
+    <environments>Default</environments>
+    <interviewLabel>MSN - Add Additional Schedule Item Code - Desktop {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>MSN - Add Additional Schedule Item Code - Desktop</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <recordCreates>
+        <description>Create a new Work Plan as prerequisite to adding a Work Step (=the Schedule Item Code) in the subsequent next step.</description>
+        <name>Create_WorkPlan_Record</name>
+        <label>Create New Work Plan</label>
+        <locationX>248</locationX>
+        <locationY>1310</locationY>
+        <assignRecordIdToReference>var_WorkPlanId</assignRecordIdToReference>
+        <connector>
+            <targetReference>Assign_Work_Step_Record_Values</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Description</field>
+            <value>
+                <stringValue>Work Plan to capture a &quot;Schedule Item Code&quot; for the job/activity carried out by the field crew.</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Name</field>
+            <value>
+                <stringValue>Schedule Item Code</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WorkOrderId</field>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WorkOrderLineItemId</field>
+            <value>
+                <elementReference>var_WorkOrderLineItem_SingleRecord.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>WorkPlan</object>
+    </recordCreates>
+    <recordCreates>
+        <description>Creates a new Work Step Record that will hold the selected Schedule Item Code information selected by the user on the previous screen. The Work Step will be related to the new Work Plan created in the previous Create action.</description>
+        <name>Create_WorkStep_Record</name>
+        <label>Create new Work Step Record</label>
+        <locationX>248</locationX>
+        <locationY>1550</locationY>
+        <connector>
+            <targetReference>Screen_ScheduleItemCodeAdded</targetReference>
+        </connector>
+        <inputReference>var_SIC_WorkStep_SingleRecord</inputReference>
+    </recordCreates>
+    <recordLookups>
+        <description>Attempt to lookup at least one Allowed Schedule Item related to the Work Type of the Work Order Line Item selected in the previous step. This will be used as a validation whether Schedule Item records exist that have to be selected in the next screen, otherwise show an error message to the user.</description>
+        <name>Get_Allowed_Schedule_Items</name>
+        <label>Get Allowed Schedule Items</label>
+        <locationX>50</locationX>
+        <locationY>758</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Decision_AllowedScheduleItems_exist</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>MSN_Work_Type__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>var_WorkOrderLineItem_SingleRecord.WorkTypeId</elementReference>
+            </value>
+        </filters>
+        <object>MSN_Allowed_ScheduleItems__c</object>
+        <outputAssignments>
+            <assignToReference>var_AllowedScheduleItem_exists</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <description>This is used in case the flow was opened from a &quot;Child Work Order&quot; that does not have WOLIs. After this step, the flow will directly jump to the decision element &quot;Check if Allowed Schedule Items exist&quot; to continue.</description>
+        <name>Get_AllowedScheduleItems_Child_WO</name>
+        <label>Get Allowed Schedule Items - Child WO</label>
+        <locationX>578</locationX>
+        <locationY>398</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Decision_AllowedScheduleItems_exist</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>MSN_Work_Type__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>var_Parent_Work_Order.WorkTypeId</elementReference>
+            </value>
+        </filters>
+        <object>MSN_Allowed_ScheduleItems__c</object>
+        <outputAssignments>
+            <assignToReference>var_AllowedScheduleItem_exists</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <description>Lookup details from the Parent Work Order related to the Service Appointment triggering this flow. This will be used to prefill fields on the new Work Order Line Item created at the end of this flow.</description>
+        <name>Get_Parent_WorkOrder_Details</name>
+        <label>Get Parent Work Order Details</label>
+        <locationX>380</locationX>
+        <locationY>158</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Decision_ParentWO_or_ChildWO</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <object>WorkOrder</object>
+        <outputReference>var_Parent_Work_Order</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>WorkTypeId</queriedFields>
+        <queriedFields>ServiceTerritoryId</queriedFields>
+        <queriedFields>ParentWorkOrderId</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <description>Attempt to lookup at least one Work Order Line Item related to the Parent Work Order of the the Service Appointment triggering this flow. This will be used as a validation whether WOLIs exist that have to be selected in the next screen.</description>
+        <name>Get_Related_WOLIs</name>
+        <label>Get related Work Order Line Items</label>
+        <locationX>182</locationX>
+        <locationY>398</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Decision_Check_if_WOLIS_exist</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>WorkOrderId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <object>WorkOrderLineItem</object>
+        <outputAssignments>
+            <assignToReference>var_WorkOrderLineItemId</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+    </recordLookups>
+    <screens>
+        <description>Shows an Error Message to the user in case no &quot;Allowed Schedule Items&quot; could have been found in the previous Get Records Element.</description>
+        <name>Screen_No_ScheduleItemCodes</name>
+        <label>No Schedule Item Codes available</label>
+        <locationX>512</locationX>
+        <locationY>1190</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>Screen_No_ScheduleItemCodes_ErrorMessage</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;Error - No Schedule Item Codes found&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;It looks like we couldn&apos;t find any allowed  Schedule Item Codes for the Activity/Asset &lt;strong style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;{!Screen_SelectSIC_Choiceset}&lt;/strong&gt; you selected previously.&lt;/p&gt;&lt;p&gt;Please get in touch with your friendly Salesforce Support team and make them aware of this error.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>This error screen is shown when the flow could not find any related WOLIs to the Parent Work Order of the Service Appointment triggering this flow. It prompts the user to user</description>
+        <name>Screen_NoWOLIFound</name>
+        <label>No activity or asset found</label>
+        <locationX>314</locationX>
+        <locationY>638</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Screen_NoWOLIFound_Error_Text</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;Error - No asset or activity code found &lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;It looks like you haven&apos;t added an asset or activity code to this job jet. In order to add an additional schedule item code, you first have to add an asset.&lt;/p&gt;&lt;p&gt;Please use the feature &quot;Work Done &amp;gt; Search for an asset&quot; in order to add an asset.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>Used as the final success screen after a new Work Plan and Workstep Record have been created successfully.</description>
+        <name>Screen_ScheduleItemCodeAdded</name>
+        <label>Schedule Item Code Added</label>
+        <locationX>248</locationX>
+        <locationY>1670</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Screen_ScheduleItemCodeAdded_SuccessMessage</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;Success! Schedule Item Code added. &lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Your schedule item code &lt;strong&gt;{!Screen_SelectSIC_Choiceset}&lt;/strong&gt; has been added to your job successfully.&lt;/p&gt;&lt;p&gt;You should see the new schedule item under the &quot;Work Plan&quot; tab and in case you added it from the &quot;Work Complete Review&quot; process also in the corresponding Review Schedule Item Codes screen.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>This screen is used to show all Schedule Item Codes that are allowed for the work type of the selected WOLI on the previous screen. This is looked up using the Record Choice Set &quot;choiceSet_SearchAvailableSIC&quot; and prompts the user to select the correct SIC from the returned choices.</description>
+        <name>Screen_SelectSIC</name>
+        <label>Select Schedule Item Code</label>
+        <locationX>248</locationX>
+        <locationY>1190</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Create_WorkPlan_Record</targetReference>
+        </connector>
+        <fields>
+            <name>Screen_SelectSIC_HintText</name>
+            <fieldText>&lt;p&gt;Please select an additional schedule item code for &lt;strong&gt;{!Screen_SelectWOLI_ActivityCodeChoiceSet}&lt;/strong&gt; .&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_SelectSIC_Choiceset</name>
+            <choiceReferences>choiceSet_SearchAllowedScheduleItems</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Select additional schedule item code</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>The user will select the Activity / Asset (=Work Order Line Item) they have been working on in order to add an additional Schedule Item Code to the same WOLI later. The user selection is then used in the next Screen element to present a list of all &quot;Allowed Schedule Items&quot; for this particular Work Type (&quot;Activity Code&quot;) so that the user can select an additional Schedule Item Code to add as a Work Plan &amp; Work Step</description>
+        <name>Screen_SelectWOLI</name>
+        <label>Select Your Activity / Asset</label>
+        <locationX>50</locationX>
+        <locationY>638</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Get_Allowed_Schedule_Items</targetReference>
+        </connector>
+        <fields>
+            <name>Screen_SelectWOLI_HintText</name>
+            <fieldText>&lt;p&gt;Please select the activity code/asset where you would like to add another Schedule Item Code.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_SelectWOLI_ActivityCodeChoiceSet</name>
+            <choiceReferences>choiceSet_SearchWorkOrderLineItems</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Select your activity</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <nextOrFinishButtonLabel>Search</nextOrFinishButtonLabel>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <start>
+        <locationX>254</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_Parent_WorkOrder_Details</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <variables>
+        <description>Used to store the Record ID of the &quot;Service Appointment&quot;, when the flow is opened from a Desktop Device.</description>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Used to store the Id of the looked up &quot;Allowed Schedule Item&quot; from the Get Element &quot;Get Allowed Schedule Items&quot;. This is only used as a validation in the Decision Element &quot;Check if Allowed Schedule Items exist&quot;.</description>
+        <name>var_AllowedScheduleItem_exists</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Used to store details from the Parent Work Order related to the Service Appointment triggering this flow.</description>
+        <name>var_Parent_Work_Order</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>WorkOrder</objectType>
+    </variables>
+    <variables>
+        <description>Record Collection Variable to store the record details from the Service Appointment triggering this flow.</description>
+        <name>var_Service_Appointment</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ServiceAppointment</objectType>
+    </variables>
+    <variables>
+        <description>Record Variable for the &quot;Work Step&quot; Record that is created for the &quot;Schedule Item Code&quot; at the end of this flow.</description>
+        <name>var_SIC_WorkStep_SingleRecord</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>WorkStep</objectType>
+    </variables>
+    <variables>
+        <description>Record Variable for the &quot;Work Order Line Item&quot; that is created at the end of this flow.</description>
+        <name>var_WorkOrderLineItem_SingleRecord</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>WorkOrderLineItem</objectType>
+    </variables>
+    <variables>
+        <description>Stores the Record Id of the looked up Work Order Line Item in the &quot;Get Work Order Line Items&quot; get element. This is then used in a subsequent decision element to check, whether Work Order Line items are present at all, otherwise show an error screen.</description>
+        <name>var_WorkOrderLineItemId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Used to store the Id of the Work Plan that is created in the &quot;Create New Work Plan&quot; element. This then will be used in a subsequent step to create a related &quot;Work Step&quot; record to this new Work Plan. Please note: as of limitations with the Field Service Mobile App Flows, the Id is saved into a separate variable instead of simply using a Record Variable.</description>
+        <name>var_WorkPlanId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>

@@ -1,0 +1,1459 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <assignments>
+        <description>Assign Desktop &quot;recordId&quot; into Mobile &quot;Id&quot; variable prior to continuing with the flow.</description>
+        <name>Assign_recordId_into_Id</name>
+        <label>Assign &quot;recordId&quot; into &quot;Id&quot; variable</label>
+        <locationX>336</locationX>
+        <locationY>278</locationY>
+        <assignmentItems>
+            <assignToReference>Id</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_ParentRecordId_DesktopFlow</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Used to assign the selected Reinstatement Types from the Checkbox Group to the variable &quot;var_SelectedReinstatementTypes&quot;. This is required as the Field Service Mobile App cannot retrieve all selected Items from the Checkbox Group in order to display them on the &quot;Confirmation&quot; screen when referencing the Checkbox Group screen element directly.</description>
+        <name>Assign_Selected_Reinstatement_Types_to_Variable</name>
+        <label>Assign Selected Reinstatement Types to Variable</label>
+        <locationX>380</locationX>
+        <locationY>1430</locationY>
+        <assignmentItems>
+            <assignToReference>var_Selected_ReinstatementTypes</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_ReinstatementDetails_ReinstatementType_CheckboxGroup</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_Selected_ServiceHazards_MultiPicklist</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_ReinstatementDetails_ServiceHazards_CheckboxGroup</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Screen_ConfirmReinstatementRequest</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Work_Order_to_Collection</name>
+        <label>Assign Work Order to Collection</label>
+        <locationX>50</locationX>
+        <locationY>3734</locationY>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_Collection</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>var_ChildWorkOrder_SingleRecord</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Create_ChildWorkOrder_Records</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Work_Order_to_Collection_0</name>
+        <label>Assign Work Order to Collection</label>
+        <locationX>50</locationX>
+        <locationY>2942</locationY>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_Collection</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>var_ChildWorkOrder_SingleRecord</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Decision_Check_ReinstatementType_Other</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Work_Order_to_Collection_0_0</name>
+        <label>Assign Work Order to Collection</label>
+        <locationX>50</locationX>
+        <locationY>2150</locationY>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_Collection</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>var_ChildWorkOrder_SingleRecord</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Decision_CheckReinstatementType_Topsoil</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Assign field values to the record variable &quot;var_ChildWorkOrder_SingleRecord&quot; prior to adding it to the record collection and creating a new Work Orders later in the flow. Please note: the assignment of the Parent Record Id for the SA is retrieved from the variable &quot;var_WorkOrder_Record&quot; that automatically gets updated with the new ID when the &quot;Create Work Order&quot; element creates the new record.</description>
+        <name>Assign_WorkOrder_field_values_HardSurface</name>
+        <label>Assign Work Order fields - Hard Surface</label>
+        <locationX>50</locationX>
+        <locationY>2030</locationY>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.WorkTypeId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_WorkTypeRecord.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.ParentWorkOrderId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_ParentWorkOrder_Details.RootWorkOrderId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>New</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.Subject</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_WorkTypeRecord.Name</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.Description</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_WorkTypeRecord.Description</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.State</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_ParentWorkOrder_Details.State</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.City</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_ParentWorkOrder_Details.City</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.Street</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_ParentWorkOrder_Details.Street</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.PostalCode</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_ParentWorkOrder_Details.PostalCode</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.Longitude</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_ParentWorkOrder_Details.Longitude</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.Latitude</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_ParentWorkOrder_Details.Latitude</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.Priority</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>P7</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.MSN_Reintatement_BackfillRequired__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_ReinstatementDetails_OtherInstructions_BackfillRequired</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.MSN_Reinstatement_Notes__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_ReinstatementDetails_OtherInstructions_Notes</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.MSN_Reinstatement_ServiceHazards__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_Selected_ServiceHazards_MultiPicklist</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.ServiceTerritoryId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_ParentWorkOrder_Details.ServiceTerritoryId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.RecordTypeId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_Reinstatement_WorkOrder_RecordTypeId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.DurationType</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_WorkTypeRecord.DurationType</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.Duration</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_WorkTypeRecord.EstimatedDuration</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.MSN_Reinstatement_BoxingRequired__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_ReinstatementDetails_OtherInstructions_CustomBoxRequired</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.AssetId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_WorkTypeRecord.MSN_Default_Asset__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Assign_Work_Order_to_Collection_0_0</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Assign field values to the record variable &quot;var_ChildWorkOrder_SingleRecord&quot; prior to adding it to the record collection and creating a new Work Orders later in the flow. Please note: the assignment of the Parent Record Id for the SA is retrieved from the variable &quot;var_WorkOrder_Record&quot; that automatically gets updated with the new ID when the &quot;Create Work Order&quot; element creates the new record.</description>
+        <name>Assign_WorkOrder_field_values_OtherMarkout</name>
+        <label>Assign Work Order fields - Other Markout</label>
+        <locationX>50</locationX>
+        <locationY>3614</locationY>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.WorkTypeId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_WorkTypeRecord.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.ParentWorkOrderId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_ParentWorkOrder_Details.RootWorkOrderId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>New</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.Subject</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_WorkTypeRecord.Name</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.Description</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_WorkTypeRecord.Description</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.State</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_ParentWorkOrder_Details.State</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.City</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_ParentWorkOrder_Details.City</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.Street</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_ParentWorkOrder_Details.Street</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.PostalCode</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_ParentWorkOrder_Details.PostalCode</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.Longitude</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_ParentWorkOrder_Details.Longitude</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.Latitude</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_ParentWorkOrder_Details.Latitude</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.Priority</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>P7</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.MSN_Reintatement_BackfillRequired__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_ReinstatementDetails_OtherInstructions_BackfillRequired</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.MSN_Reinstatement_Notes__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_ReinstatementDetails_OtherInstructions_Notes</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.MSN_Reinstatement_ServiceHazards__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_Selected_ServiceHazards_MultiPicklist</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.ServiceTerritoryId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_ParentWorkOrder_Details.ServiceTerritoryId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.RecordTypeId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_Reinstatement_WorkOrder_RecordTypeId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.DurationType</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_WorkTypeRecord.DurationType</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.Duration</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_WorkTypeRecord.EstimatedDuration</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.MSN_Reinstatement_BoxingRequired__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_ReinstatementDetails_OtherInstructions_CustomBoxRequired</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.AssetId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_WorkTypeRecord.MSN_Default_Asset__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Assign_Work_Order_to_Collection</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Assign field values to the record variable &quot;var_ChildWorkOrder_SingleRecord&quot; prior to adding it to the record collection and creating a new Work Orders later in the flow. Please note: the assignment of the Parent Record Id for the SA is retrieved from the variable &quot;var_WorkOrder_Record&quot; that automatically gets updated with the new ID when the &quot;Create Work Order&quot; element creates the new record.</description>
+        <name>Assign_WorkOrder_field_values_Topsoil</name>
+        <label>Assign Work Order fields - Topsoil</label>
+        <locationX>50</locationX>
+        <locationY>2822</locationY>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.WorkTypeId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_WorkTypeRecord.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.ParentWorkOrderId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_ParentWorkOrder_Details.RootWorkOrderId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>New</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.Subject</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_WorkTypeRecord.Name</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.Description</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_WorkTypeRecord.Description</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.State</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_ParentWorkOrder_Details.State</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.City</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_ParentWorkOrder_Details.City</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.Street</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_ParentWorkOrder_Details.Street</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.PostalCode</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_ParentWorkOrder_Details.PostalCode</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.Longitude</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_ParentWorkOrder_Details.Longitude</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.Latitude</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_ParentWorkOrder_Details.Latitude</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.Priority</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>P7</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.MSN_Reintatement_BackfillRequired__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_ReinstatementDetails_OtherInstructions_BackfillRequired</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.MSN_Reinstatement_Notes__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_ReinstatementDetails_OtherInstructions_Notes</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.MSN_Reinstatement_ServiceHazards__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_Selected_ServiceHazards_MultiPicklist</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.ServiceTerritoryId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_ParentWorkOrder_Details.ServiceTerritoryId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.RecordTypeId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_Reinstatement_WorkOrder_RecordTypeId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.DurationType</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_WorkTypeRecord.DurationType</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.Duration</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_WorkTypeRecord.EstimatedDuration</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.MSN_Reinstatement_BoxingRequired__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Screen_ReinstatementDetails_OtherInstructions_CustomBoxRequired</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>var_ChildWorkOrder_SingleRecord.AssetId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>var_WorkTypeRecord.MSN_Default_Asset__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Assign_Work_Order_to_Collection_0</targetReference>
+        </connector>
+    </assignments>
+    <choices>
+        <description>Indicates that a &quot;Backfill&quot; is required for a reinstatement job.</description>
+        <name>ch_BackfillRequired</name>
+        <choiceText>Backfill required?</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Backfill</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <description>Used on the screen &quot;Reinstatement Type&quot; to give the user a &quot;Hard Surface&quot; option to choose from</description>
+        <name>ch_HardSurface</name>
+        <choiceText>Hard Surface</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Hard Surface</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>ch_Other</name>
+        <choiceText>Other</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Other</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>ch_ServiceHazard_Other</name>
+        <choiceText>Other (describe in notes)</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Other</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>ch_ServiceHazard_ShallowElectrical</name>
+        <choiceText>Shallow Electrical</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Shallow Electrical</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>ch_ServiceHazard_ShallowGas</name>
+        <choiceText>Shallow Gas</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Shallow Gas</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>ch_ServiceHazard_ShallowTelco</name>
+        <choiceText>Shallow Telco</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Shallow Telco</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>ch_Topsoil</name>
+        <choiceText>Topsoil</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Topsoil</stringValue>
+        </value>
+    </choices>
+    <decisions>
+        <description>Checks wether the user has selected &quot;Other&quot; in the previous screen. If so, get the correct Work Type Record and prepare to create a child Work Order.</description>
+        <name>Decision_Check_ReinstatementType_Other</name>
+        <label>Other Reinstatement Required?</label>
+        <locationX>380</locationX>
+        <locationY>3254</locationY>
+        <defaultConnector>
+            <targetReference>Create_ChildWorkOrder_Records</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No Other Reinstatement</defaultConnectorLabel>
+        <rules>
+            <name>outcome_OtherReinstatment_Required</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Screen_ReinstatementDetails_ReinstatementType_CheckboxGroup</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <elementReference>ch_Other</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_WorkType_Reinstatement_Other_Markout</targetReference>
+            </connector>
+            <label>Other Reinstatement Required</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Checks wether the user has selected &quot;Hard Surface&quot; in the previous screen. If so, get the correct Work Type Record and prepare to create a child Work Order.</description>
+        <name>Decision_CheckReinstatementType_HardSurface</name>
+        <label>Hard Surface Required?</label>
+        <locationX>380</locationX>
+        <locationY>1670</locationY>
+        <defaultConnector>
+            <targetReference>Decision_CheckReinstatementType_Topsoil</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Hard Surface Not Required</defaultConnectorLabel>
+        <rules>
+            <name>outcome_HardSurface_Required</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Screen_ReinstatementDetails_ReinstatementType_CheckboxGroup</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <elementReference>ch_HardSurface</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_WorkType_Reinstatement_Markout</targetReference>
+            </connector>
+            <label>Hard Surface Required</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Checks whether the user has selected &quot;Topsoil&quot; in the previous screen. If so, get the correct Work Type Record and prepare to create a child Work Order.</description>
+        <name>Decision_CheckReinstatementType_Topsoil</name>
+        <label>Topsoil Required?</label>
+        <locationX>380</locationX>
+        <locationY>2462</locationY>
+        <defaultConnector>
+            <targetReference>Decision_Check_ReinstatementType_Other</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Topsoil not required</defaultConnectorLabel>
+        <rules>
+            <name>outcome_Topsoil_Required</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Screen_ReinstatementDetails_ReinstatementType_CheckboxGroup</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <elementReference>ch_Topsoil</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_WorkType_Reinstatement_Topsoil</targetReference>
+            </connector>
+            <label>Topsoil required</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Determine the Object Type of the Parent Record Id triggering this flow. This is required to avoid having two flows to cater for the following scenarios:
+1) The &quot;Request Reinstatement&quot; flow was launched from a Service Appointment that is related to a &quot;Work Order&quot;
+2) OR The &quot;Request Reinstatement&quot; flow was launched from a Service Appointment that is related to a &quot;Work Order Line Item&quot;
+
+In order to determine what object type the record Id is from, we find the Object type from the static &quot;Record ID prefix&quot; (first 3 digits of the ID) which is always the same on Standard objects:
+- For &quot;Work Order&quot; objects the prefix is: 0WO
+- For &quot;Work Order Line Items&quot; objects the prefix is: 1WL 
+
+It was deliberately chosen to use those static/hardcoded prefixes for the decision outcomes as it only needs to cater to the above 2 cases and respect especially the Field Service Mobile App limitations in regards FSL Mobile Flow capabilities - even though it might not be best practice in general to use hardcoded elements.</description>
+        <name>Decision_DetermineObjectType_ParentRecord</name>
+        <label>Determine Object Type of Parent Record</label>
+        <locationX>380</locationX>
+        <locationY>614</locationY>
+        <defaultConnector>
+            <targetReference>Screen_UnknownObjectType</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>outcome_Parent_Record_Is_WO</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>ParentId</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>0WO</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Reinstatement_Work_Order_Record_Type</targetReference>
+            </connector>
+            <label>Work Order</label>
+        </rules>
+        <rules>
+            <name>outcome_Parent_Record_Is_WOLI</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>ParentId</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>1WL</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_ParentRecordId_WOLI</targetReference>
+            </connector>
+            <label>Work Order Line Item</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>This decision caters for the usecase, that a &quot;Reinstatement&quot; could also be requested from Salesforce Desktop (e.g. by a Job Coordinator) and not only from the Field Service Mobile App. It checks, whether the flow was opened from the Field Service Mobile App or from Desktop in order to request a Reinstatement. If the variable &quot;Id&quot; is filled it is opened from the Mobile App, if the variable &quot;recordId&quot; is filled, then it was opened from Desktop and then populates the &quot;Id&quot; variable to lookup the correct Service Appointment in the next step.</description>
+        <name>Decision_OpenedFromMobileOrDesktop</name>
+        <label>Opened from FSL Mobile App or Desktop?</label>
+        <locationX>380</locationX>
+        <locationY>158</locationY>
+        <defaultConnector>
+            <targetReference>Screen_NoRecordId</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>outcome_OpenedFromMobileApp</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Decision_DetermineObjectType_ParentRecord</targetReference>
+            </connector>
+            <label>Field Service Mobile App</label>
+        </rules>
+        <rules>
+            <name>outcome_OpenedFromDesktop</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>recordId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_recordId_into_Id</targetReference>
+            </connector>
+            <label>Desktop</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Validation to check whether the selected work type was looked up successfully - otherwise go to the Default Error Screen. This could happen if the work type records in Salesforce are renamed, as this flow relies on record names to be precise.</description>
+        <name>Decision_WorkType_Found_Markout</name>
+        <label>Markout Work Type found?</label>
+        <locationX>182</locationX>
+        <locationY>1910</locationY>
+        <defaultConnector>
+            <targetReference>Screen_UnknownWorkType_Error_Markout</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Work Type Not Found</defaultConnectorLabel>
+        <rules>
+            <name>outcome_WorkTypeFound_Markout</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>var_WorkTypeRecord.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>var_WorkTypeRecord.Id</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_WorkOrder_field_values_HardSurface</targetReference>
+            </connector>
+            <label>Work Type Found</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Validation to check whether the selected work type was looked up successfully - otherwise go to the Default Error Screen. This could happen if the work type records in Salesforce are renamed, as this flow relies on record names to be precise.</description>
+        <name>Decision_WorkType_Found_OtherMarkout</name>
+        <label>Other Markout Work Type found?</label>
+        <locationX>182</locationX>
+        <locationY>3494</locationY>
+        <defaultConnector>
+            <targetReference>Screen_UnknownWorkType_Error_Topsoil_0</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Work Type Not Found</defaultConnectorLabel>
+        <rules>
+            <name>outcome_WorkTypeFound_OtherMarkout</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>var_WorkTypeRecord.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>var_WorkTypeRecord.Id</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_WorkOrder_field_values_OtherMarkout</targetReference>
+            </connector>
+            <label>Work Type Found</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Validation to check whether the selected work type was looked up successfully - otherwise go to the Default Error Screen. This could happen if the work type records in Salesforce are renamed, as this flow relies on record names to be precise.</description>
+        <name>Decision_WorkType_Found_Topsoil</name>
+        <label>Topsoil Work Type found?</label>
+        <locationX>182</locationX>
+        <locationY>2702</locationY>
+        <defaultConnector>
+            <targetReference>Screen_UnknownWorkType_Error_Topsoil</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Work Type Not Found</defaultConnectorLabel>
+        <rules>
+            <name>outcome_WorkTypeFound_Topsoil</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>var_WorkTypeRecord.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>var_WorkTypeRecord.Id</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_WorkOrder_field_values_Topsoil</targetReference>
+            </connector>
+            <label>Work Type Found</label>
+        </rules>
+    </decisions>
+    <description>16/02/22 - Version 1:  Used as a sub-flow triggered by the &quot;Change Job Status&quot; mobile flow, in order to request required Reinstatement work for a job. Built from requirements in https://watercarestp.atlassian.net/browse/MSRS-297.
+
+17/02/22 - Version 2-6: Added a formula for &quot;fx_ServiceApppointment_Inline Due Date&quot; in order to be able to assign the field &quot;Inline Due Date&quot; in both &quot;Service Appointment&quot; assignment elements. This was done to address an issue that prevented a SA to be created correctly when no Inline Due Date was set. Diverse bugfix to address problems with duplicate SA creation on Parent Work Order.
+
+18/02/22 - Version 7: Added support to make Variables available for output to recall the parent flow &quot;Update Status&quot; after the flow has finished.
+
+18/02/22 - Version 8: removed Service Appointment creation Assignment and create element as it did not work with Mobile app relating the SA to the newly created WO or WOLI in the previous step before (unable to get new Record ID of records as long they are not synced to Salesforce). The flow relies now on the existing out-of the box capability &quot;Auto-create Service Appointments&quot; on the Work Type record in order to create an SA instead.
+
+18/02/22 - Version 9: Added the screen &quot;Additional Reinstatement Required?&quot; incl. following decision element.
+
+18/02/22 - Version 10/11/12/13/14/15: Proposed architectural change. Removed creation of child Work Orders in favor of creating WOLI records instead, directly related to the originating Parent work order. Reasoning for this is that on Mobile app it does not seem feasible to create a new WO and then a new WOLI/SA related to this new WO, as the new Record ID in Salesforce is unknown yet at runtime of the flow in the mobile app; Added additional decision element &quot;Work Type Found&quot; to handle potential errors should the work type name in Salesforce have changed and the mobile app cannot find the record any longer; Changed order of the &quot;Topsoil&quot; and &quot;Hard Surface&quot; choices on screen to first show &quot;Topsoil&quot; (as more important).
+
+18/02/2022 - V16: Build in validation functionality to check whether the flow was opened from Mobile App or Desktop salesforce using the Decision Element &quot;Opened from FSL Mobile App or Desktop&quot; and the following assignment element.
+
+23/02/2022 - V17:  Included a Decision to determine the object type of the Parent Record (Work Order or WOLI) in order to make flow compatible when SA Parent record is a Work Order Line Item. User &quot;Id&quot; and &quot;ParentId&quot; instead of var_ServiceAppointment&gt;ParentRecordId&quot;.
+
+16/03/2022 - V18-25: Significant rework of screens and business logic (e.g. reate Child WO instead of WOLI) after feedback from business; Build from requirements in https://watercarestp.atlassian.net/browse/MSRS-601; Added Assignment of additional Hazard field, Reinstatement Notes, Backfill into assignment elements; Changed display of selected reinstatement types on the &quot;Confirm your reinstatement request&quot; screen multiple times; Introduces new variable &quot;var_SelectedReinstatementTypes&quot; to cater for mobile app shortcoming with direct referencing of the checkbox group element. Change Hazards from Single Checkboxes to Checkbox Group; Assign Hazards to new Multiselect picklist on WO instead of individual checkbox fields.
+
+17/03/2022 - V26/27:  Removed Validation/Decision &quot;Reinstatement Type Validation&quot; as not required (validation happens inside the screen &quot;Reinstatement Details&quot;; Cleanup of resource names for consistency; Remove unused Ressources/Variables; Changes the Value of the Choice &quot;ch_ServiceHazard_Other&quot; to &quot;Other&quot; as picklist field in Salesforce changed. Minor Copytext improvements.
+
+17/03/2022 - V28: Added the &quot;Service Territory&quot; from the Parent Work Order to the Child Work Order Assignment Elements.
+
+23/03/2022 - V29: Bugfix for https://watercarestp.atlassian.net/browse/MSRS-666 : Added a &quot;Reinstatement Request Successful&quot; screen at the end of the flow, in order to prevent users from using the &quot;back&quot; buttons from the parent flow &quot;Update Job Status&quot; which would duplicate the work orders that are being created.
+
+24/03/2022 - V30: Added the Record Type Lookup element in order to retrieve the &quot;Reinstatement&quot; record type for Work Orders; Assign the REcord Type in all assignment Elements for Work Orders.
+
+24/03/2022 - V31: Add &quot;Duration Type&quot; and &quot;Duration&quot; into all Work Order Assignment Elements and prefill them from the variable var_WorkTypeRecord which is looked up prior to assignment in every step. This was required after experiencing issues that the field &quot;Duration Type&quot; on work orders always gets prepopulated as &quot;hours&quot; and despite being configured differently on the Work Type of that work order has not been updated correctly when a new Service Appointment was auto created upon creation of the Work Order Record.
+
+18/08/2022 - V32: Added two checkbox options &quot;Steel plates required&quot; and &quot;Custom box required&quot; as requested in https://watercarestp.atlassian.net/browse/MSRS-1906; Cleanup inconsistencies with flow element naming (topsoil and hard surface decision elements had the wrong label).
+
+26/08/2022 - V33: Removed the checkbox &quot;Steel Plates Required&quot; again after final feedback from Miho Saikyo.
+
+13/01/2022 - V34: Added the new field &quot;Default Asset&quot; on Work Type into each Work Type get element and assign the looked up AssetId value in each Work Order Assignment element; This is required to link the new Reinstatement Work Orders to the predefined &quot;Default Dummy Assets&quot;, as Assets are now mandatory in the integration payload for every Work Order/Child Work Order/WOLI in Salesforce in order to create Child Work Orders in EAM accordingly.
+
+16/01/2022 - V35: Updated the &quot;Get Parent Work Order Details&quot; element in order to retrieve the &quot;RootWorkOrderId&quot; from the Parent Work Order and use the RootWorkOrderId in all Work Order Assignment Elements as the &quot;ParentId&quot; of the new Reinstatement Work Order to be created. This is required to prevent that a Reinstatement Work Order can be created as a &quot;Grand Child&quot; which is undesirable. All Child Work Orders should always be created as a child under the main, parent Work Order.</description>
+    <environments>Default</environments>
+    <interviewLabel>MSN - Field Service Mobile App- Reinstatement {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>MSN - Field Service Mobile App - Request Reinstatement</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>FieldServiceMobile</processType>
+    <recordCreates>
+        <description>Create new Work Order Records depending on the user choice in the screen &quot;Reinstatement Type&quot; (Hard Surface, Topsoil, Other)</description>
+        <name>Create_ChildWorkOrder_Records</name>
+        <label>Create Child Work Order Records</label>
+        <locationX>380</locationX>
+        <locationY>4046</locationY>
+        <connector>
+            <targetReference>Screen_ReinstatementRequestSuccessful</targetReference>
+        </connector>
+        <inputReference>var_ChildWorkOrder_Collection</inputReference>
+    </recordCreates>
+    <recordLookups>
+        <description>Lookup details from the Parent Work Order related to the Service Appointment triggering this flow. This will be used to prefill fields on the new Work Order or Work Order Line Item created at the end of this flow.</description>
+        <name>Get_Parent_WorkOrder</name>
+        <label>Get Parent Work Order Details</label>
+        <locationX>380</locationX>
+        <locationY>1190</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Screen_ReinstatementDetails</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>ParentId</elementReference>
+            </value>
+        </filters>
+        <object>WorkOrder</object>
+        <outputReference>var_ParentWorkOrder_Details</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>ServiceTerritoryId</queriedFields>
+        <queriedFields>AssetId</queriedFields>
+        <queriedFields>State</queriedFields>
+        <queriedFields>City</queriedFields>
+        <queriedFields>Street</queriedFields>
+        <queriedFields>PostalCode</queriedFields>
+        <queriedFields>Longitude</queriedFields>
+        <queriedFields>Latitude</queriedFields>
+        <queriedFields>RootWorkOrderId</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <description>Lookup records details from the Service Appointment triggering this flow/subflow when opened from Desktop Salesforce only. The Record Id is handed over by the Desktop Salesforce flow into the Variable &quot;recordId&quot; and has to be copied over into the variable &quot;Id&quot; to make it compatible. Also we assign the &quot;ParentId&quot; variable.</description>
+        <name>Get_ParentRecordId_DesktopFlow</name>
+        <label>Get Parent Record Id of Service Appointment</label>
+        <locationX>336</locationX>
+        <locationY>398</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Decision_DetermineObjectType_ParentRecord</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <object>ServiceAppointment</object>
+        <outputAssignments>
+            <assignToReference>Id</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>ParentId</assignToReference>
+            <field>ParentRecordId</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <description>If the Service Appointment is child to a Work Order Line Item, then we need to get the record Id of the Parent Work Order of this WOLI first in order to make the following steps of the flow compatible.</description>
+        <name>Get_ParentRecordId_WOLI</name>
+        <label>Get Parent Work Order of WOLI</label>
+        <locationX>336</locationX>
+        <locationY>734</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Reinstatement_Work_Order_Record_Type</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>ParentId</elementReference>
+            </value>
+        </filters>
+        <object>WorkOrderLineItem</object>
+        <outputAssignments>
+            <assignToReference>ParentId</assignToReference>
+            <field>WorkOrderId</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <description>Get the Record Type &quot;Reinstatement&quot; for the Work Order Records to be created later in the process.</description>
+        <name>Get_Reinstatement_Work_Order_Record_Type</name>
+        <label>Get Reinstatement Work Order Record Type</label>
+        <locationX>380</locationX>
+        <locationY>1070</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Parent_WorkOrder</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>MSN_Reinstatement_WorkOrder</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>SobjectType</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>WorkOrder</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>IsActive</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <object>RecordType</object>
+        <outputAssignments>
+            <assignToReference>var_Reinstatement_WorkOrder_RecordTypeId</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <description>Retrieve the ID of the Work Type record &quot;Reinstatement - Markout&quot; which is used to create a Work Order later in the flow. Please note: as all Work Orders require an &quot;Asset&quot; linked to it in order to be sent to EAM as a &quot;Child Work Order&quot;, the flow was amended to retrieve the &quot;Default Asset&quot; defined on the Work Type for any ancillary work types as well and store it in the variable.</description>
+        <name>Get_WorkType_Reinstatement_Markout</name>
+        <label>Get Work Type: Reinstatement Markout</label>
+        <locationX>182</locationX>
+        <locationY>1790</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Decision_WorkType_Found_Markout</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Name</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Reinstatement - Markout</stringValue>
+            </value>
+        </filters>
+        <object>WorkType</object>
+        <outputReference>var_WorkTypeRecord</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Description</queriedFields>
+        <queriedFields>EstimatedDuration</queriedFields>
+        <queriedFields>DurationType</queriedFields>
+        <queriedFields>Name</queriedFields>
+        <queriedFields>MSN_Default_Asset__c</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <description>Retrieve the ID of the Work Type record &quot;Reinstatement - Other Markout&quot; which is used to create a Work Order later in the flow. Please note: as all Work Orders require an &quot;Asset&quot; linked to it in order to be sent to EAM as a &quot;Child Work Order&quot;, the flow was amended to retrieve the &quot;Default Asset&quot; defined on the Work Type for any ancillary work types as well and store it in the variable.</description>
+        <name>Get_WorkType_Reinstatement_Other_Markout</name>
+        <label>Get Work Type: Reinstatement Other Markout</label>
+        <locationX>182</locationX>
+        <locationY>3374</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Decision_WorkType_Found_OtherMarkout</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Name</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Reinstatement - Other Markout</stringValue>
+            </value>
+        </filters>
+        <object>WorkType</object>
+        <outputReference>var_WorkTypeRecord</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Description</queriedFields>
+        <queriedFields>EstimatedDuration</queriedFields>
+        <queriedFields>DurationType</queriedFields>
+        <queriedFields>Name</queriedFields>
+        <queriedFields>MSN_Default_Asset__c</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <description>Retrieve the ID of the Work Type record &quot;Reinstatement - Topsoil&quot; which is used to create a Work Order later in the flow. Please note: as all Work Orders require an &quot;Asset&quot; linked to it in order to be sent to EAM as a &quot;Child Work Order&quot;, the flow was amended to retrieve the &quot;Default Asset&quot; defined on the Work Type for any ancillary work types as well and store it in the variable.</description>
+        <name>Get_WorkType_Reinstatement_Topsoil</name>
+        <label>Get Work Type: Reinstatement Topsoil</label>
+        <locationX>182</locationX>
+        <locationY>2582</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Decision_WorkType_Found_Topsoil</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Name</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Reinstatement - Perm Topsoil</stringValue>
+            </value>
+        </filters>
+        <object>WorkType</object>
+        <outputReference>var_WorkTypeRecord</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Description</queriedFields>
+        <queriedFields>EstimatedDuration</queriedFields>
+        <queriedFields>DurationType</queriedFields>
+        <queriedFields>Name</queriedFields>
+        <queriedFields>MSN_Default_Asset__c</queriedFields>
+    </recordLookups>
+    <screens>
+        <description>Used to prompt the user once more whether their choice on the previous screen is correct before creating new Child Work Orders from the selected Reinstatment Types in the subsequent elements of the flow.</description>
+        <name>Screen_ConfirmReinstatementRequest</name>
+        <label>Confirm your Reinstatement Request</label>
+        <locationX>380</locationX>
+        <locationY>1550</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Decision_CheckReinstatementType_HardSurface</targetReference>
+        </connector>
+        <fields>
+            <name>Screen_ConfirmReinstatementRequest_Heading</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Please confirm your reinstatement request&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_ConfirmReinstatementRequest_Selection</name>
+            <fieldText>&lt;p&gt;You will now create a reinstatement request for the following items:&lt;/p&gt;&lt;p&gt;&lt;b&gt;{!var_Selected_ReinstatementTypes}&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Hit &apos;next&apos; to confirm or &apos;back&apos; to change your selection.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <description>Shows an Error Message to the user in case no Record ID is populated in either the &quot;ID&quot; variable or &quot;recordID&quot; variable.</description>
+        <name>Screen_NoRecordId</name>
+        <label>No Record Id</label>
+        <locationX>600</locationX>
+        <locationY>278</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Screen_UnknownWorkType_ErrorText_0</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Error - No Service Appointment Record Id&lt;/b&gt;&lt;/p&gt;&lt;p&gt;It looks like there was no Record ID for the Service Appointment prepopulated when opening this feature.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Please get in touch with your friendly Salesforce Support team and make them aware of this error.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>Used to prompt the mobile app user to choose required reinstatement types and any other specific instructions or service hazards.</description>
+        <name>Screen_ReinstatementDetails</name>
+        <label>Reinstatement Details</label>
+        <locationX>380</locationX>
+        <locationY>1310</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Assign_Selected_Reinstatement_Types_to_Variable</targetReference>
+        </connector>
+        <fields>
+            <name>Screen_ReinstatementDetails_ReinstatementTypeHeading</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;What type of reinstatement is required?&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_ReinstatementDetails_ReinstatementType_CheckboxGroup</name>
+            <choiceReferences>ch_Topsoil</choiceReferences>
+            <choiceReferences>ch_HardSurface</choiceReferences>
+            <choiceReferences>ch_Other</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Select all reinstatement types you need</fieldText>
+            <fieldType>MultiSelectCheckboxes</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Screen_ReinstatementDetails_ServiceHazard_Heading</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Are there any service hazards?&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_ReinstatementDetails_ServiceHazards_CheckboxGroup</name>
+            <choiceReferences>ch_ServiceHazard_ShallowTelco</choiceReferences>
+            <choiceReferences>ch_ServiceHazard_ShallowGas</choiceReferences>
+            <choiceReferences>ch_ServiceHazard_ShallowElectrical</choiceReferences>
+            <choiceReferences>ch_ServiceHazard_Other</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Select service hazards (if applicable)</fieldText>
+            <fieldType>MultiSelectCheckboxes</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Screen_ReinstatementDetails_OtherInstructions_Heading</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Other Instructions&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_ReinstatementDetails_OtherInstructions_BackfillRequired</name>
+            <dataType>Boolean</dataType>
+            <fieldText>Backfill required?</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Screen_ReinstatementDetails_OtherInstructions_CustomBoxRequired</name>
+            <dataType>Boolean</dataType>
+            <fieldText>Custom box required?</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Screen_ReinstatementDetails_OtherInstructions_Notes</name>
+            <fieldText>Notes</fieldText>
+            <fieldType>LargeTextArea</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <description>Used to provide the mobile user with a visual confirmation that the Reinstatement Request has been successful. It was deliberately decided to remove the &quot;previous&quot; button on this screen, in order to prevent the user can go back (also from the parent flow &quot;Update Job Status&quot;)  and duplicate Work Order Records are being created.</description>
+        <name>Screen_ReinstatementRequestSuccessful</name>
+        <label>Reinstatement Request Successful</label>
+        <locationX>380</locationX>
+        <locationY>4166</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Screen_ReinstatementRequestSuccessful_Heading</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Reinstatement request successful!&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Screen_ReinstatementRequestSuccessful_InfoText</name>
+            <fieldText>&lt;p&gt;The following reinstatement requests have been successfully created:&lt;/p&gt;&lt;p&gt;&lt;b&gt;{!var_Selected_ReinstatementTypes}&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Hit &apos;next&apos; to close this screen and proceed to job completion.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <description>Shows an Error Message to the user in case the decision cannot determine what Object type the Parent Record ID in the &quot;ParentId&quot; variable is of. (Has to be either Work Order or Work Order Line Item)</description>
+        <name>Screen_UnknownObjectType</name>
+        <label>Unknown Object Type</label>
+        <locationX>600</locationX>
+        <locationY>734</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>Screen_UnknownObjectType_ErrorMessage</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Error - Unknown Parent Record Type&lt;/b&gt;&lt;/p&gt;&lt;p&gt;It looks like we cannot determine from which parent record (must be Work Order or Work Order Line Item) you attempted to open this feature from.&lt;/p&gt;&lt;p&gt;Please get in touch with your friendly Salesforce Support team and make them aware of this error.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>This error screen is shown, when the Get Work Type</description>
+        <name>Screen_UnknownWorkType_Error_Markout</name>
+        <label>Unknown Work Type</label>
+        <locationX>314</locationX>
+        <locationY>2030</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Screen_UnknownWorkType_ErrorText_Markout</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Error - Unknown Work Type. &lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;It looks like we couldn&apos;t find the correct work type name for the reinstatement type &quot;Hard Surface - Markout&quot; you requested. Please report this error to your friendly IT support team.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <description>This error screen is shown, when the Get Work Type</description>
+        <name>Screen_UnknownWorkType_Error_Topsoil</name>
+        <label>Unknown Work Type</label>
+        <locationX>314</locationX>
+        <locationY>2822</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Screen_UnknownWorkType_ErrorText_Topsoil</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Error - Unknown Work Type. &lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;It looks like we couldn&apos;t find the correct work type name for the reinstatement type &quot;Topsoil&quot; you requested. Please report this error to your friendly IT support team.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <description>This error screen is shown, when the Get Work Type</description>
+        <name>Screen_UnknownWorkType_Error_Topsoil_0</name>
+        <label>Unknown Work Type</label>
+        <locationX>314</locationX>
+        <locationY>3614</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Screen_UnknownWorkType_ErrorText_Topsoil_0</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Error - Unknown Work Type. &lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;It looks like we couldn&apos;t find the correct work type name for the reinstatement type &quot;Other&quot; you requested. Please report this error to your friendly IT support team.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <start>
+        <locationX>254</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Decision_OpenedFromMobileOrDesktop</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <variables>
+        <description>Stores the Record ID of the record that triggered this flow. In this case the Service Appointment ID. This is handed over from the FSL Mobile App into the flow.</description>
+        <name>Id</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <description>Stores the ParentRecord ID of the record that triggered this flow (usually the Work Order Id of the Service Appointment). This is handed over from the FSL Mobile App into the flow.</description>
+        <name>ParentId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <description>Used to store the Record ID of the &quot;Service Appointment&quot;, when the flow is opened from a Desktop Device.</description>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Used to store a collection of Work Orders that are to be created depending on the users choice when selecting the requested Reinstatement Types.</description>
+        <name>var_ChildWorkOrder_Collection</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>WorkOrder</objectType>
+    </variables>
+    <variables>
+        <name>var_ChildWorkOrder_SingleRecord</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>WorkOrder</objectType>
+    </variables>
+    <variables>
+        <description>This Record Variable stores some details of the Parent Work Order record  retrieved from the lookup &quot;Get Work Order Details&quot; and is also used to create a child work order later in the flow.</description>
+        <name>var_ParentWorkOrder_Details</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>WorkOrder</objectType>
+    </variables>
+    <variables>
+        <description>Used to store the Record Type Id of the &quot;Reintatement&quot; Record Type on Work Orders</description>
+        <name>var_Reinstatement_WorkOrder_RecordTypeId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Used to store the selected Reinstatement Types from the Checkbox Group. This is required as the Field Service Mobile App cannot retrieve all selected Items from the Checkbox Group in order to display them on the &quot;Confirmation&quot; screen when referencing the Checkbox Group screen element directly.</description>
+        <name>var_Selected_ReinstatementTypes</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>var_Selected_ServiceHazards_MultiPicklist</name>
+        <dataType>Multipicklist</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Stores the ID and other details of the Work Type record looked up with the Get Work Type elements. As the assignment happens immediately after the lookup element into other variables, this Work  Type Record Variable is used multiple times to stores values for the Work Order record type AND Work Order Line Items Record Type.</description>
+        <name>var_WorkTypeRecord</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>WorkType</objectType>
+    </variables>
+</Flow>

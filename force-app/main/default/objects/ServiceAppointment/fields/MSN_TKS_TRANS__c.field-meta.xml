@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_TKS_TRANS__c</fullName>
+    <defaultValue>&quot;SFPO&quot;</defaultValue>
+    <description>This field is used to accomodate the requirements of the &quot;Subcontractor Claims&quot; process that requires TKD_TRANS as a column in the claims upload template in order to import claims into EAM. It is used in a column of the Subcontractor Claims report.</description>
+    <externalId>false</externalId>
+    <label>TKD_TRANS</label>
+    <length>4</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

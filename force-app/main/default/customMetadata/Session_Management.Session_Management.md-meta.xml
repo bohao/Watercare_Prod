@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Session_Management</label>
+    <protected>false</protected>
+    <values>
+        <field>Access_Key__c</field>
+        <value xsi:type="xsd:string">ASIA5LLLFMNDTDWQFODB</value>
+    </values>
+    <values>
+        <field>Secret_Access_Key__c</field>
+        <value xsi:type="xsd:string">GpJqQ5N1Q1kZQZMI5pGqxx84WyHjuFVZpBjblQRX</value>
+    </values>
+    <values>
+        <field>Session_Token__c</field>
+        <value xsi:type="xsd:string">IQoJb3JpZ2luX2VjEBAaDmFwLXNvdXRoZWFzdC0yIkgwRgIhALUHkuksu/R2X+9AWOgnUsyZskjP/zNDJ1ltG7pDh/OfAiEAmjUVNiI9FIXm4jY6bOpDZTnT2LzmsIkwX9SdHy3nlYEqngIIyf//////////ARACGgw5MTc3MzcxMzY5NjciDBqKnjXwdCVtlu2JNSryASfdabHVY7VNrtAoB6VGxjgACwtA8/2yai4egkHmDoUyDcdsq2xPL/ZghBQk1uotag52/AUvjxt4fmY7uxirn4ryoFeb4yNrJq3YvgOCMIgOj4E3SBR5q+zQ0mkFCeYpzx2qunfhGFnXDCHHIiCcJNeWxn2Ey5izKliTjLmz2LqmKk1RRogqsUZQ45i5URbW27yzGtXgWg78495jql27lVxOvyn9robpQ+VQDJKr3d/3j+M6rhjDPvORNIZDrIoHHEVssKeJOBMGBRSlNG1XU2m8NCq0Hd7IeBI/REWjc5SIJlG2i+4h+tAhPbAXZvtPTSDSMMCO85kGOpwBTOvLMA100I5DthcgoWReUBlpNUzC8Wc8z9PlGA8AVIHhe4U7XI8IURJYyvywqcKu37rqs4dloke5M4lJfz2kahypphSyPPW8ZKVxZ3Df1VTFJzGSVr9Y4iXwNV5C2vBn2QlEpqocZYCQVOl9zRiZL5EFhNhF1yu+qxO11mMOaypDrw6MQZZAflO+skqGVFjl26TfxQddFOxWZRwA</value>
+    </values>
+</CustomMetadata>

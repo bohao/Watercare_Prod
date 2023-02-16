@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_RelatedAssetName__c</fullName>
+    <description>This Cross Object Formula is used to determine the related Asset Name of the Work Order or Work Order Line Item in order to show this in on the &quot;Work Step&quot; on the Field Service Mobile App.</description>
+    <externalId>false</externalId>
+    <formula>IF(NOT(ISBLANK(WorkOrderLineItemId) || ISBLANK( WorkOrderLineItem.AssetId) ) ,  WorkOrderLineItem.Asset.Name ,  IF(NOT(ISBLANK( WorkOrderId)|| ISBLANK( WorkOrder.AssetId)),  WorkOrder.Asset.Name , &quot;None&quot;) )</formula>
+    <label>Related Asset</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_AutoSchedule_ServiceAppointment__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Used to determine if a Service Appointment should be &quot;auto-scheduled&quot; when &quot;auto-create service appointment&quot; is ticked on the Work Type. This checkbox uses the Record Triggered Flow &quot;MSN - Service Appointment - Record-Triggered Updates&quot; to update the checkbox &quot;Auto-Schedule&quot; on the Service Appointment Record</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Please tick this checkbox in order to auto-schedule new Service Appointments that get auto-created from the Work Type.</inlineHelpText>
+    <label>Auto-Schedule Service Appointment</label>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

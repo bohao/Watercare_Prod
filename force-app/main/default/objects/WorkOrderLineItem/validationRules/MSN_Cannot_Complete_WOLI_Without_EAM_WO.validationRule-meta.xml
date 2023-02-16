@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_Cannot_Complete_WOLI_Without_EAM_WO</fullName>
+    <active>true</active>
+    <description>Validation rule to prevent users from completing Work Order Line Items without an EAM Work Order number. If the error is triggerd, the WOLI most likely has not received a correct response from EAM after creation or has not been created in EAM at all.</description>
+    <errorConditionFormula>AND(ISPICKVAL(StatusCategory, &apos;Completed&apos;), ISBLANK(MSN_EAM_Work_Order_No__c))</errorConditionFormula>
+    <errorMessage>You cannot complete a Work Order Line Item without an EAM Work Order number. If you see this error, the WOLI has most likely not been correctly created in EAM.</errorMessage>
+</ValidationRule>

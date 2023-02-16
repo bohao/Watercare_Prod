@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_CannotCreate_New_SA_CompletedWO</fullName>
+    <active>true</active>
+    <description>Validation rule to prevent users from creating new &quot;Service Appointment&quot; records, when its Parent Work Order is already in a &quot;completed&quot; state. This is required to prevent the addition ofl Labour or WOLIs to a completed job in EAM.</description>
+    <errorConditionFormula>AND(
+ISNEW(),
+OR(
+ISPICKVAL( FSSK__FSK_Work_Order__r.Status, &apos;Reviewed&apos;),
+ISPICKVAL( FSSK__FSK_Work_Order__r.Status, &apos;Completed&apos;),
+ISPICKVAL( FSSK__FSK_Work_Order__r.Status, &apos;Cannot Complete&apos;),
+ISPICKVAL( FSSK__FSK_Work_Order__r.Status, &apos;Canceled&apos;),
+ISPICKVAL( FSSK__FSK_Work_Order__r.Status, &apos;Rejected&apos;)
+)
+)</errorConditionFormula>
+    <errorMessage>You are not allowed to create new Service Appointments when the parent Work Order is already Reviewed, Completed, Cannot Complete, or Canceled. You might still create a new Child Work Order or have a new Work Order released in EAM.</errorMessage>
+</ValidationRule>

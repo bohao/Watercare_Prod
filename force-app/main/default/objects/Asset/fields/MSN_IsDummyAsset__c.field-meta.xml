@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MSN_IsDummyAsset__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Used to flag &quot;Dummy Assets&quot; that are used in the &quot;Work Done&quot; process in case a field crew team member cannot find a Compkey or Serial number for an installed asset in their GIS application.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Please only tick this for &quot;Dummy Assets&quot; which should show up for field crew on the mobile app in the &quot;Work Done&quot; process in case they cannot find a CompKey in GIS.</inlineHelpText>
+    <label>Is Dummy Asset</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

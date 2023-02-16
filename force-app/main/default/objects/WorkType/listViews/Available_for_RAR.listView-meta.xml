@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Available_for_RAR</fullName>
+    <columns>Name</columns>
+    <columns>EstimatedDuration</columns>
+    <columns>DurationType</columns>
+    <columns>Service_Area__c</columns>
+    <columns>Sub_Contractor__c</columns>
+    <columns>MSN_Crew__c</columns>
+    <columns>Available_for_RAR__c</columns>
+    <columns>FSL__Due_Date_Offset__c</columns>
+    <columns>MSN_Default_Asset__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Available_for_RAR__c</field>
+        <operation>equals</operation>
+        <value>1</value>
+    </filters>
+    <label>Available for RAR</label>
+</ListView>
